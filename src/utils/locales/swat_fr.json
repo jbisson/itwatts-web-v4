@@ -1,0 +1,495 @@
+{
+  "menu": {    
+    "swatHome": {
+      "title": "Accueil"
+    },
+    "raccoonRace": {
+      "title": "Course du Raton",
+      "info": "Information",
+      "registration": "Inscription",
+      "resultsSweetRound1": "Résultats Sucrée Ronde 1",
+      "resultsSweetRound2": "Résultats Sucrée Ronde 2",
+      "resultsSweetRound3": "Résultats Sucrée Ronde 3",
+      "resultsSpicyRound1": "Résultats Épicé Ronde 1",
+      "resultsSpicyRound2": "Résultats Épicé Ronde 2",
+      "resultsSpicyRound3": "Résultats Épicé Ronde 3"
+    },
+    "atomasRace": {
+      "title": "Course Atomas",
+      "info": "Information",
+      "resultsRound": "Résultats Ronde 4"
+    },
+    "premierTechEndoXLevisRace": {
+      "title": "Course PT X Endo Lévis",
+      "info": "Information",
+      "resultsRound1": "Résultats"
+    },
+    "swat": {
+      "title": "5.W.4.T (old)",
+      "frr": "Flamme Rouge",
+      "info": "Information",
+      "irlCalendar": "Calendrier IRL",
+      "compliance": "Conformité",
+      "performanceAnalysis": "Analyse Performance",
+      "members": "Membres (2024-2025)",
+      "guests": "Invité(e)s (2024-2025)",
+      "participation": "Participation",
+      "registerZrl": "Inscription ZRL 2024-2025 Ronde 3",
+      "registerTTT": "Inscription WTRL Team Time Trial",
+      "registerClubLadder": "Inscription Club Ladder 2024"
+    },
+    "admin": {
+      "title": "Admin",
+      "info": "Info",
+      "users": "Utilisateurs",
+      "discord": "Discord",
+      "zwiftPower": "Zwift Power",
+      "strava": "Strava",      
+      "clubLadderRegistrations": "Inscriptions Club Ladder 2024",      
+      "zrl20242025Round3Registrations": "Inscriptions ZRL 2024-2025 Ronde 3",
+      "zrl20242025Round2Registrations": "Inscriptions ZRL 2024-2025 Ronde 2",
+      "wtrlTTTRegistrations": "Inscriptions WTRL TTT 2024-2025",      
+      "swatInterestForms2024": "Formulaires intérêt 2024",
+      "swatGuestForms2024": "Formulaires invité 2024",
+      "swatMembers": "Membres 5.W.4.T (2024)",
+      "swatMembers2023": "Membres 5.W.4.T (2023)",
+      "swatGuests": "Invité(e)s 5.W.4.T (2024)",
+      "swatGuests2023": "Invité(e)s 5.W.4.T (2023)"
+    },    
+    "gcqc": {
+      "title": "Grosse Course",
+      "info": "Information",
+      "resultsRound1": "Résultats",
+      "signups": "Inscriptions"
+    },    
+    "itt": {
+      "title": "Les Chronos ITTWatts",
+      "info": "Information",
+      "results": "Résultats",
+      "results_serie17": "Résultats Série 17",
+      "signups": "Inscriptions"
+    }
+  },
+  "lists": {
+    "roles": {
+      "SUPER_ADMIN": "Super Administrateur",
+      "SWAT_MEMBER": "Membre",
+      "SWAT_ADMIN": "Administrateur Swat",
+      "SWAT_GUEST_MEMBER": "Invité(e)"
+    }
+  },
+  "interest": {
+    "validation": {
+      "zwiftPowerIDLowerThan8": "L'identifiant ZwiftPower doit comporter moins de 8 chiffres.",
+      "zwiftPowerIDNumber": "L'identifiant ZwiftPower doit être un chiffre numérique.",
+      "zwiftPowerIDRequired": "L'identifiant ZwiftPower est requis."
+    },
+    "zwiftPowerID": "ZwiftPower ID (ie: 1241072)"
+  },
+  "home": {
+    "pageCategory": "Accueil",
+    "pageTitle": "Bienvenue",
+    "intro1": "Bienvenue sur le site d'ITWatts. Le site a été conçu initialement pour permettre aux différents coureurs de Zwift de s'inscrire à différentes courses e-sports. Il est maintenant utilisé pour faire de la gestion pour des équipes virtuelles e-sport, tel que l'équipe 5.W.4.T.",
+    "intro2": "ITWatts permet de détecter les coureurs hors-catégorie lors de courses Zwift de façon juste et automatisée. D'autres outils d'analyse de données liés avec Zwift sont en cours de développement.",
+    "intro3": "Pour toutes les demandes d'analyse de données, de résultats de courses ou pour toute autre questions, veuillez "
+  },  
+  "adminDiscord": {
+    "pageCategory": "Admin",
+    "pageTitle": "Discord"
+  },
+  "adminInfo": {
+    "pageCategory": "Admin",
+    "pageTitle": "Info"
+  },
+  "adminUsers": {
+    "pageCategory": "Admin",
+    "pageTitle": "Utilisateurs"
+  },
+  "adminZwiftpower": {
+    "pageCategory": "Admin",
+    "pageTitle": "5.W.4.T Zwiftpower"
+  },
+  "adminZrlRegistration": {
+    "pageCategory": "Admin",
+    "pageTitle": "Inscriptions ZRL 2024 ronde3"
+  },
+  "adminZrl20242025Round2Registrations": {
+    "pageCategory": "Admin",
+    "pageTitle": "Inscriptions ZRL 2024-2025 ronde 2"
+  },
+  "adminZrl20242025Round3Registrations": {
+    "pageCategory": "Admin",
+    "pageTitle": "Inscriptions ZRL 2024-2025 ronde 3"
+  },
+  
+  "wtrlTTTRegistrations": {
+    "pageCategory": "Admin",
+    "pageTitle": "Inscriptions WTRL TTT 2024-2025"
+  },
+  "adminClubLadderRegistration": {
+    "pageCategory": "Admin",
+    "pageTitle": "Inscriptions Club Ladder 2024"
+  },
+  "swatInterestForms2024": {
+    "pageCategory": "Admin",
+    "pageTitle": "Formulaires Intérêt 2024"
+  },
+  "swatGuestForms2024": {
+    "pageCategory": "Admin",
+    "pageTitle": "Formulaires Invité 2024"
+  },
+  "adminSwatMembers": {
+    "pageCategory": "Admin",
+    "pageTitle": "Membres 5.W.4.T (2024)"
+  },
+  "adminSwatMembers2023": {
+    "pageCategory": "Admin",
+    "pageTitle": "Membres 5.W.4.T (2023)"
+  },
+  "adminSwatGuests": {
+    "pageCategory": "Admin",
+    "pageTitle": "Invité(e)s 5.W.4.T (2024)"
+  },
+  "adminSwatGuests2023": {
+    "pageCategory": "Admin",
+    "pageTitle": "Invité(e)s 5.W.4.T (2023)"
+  },
+  "atomasInfo": {
+    "pageCategory": "Course Atomas",
+    "pageTitle": "Information",
+    "howToParticipate": "Comment participer?",
+    "howToParticipateInfo": "Viens te réveiller avec atomas et l'équipe 5.W4.T {0}.",
+    "jasminTitch": "la chaine twitch de Jasmin Marinelli",
+    "officialAtomasPage": "la page facebook officiel de la course Atomas",
+    "pointsSystem": "Système de points",
+    "pointsSystemInfo": "Le système de pointage comporte les points pour le Finish + des points bonus pour les FTS et FAL en fonction du parcours. Les détails sont disponibles lors de la publication de l'événement sur facebook. Les 10 meilleurs coureurs par catégorie qui auront le plus de points auront de 10 à 1 points pour le cumulatif de la ronde!",
+    "questions": "Questions?",
+    "questionsInfo": "Veuillez contacter Atomas à la {0} ou bien {1}.",
+    "what": "Quoi?",
+    "whatInfo1": "La Course Atomas vous est présentée par l'équipe 5.W.4.T. Optez pour la victoire, un record personnel ou essayez simplement d'obtenir le meilleur entrainement possible. Pour rendre la course aussi équitable que possible, nous avons appliqué quelques règles mineures qui entraineront une disqualification automatique sur ZwiftPower.",
+    "whatInfo2": "Tous les coureurs doivent:",
+    "whatInfo3": "1- Rouler selon leurs catégories selon ZwiftPower.",
+    "whatInfo4": "2- Fortement suggère de porter un moniteur de fréquence cardiaque.",
+    "whatInfo5": "Les coureurs sans moniteur cardiaque seront disqualifiés dans les catégorie A, B et C. Les coureurs qui utilisent zPower sont autorisés dans la catégorie D.",
+    "whatInfo6": "Veuillez suivre {0} pour écouter la course!",
+    "when": "Quand?",
+    "whenInfo": "À tous les samedi matin 9h 30am (Heure de l'EST)",
+    "who": "Qui?",
+    "whoInfo": "Tout le monde! Que vous soyez débutant à 1.5w/kg ou bien 6w/kg, tout le monde y retrouverons leur compte. Les coureurs sont principalement des francophones de sexe mixtes."
+  },
+  "atomasResults": {
+    "pageCategory": "Course Atomas",
+    "pageTitle": "Résultats Ronde %{roundNumber}",
+    "cumulative": "Cummulatif"
+  },
+  "dataDeletion": {
+    "pageCategory": "Accueil",
+    "pageTitle": "Suppression des données",
+    "pageBody": "ITWatts - Supprimer Mes Données{newline}{newline}Nous prenons la protection des données au sérieux chez ITWatts. Si vous souhaitez demander la suppression de vos données personnelles de nos systèmes, veuillez nous contacter à info{'@'}itwatts.com"
+  },
+  "gcqcInfo": {
+    "howToParticipate": "Visitez la page suivante pour vous inscrire: {0}.",
+    "jasminTitch": "la chaîne Twitch de Jasmin Marinelli",
+    "officialGcqcPage": "la page Facebook officielle de la Grosse Course Zwift du Québec",
+    "pageCategory": "Course Grosse Course Zwift du Québec",
+    "pageTitle": "Information",
+    "pointsSystem": "Système de points",
+    "pointsSystemInfo": "Le système de notation comprend des points pour l'arrivée + des points bonus pour le FAL basés sur le parcours. Les 15 meilleurs coureurs de chaque catégorie avec le plus de points auront de 30 à 1 points pour le cumulatif de la ronde !",
+    "questions": "Questions ?",
+    "questionsInfo": "Veuillez visiter {0}.",
+    "what": "Quoi ?",
+    "whatInfo1": "La Course Grosse Course Zwift du Québec vous est présentée par le Clan Knox et l'équipe 5.W.4.T. Visez la victoire, un record personnel ou essayez simplement d'obtenir le meilleur entraînement possible. Pour rendre la course aussi équitable que possible, nous avons appliqué quelques règles mineures qui entraîneront une disqualification automatique sur ZwiftPower.",
+    "when": "Quand ?",
+    "whenInfo": "Tous les jeudis à 19h15 (heure de l'Est)",
+    "who": "Qui ?",
+    "whoInfo": "Tout le monde ! Que vous soyez débutant à 1.5w/kg ou 6w/kg, tout le monde y trouvera son compte. Consultez le tableau ci-dessous pour les différentes catégories."
+  },
+  "gcqcResults": {
+    "cumulative": "Cumulative",
+    "pageCategory": "La Grosse Course Zwift du Québec",
+    "pageTitle": "Résultats de la saison d'automne"
+  },
+  "ittInfo": {
+    "pageCategory": "Les Chronos ITTWatts",
+    "pageTitle": "Information",
+    "howToParticipate": "Comment participer?",
+    "howToParticipateInfo": "Pour vous inscrire : {0} ou choisissez n'importe quel événement de type \"Zwift TT Club\" sous Companion.",
+    "pointsSystem": "Système de points",
+    "pointsSystemInfo1": "Le Zwift TT Club propose un classement \"TT Club SCORE\" qui compare votre temps à celui du meilleur participant de la population générale de la semaine dans votre catégorie.",
+    "pointsSystemInfo2": "ITWatts propose le \"ITTWatts SCORE\", qui représente un facteur d'efficacité calculé comme le rapport de votre temps de référence à votre temps réel. Le temps de référence est celui que vous auriez obtenu en parcourant la distance avec une puissance constante, sans \"puncher\" les bosses, section de sable, etc. Le temps de référence prend en compte votre puissance moyenne pour l'événement, votre poids, et votre taille, et est déterminé à l'aide d'une méthode proposée par {0}.",
+    "pointsSystemInfo3": "Vos points hebdomadaires sont calculés en additionnant votre \"ITWatts SCORE\" à votre \"TT Club SCORE\" comme suit : (ITWatts SCORE) + (TT Club SCORE) - 100.",
+    "questions": "Questions ?",
+    "questionsInfo": "Contactez-nous sur Discord pour plus d'information.",
+    "what": "Quoi ?",
+    "whatInfo1": "Les Chronos ITTWatts proposent un classement enrichi et exclusif pour la série Zwift TT Club sur Zwift.",
+    "whatInfo2": "La série Zwift TT Club propose des contre-la-montre individuels sur cinq semaines, au cours desquelles la distance des événements augmentera progressivement, allant d'efforts de 5 minutes à environ une heure.",
+    "whatInfo3": "Exclusivement pour les membres de l'équipe 5.W.4.T, ITTWatts propose un classement mettant en valeur votre efficacité et l'intensité de votre effort. La performance sur un contre-la-montre individuel ne repose pas uniquement sur la puissance; le \"pacing\" stratégique en fonction du parcours est crucial.",
+    "when": "Quand ?",
+    "whenInfo": "Plusieurs plages horaires : 3h20, 5h20, 7h20, 9h20, 12h20, 13h20, 14h20, 18h20 et 21h20 (Visitez Companion pour l'horaire complet) -> Zwift TT Club",
+    "who": "Qui ?",
+    "whoInfo": "Tous ceux qui veulent améliorer leur pacing tactique et travailler des efforts soutenus."
+  },
+  "ittResults": {
+    "cumulative": "Cumulative",
+    "pageCategory": "Les Chronos ITTWatts",
+    "pageTitle": "Résultats Series %{serie}"
+  },
+  "gcqcSignups": {
+    "pageCategory": "La Grosse Course Zwift du Québec",
+    "pageTitle": "Inscriptions"
+  },
+  
+  "swatFRR": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Flamme Rouge"
+  },
+  "email": {
+    "pageCategory": "Accueil",
+    "pageTitle": "Validation Courriel"
+  },
+  "swatInfo": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Information"
+  },
+  "swatIrlCalendar": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Calendrier IRL"
+  },
+  "swatDiscord": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Discord"
+  },
+  "swatMember": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Member"
+  },
+  "swatMembers": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Membres 5.W.4.T (2024-2025)"
+  },
+  "swatCompliance": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Conformité 5.W.4.T"
+  },
+  "swatGuests": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Invité(e)s 5.W.4.T (2024-2025)"
+  },
+  "swatParticipation": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Participation 5.W.4.T"
+  },
+  "swatRegisterZrl2024winter": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Inscription ZRL 2024"
+  },
+  "swatRegisterZrl": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Inscription ZRL 2024-2025 Ronde 3"
+  },
+  "swatRegisterTTT": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Inscription WTRL Team Time Trial (TTT)"
+  },
+  "swatJoin": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Joindre le 5.W.4.T"
+  },
+  "swatInvite": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Formulaire de l'invité du 5.W.4.T",
+    "formQuestions": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse courriel",
+      "region": "Région",
+      "regionOther": "Autre Région",
+      "partOfIrlTeam": "Faites-vous partie d'un club cycliste sur route In Real Life (IRL) (non virtuel, à l'extérieur) ? Si oui, lequel ?",
+      "irlTeamOther": "Autre équipe IRL",
+      "partOfVirtualTeam": "Faite-vous partie d’un autre club/équipe virtuel ? Si oui, lequel ?",
+      "zpID": "Quelle est votre identifiant ZwiftPower ? Vous pouvez trouver votre identifiant ZwiftPower ici : https://zwiftpower.com. Après vous être connecté, cliquez sur votre photo de profil (en haut à droite) et sélectionnez « Profil ZwiftPower ». Regardez le lien web dans la barre, le numéro après le z= est votre identifiant : par exemple : https://zwiftpower.com/profile.php?z=[IDENTIFIANT]",
+      "virtualTeam": "Équipe virtuelle",
+      "knowSwatMember": "Connaissez-vous l’un(e) ou plusieurs de nos membres / invité(es) 2023-2024 ? Si oui lequel/lesquels ?",
+      "knowSwatMembersNames": "Connaissances membres / invité(es) 2023",
+      "reasonsToJoin": "Quelles sont les raisons qui vous motivent à rejoindre l’équipe du 5.W.4.T ?",
+      "wantToParticipeInVirtualActivities": "J'aimerais participer à une (ou plusieurs) série de course(s) virtuelle avec le 5.W.4.T.",
+      "wantToParticipeInSocialRides": "J'aimerais participer à une (ou des) rides sociales avec le 5.W.4.T.",
+      "wantToParticipeIRLActivities": "J'aimerais participer à une (ou plusieurs) activité(s) à l'extérieur avec le 5.W.4.T.",
+      "wantToParticipeInChatting": "J'aimerais principalement discuter et échanger avec les autres membres 5.W.4.T sur Discord.",
+      "comments": "Questions / commentaires supplémentaires ? veuillez nous en faire part !"      
+    }
+  },
+  "swatInterest": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Formulaire d’intérêt du 5.W.4.T",
+    "formQuestions": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse courriel",
+      "region": "Région",
+      "regionOther": "Autre Région",
+      "birthday": "Date de naissance",
+      "height": "Grandeur (cm)",
+      "weight": "Poids (kg)",
+      "zpID": "Quelle est votre identifiant ZwiftPower ? Vous pouvez trouver votre identifiant ZwiftPower ici : https://zwiftpower.com. Après vous être connecté, cliquez sur votre photo de profil (en haut à droite) et sélectionnez « Profil ZwiftPower ». Regardez le lien web dans la barre, le numéro après le z= est votre identifiant : par exemple : https://zwiftpower.com/profile.php?z=[IDENTIFIANT]",
+      "partOfIrlTeam": "Faites-vous partie d'un club cycliste sur route In Real Life (IRL) (non virtuel, à l'extérieur) ? Si oui, lequel ?",
+      "irlTeamOther": "Autre équipe IRL",
+      "partOfVirtualTeam": "Faite-vous partie d’un autre club/équipe virtuel ? Si oui, lequel ?",
+      "virtualTeam": "Équipe virtuelle",
+      "knowSwatMember": "Connaissez-vous l’un(e) ou plusieurs de nos membres / invité(es) 2023-2024 ? Si oui lequel/lesquels ?",
+      "knowSwatMembersNames": "Connaissances membres / invité(es) 2023",
+      "trainerModel": "Quel est le modèle de votre base d'entrainement (Tacx Flux, Tacx Neo, Saris H3, Wahoo Kickr, Elite Drivo, etc…) ?",
+      "trainerModelOther": "Base d'entrainement (autre)",
+      "secondaryPowerSource": "Avez-vous un deuxième capteur de puissance à ta disposition ? Si oui, lequel? (pédales, crank, etc)",
+      "secondaryPowerSourceModel": "Modèle capteur de puissance",
+      "secondaryPowerSourceModelOther": "Modèle capteur de puissance (autre)",
+      "otherSports": "Quels sont les sports que vous pratiquez et quelle est votre expérience en tant que cycliste virtuel ?",
+      "reasonsToJoin": "Quelles sont les raisons qui vous motivent à rejoindre l’équipe du 5.W.4.T ?",
+      "hoursWorkoutSummer": "Combien d'heures environ par semaine consacrez-vous au vélo (entraînements, rides, courses) lors de la saison de vélo virtuel ?",
+      "virtualRacesParticipation": "Je participe régulièrement à des courses virtuelles.",
+      "virtualRacesNeverParticated": "Je n’ai jamais participé à une course virtuelle mais je suis intéressé(e).",
+      "virtualRacesNotInterested": "Je ne suis pas intéressé(e) à participer à des courses virtuelles.",
+      "racesOrEvents": "Quels sont les courses et les événements virtuels auxquels vous avez participés dans le passé (si applicable) :",
+      "workoutsInterest": "Entraînement structurés",
+      "socialRidesInterest": "Rides sociales (style zone 1-2)",
+      "tttInterest": "Course contre la montre (TTT)",
+      "zrlInterest": "Série hebdomadaire (style ZRL Zwift Racing League)",
+      "stageRacesInterest": "Course à étape (style Flamme Rouge)",
+      "clubLadderInterest": "Course équipe vs équipe (style Club Ladder)",
+      "otherPlatformInterest": "Autre plateforme que Zwift (indieVelo, myWhoosh, rouvy, etc)",
+      "hoursWorkoutWinter": "Combien d'heures environ par semaine consacrez-vous au vélo (entraînements, rides, courses) lors de la saison estivale ?",
+      "integrityValuesAuthenticPerformances": "Je trouve important de pouvoir démontrer que mes performances virtuelles sont authentiques.",
+      "integrityValuesLowInterestPerformanceValidation": "J'ai peu d'intérêt à valider mes performances en virtuel, car je ne vois pas l’utilité.",
+      "integrityValuesAcceptTests": "J’accepte de réaliser tous les tests nécessaires (avec l’aide du 5.W.4.T, au besoin) pour valider que mes données virtuelles (par exemple, base d'entraînement, grandeur, poids, etc) sont authentiques.",
+      "respectValuesPriorizeGroup": "J’ai tendance à prioriser le bien-être du groupe, au-delà de mon propre gain personnel.",
+      "respectValuesRespectOthers": "Je respecte mes adversaires en reconnaissant leurs efforts.",
+      "respectValuesBadLooser": "Je suis capable d’être un bon perdant et d’accepter les défaites.",
+      "respectValuesSharedLost": "Je partage autant les succès que les échecs de mes coéquipiers.",
+      "respectValuesOwnObjectivesOnly": "Je roule virtuellement uniquement pour atteindre mes objectifs sportifs personnels.",
+      "engagementValuesInvested": "Je cherche une équipe dans laquelle je pourrai m’investir pleinement.",
+      "engagementValuesTeamMembershipInterest": "J’ai l’intention de jouer un rôle actif au sein de l’équipe et j’aimerais collaborer avec les autres membres dans l’atteinte des objectifs communs.",
+      "engagementValuesBelongingToAGroup": "Je cherche une équipe pour laquelle j’aimerais ressentir un sentiment d’appartenance.",
+      "engagementValuesLowEngagementOnly": "J’ai beaucoup d’autres activités que le cyclisme virtuel, donc mon engagement envers l’équipe sera minime.",
+      "topSwatValue": "Parmis les valeurs sportives suivantes, quel serait la valeur la plus importantes à vos yeux ?",
+      "teamCapitain": "Capitaine d'équipe sur une série de course (style ZRL, Club Ladder)",
+      "organizeCourseSerie": "Coordonner la participation à une série de course (style Flammerouge, TTT) (comité de courses)",
+      "helpShareKnowledge": "Aider aux partages de connaissances specifiques au e-sport (comité formation)",
+      "testingTechTools": "Tester nouveaux outils technologiques en lien avec le 5.W.4.T (style ITWatts)",
+      "comments": "Questions / commentaires supplémentaires ? veuillez nous en faire part !"      
+    }
+  },
+  "swatAdmission": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Processus d'admission 5.W.4.T 2024-2025"
+  },
+  "swatRegisterClubLadder": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Inscription Club Ladder 2024"
+  },
+  "Modern": "Moderne",
+  "eCommerce": "commerce électronique",
+  "Analytical": "Analytique",
+  "Classic": "Classique",
+  "Demographical": "démographique",
+  "Minimal": "Minimale",
+  "Contact": "a lua legatura",
+  "Blog": "Blog",
+  "Posts": "Des postes",
+  "Detail": "Détail",
+  "E-Commerce": "Commerce électronique",
+  "Shop": "Boutique",
+  "List": "Liste",
+  "Checkout": "Vérifier",
+  "Chats": "Chattes",
+  "User Profile": "Profil des utilisateurs",
+  "Notes": "Remarques",
+  "Calendar": "Calendrier",
+  "Profile": "Profil",
+  "Followers": "Suiveuses",
+  "Friends": "Amies",
+  "Gallery": "Galerie",
+  "Email": "E-mail",
+  "Pricing": "Tarification",
+  "Account Setting": "Paramètre du compte",
+  "FAQ": "FAQ",
+  "Widget": "Widget",
+  "Landing Page": "Page de destination",
+  "Form Elements": "Éléments de formulaire",
+  "Autocomplete": "Saisie automatique",
+  "Combobox": "Boîte combo",
+  "Button": "Bouton",
+  "Checkbox": "Case à cocher",
+  "Custom Inputs": "Entrées personnalisées",
+  "File Inputs": "Entrées de fichier",
+  "Radio": "Radio",
+  "Date Time": "Date Heure",
+  "Select": "Sélectionner",
+  "Slider": "Glissière",
+  "Switch": "Changer",
+  "Form Layout": "Disposition du formulaire",
+  "Form Horizontal": "Forme horizontale",
+  "Form Vertical": "Forme verticale",
+  "Form Custom": "Formulaire personnalisé",
+  "Form Validation": "Validation du formulaire",
+  "Editor": "Éditrice",
+  "Basic Table": "Tableau de base",
+  "Dark Table": "Tableau noir",
+  "Density Table": "Tableau de densité",
+  "Fixed Header Table": "Table d'en-tête fixe",
+  "Height Table": "Tableau des hauteurs",
+  "Ui Components": "Composants de l'interface utilisateur",
+  "Alert": "Alerte",
+  "Accordion": "Accordéon",
+  "Avatar": "Avatar",
+  "Chip": "Ébrécher",
+  "Dialog": "Dialogue",
+  "Menus": "Menus",
+  "Rating": "Notation",
+  "Tabs": "Filele",
+  "Tooltip": "Info-bulle",
+  "Typography": "Typographie",
+  "Line": "Doubler",
+  "Gredient": "Ils entreront",
+  "Area": "Zone",
+  "Candlestick": "Chandelier",
+  "Column": "Colonne",
+  "Doughnut & Pie": "Donut et Tarte",
+  "Radialbar & Radar": "Barre radiale et radar",
+  "Login": "Connexion",
+  "Side Login": "Connexion latérale",
+  "Boxed Login": "Connexion en boîte",
+  "Register": "Enregistrer",
+  "Side Register": "Registre latéral",
+  "Boxed Register": "Registre en boîte",
+  "Forgot Password": "Mot de passe oublié",
+  "Side Forgot Password": "Mot de passe oublié",
+  "Boxed Forgot Password": "Mot de passe oublié",
+  "Two Steps": "Deux étapes",
+  "Side Two Steps": "Côté deux étapes",
+  "Boxed Two Steps": "Deux étapes en boîte",
+  "Error": "Erreur",
+  "Maintenance": "Entretien",
+  "Menu Level": "Niveau menus",
+  "Level 1": "Niveau 1",
+  "Level 2": "Niveau 2",
+  "Level 3": "Niveau 3",
+  "Disabled": "Désactivé",
+  "Sub Caption": "Sous-titre",
+  "Outlined": "Décrite",
+  "External Link": "lien externe",
+  "Editable Table":"Tableau modifiable",
+  "Cards":"Cartes",
+  "Banners":"Bannières",
+  "Charts":"Graphiques",
+  "Material":"Matériel",
+  "Tabler":"Tableur",
+  "kanban":"Kanban",
+  "Header Table":"Tableau d'en-tête",
+  "Selection Table":"Tableau de sélection",
+  "Sorting Table":"Tableau de tri",
+  "Pagination Table":"Tableau de pagination",
+  "Filtering Table":"Tableau de filtrage",
+  "Grouping Table":"Tableau de regroupement",
+  "Table Slots":"Emplacements de table",
+  "This is the subtitle":"C'est le sous-titre"
+}

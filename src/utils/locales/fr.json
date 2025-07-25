@@ -1,0 +1,354 @@
+{
+  "menu": {
+    "fera": {
+      "title": "FERA",
+      "info": "Information",
+      "rider": "Mon Profile",
+      "allRiders": "Tous les coureurs",
+      "transparency": "Transparence",
+      "validations": "Validations"
+    },
+    "login": {
+      "title": "Se connecter"
+    },
+    "home": {
+      "title": "Accueil"
+    },
+    "superAdmin": {
+      "title": "Super Admin",
+      "teams": "Équipes"
+    },
+    "teams": {
+      "myTeams": "Mes équipes"
+    },
+    "primaryTeam": {
+      "info": "Information",
+      "manage": "Gérer",
+      "strava": "Strava",
+      "powerStats": "Statistiques de Puissance"
+    }
+  },
+  "lists": {
+    "roles": {
+      "SUPER_ADMIN": "Super Administrateur",
+      "SWAT_MEMBER": "Membre",
+      "SWAT_ADMIN": "Administrateur Swat",
+      "SWAT_GUEST_MEMBER": "Invité(e)"
+    }
+  },
+  "cb": {
+    "pageTitle": "",
+    "pageCategory": ""
+  },
+  "feraInfo": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "FERA",
+    "faq": "Questions fréquemment posées",
+    "whatIsFeraQ": "Qu'est-ce que la Fair E-Racing Alliance Mission ?",
+    "whatIsFeraA": "FERA est une alliance d’équipes cyclistes communautaires dédiée à la course équitable sur Zwift. L’alliance a été fondée à la fin de l’année 2022 et a pour objectif de développer des outils de base permettant aux équipes participantes et à leurs responsables d’identifier les anomalies dans les données de leurs propres coureurs et de déterminer si celles-ci sont dues à un équipement défectueux ou à un comportement malhonnête.",
+    "whatIsFeraA2": "FERA est convaincue que la meilleure façon de promouvoir l'intégrité est que chaque équipe prenne la responsabilité de ses propres coureurs, plutôt que de dénoncer ceux des autres équipes. Nous visons à offrir une plateforme où les équipes, qu'elles soient bien établies ou nouvelles, peuvent être soutenues, éduquées et dignes de confiance pour promouvoir le fair-play au sein de la communauté d'E-sport.",
+    "howToJoinQ": "Rejoindre FERA",
+    "howToJoinA": "FERA souhaite vivement accueillir davantage d'équipes. Toutefois, il est impératif que ces équipes, ainsi que tous leurs membres, s'engagent en faveur d'un sport équitable. Toutes les équipes s'engagent à vérifier les performances suspectes et, si nécessaire, à exclure leurs propres membres si une coopération n'est pas possible et que les performances ne peuvent être vérifiées. La tolérance et le respect mutuel sont les bases d'une coopération amicale et constructive.",
+    "howToJoinA2": "En général, les équipes ne devraient pas avoir plus de deux ou trois représentants au sein de FERA. Ces représentants devraient occuper un poste au sein de l’équipe leur permettant d’initier des changements et d’avoir une influence sur la structure et les procédures de l’équipe. Idéalement, les représentants devraient avoir de l’expérience sur Zwift ainsi qu’une bonne compréhension technique.",
+    "howToJoinA3": "Tous les membres de FERA sont connectés via Discord et y échangent des informations. Si vous êtes intéressé à devenir membre en tant qu'équipe ou organisateur de course, vous pouvez rejoindre le serveur Discord via le lien ci-dessous. Celui-ci mène à ce que l'on appelle le lobby. Veuillez vous présenter ainsi que votre équipe, et nous expliquer pourquoi vous souhaitez rejoindre FERA.",
+    "howToJoinA4": "Lobby de FERA : https://discord.gg/rBQq8WX7Qs",
+    "knowMoreQ": "Comment en savoir plus sur FERA",
+    "knowMoreA": "Visitez le site web de FERA à l'adresse suivante : https://www.f-e-r-a.org/"
+  },
+  "feraValidations": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "Validations"
+  },
+  "feraAddValidation": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "Nouvelle validation"
+  },
+  "feraRider": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "Mes données",
+    "trainers": "Bases d'entraînement",
+    "equipment": "Équipements",
+    "powerTests": "Tests de puissance",
+    "biometrics": "Données biométriques",
+    "validation": "Validation",
+    "transparency": "Transparence",
+    "privacy": "Confidentialité"    
+  },
+  "feraAllRiders": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "Tous les coureurs"
+  },
+  "feraTransparency" : {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "Transparence",
+    "zwift": "Zwift",
+    "addBio": "Ajouter une bio à votre profile ZwiftPower: {0} Cliquez sur votre photo de profil (en haut à droite), sélectionnez « ZwiftPower Profile » et cliquer sur l'onglet \"Settings\". Copier tout le text (incluant les codes) ci-bas tel quel."
+  },
+  "superAdminTeams": {
+    "pageCategory": "Super Admin",
+    "pageTitle": "Teams"
+  },
+  "privacy": {
+    "pageCategory": "Accueil",
+    "pageTitle": "Confidentialité",
+    "pageBody": "Politique de confidentialité pour ITWatts{newline}{newline}Cette politique de confidentialité décrit les types d'informations personnelles collectées par ITWatts (\"nous\", \"notre\" ou \"nos\") et comment ces informations sont utilisées, divulguées et protégées. En utilisant ITWatts, vous acceptez les termes de cette politique de confidentialité.{newline}{newline}Collecte et utilisation d'informations{newline}{newline}Nous collectons les informations que vous nous fournissez via Facebook afin de fournir et d'améliorer ITWatts. Ces informations peuvent inclure :{newline}{newline}- Votre nom Facebook, votre photo de profil et votre genre{newline}- D'autres informations auxquelles vous nous avez donné la permission d'accéder{newline}{newline}Nous utilisons ces informations pour vous fournir ITWatts, personnaliser votre expérience avec l'application et améliorer sa fonctionnalité. Nous pouvons également utiliser ces informations pour communiquer avec vous à propos de ITWatts, vous envoyer des mises à jour et vous offrir des promotions.{newline}{newline}Accès par des tiers{newline}{newline}Nous pouvons partager vos informations avec des fournisseurs de services tiers afin d'améliorer la fonctionnalité de ITWatts. Ces fournisseurs de services peuvent avoir accès à vos informations personnelles afin de nous fournir des services. Nous ne partagerons votre information personnelle qu'avec des fournisseurs de services tiers qui ont accepté de maintenir la confidentialité et la sécurité de votre information personnelle.{newline}{newline}Nous pouvons également divulguer vos informations personnelles si nous y sommes obligés par la loi, ou si nous croyons que cette divulgation est nécessaire pour protéger nos droits ou les droits des autres.{newline}{newline}Sécurité des données{newline}{newline}Nous prenons des mesures techniques et organisationnelles appropriées pour protéger vos informations personnelles contre tout accès non autorisé, toute perte, destruction ou dommage accidentel. Nous utilisons des mesures de sécurité standard de l'industrie pour protéger vos informations personnelles.{newline}{newline}Conservation des données{newline}{newline}Nous conserverons vos informations personnelles aussi longtemps que nécessaire pour vous fournir ITWatts et pour respecter les obligations légales.{newline}{newline}Modifications de cette politique de confidentialité{newline}{newline}Nous pouvons mettre à jour cette politique de confidentialité de temps à autre. Nous publierons toutes les modifications de cette politique sur cette page et nous vous encourageons à la consulter périodiquement.{newline}{newline}Contactez-nous{newline}{newline}Si vous avez des questions sur cette politique de confidentialité ou sur notre utilisation de vos informations personnelles, veuillez nous contacter à l'adresse info{'@'}itwatts.com"
+  },  
+  "resultComponent": {
+    "results": "Résultats",
+    "name": "Nom",
+    "position": "Position",
+    "points": "Points"
+  },
+  "signin": {
+    "pageCategory": "Se connecter",
+    "pageTitle": "",
+    "withStrava": "S'authentifier avec Strava",
+    "continueWithStrava": "Continuez avec Strava",
+    "withGoogle": "S'authentifier avec Google",
+    "withFacebook": "S'authentifier avec Facebook",
+    "reservedPage": "La page dont vous voulez accéder est réservé.",
+    "allowStravaConsent": "Pour continuer, ITWatts a besoin de votre consentement pour accéder à vos données Strava. Veuillez noter que nous prenons la protection des données très au sérieux.",
+    "loginToContinue": "Veuillez vous authentifier à l'aide du bouton ci-dessous pour continuer.",
+    "giveConcentToContinue": "Veuillez donner votre consentement en utilisant le bouton ci-dessous pour continuer."
+  },
+  "teamInvite": {
+    "pageCategory": "Team Invitation",
+    "pageTitle": "",
+    "needLogin" : "Pour accepter l'invitation à l'équipe, vous devez d'abord vous authentifier (ou créer) votre compte ITWatts en utilisant Strava. Cliquez sur le lien ci-dessous pour continuer.",
+    "notAuthorized": "Vous n'êtes pas autorisé à faire partie de cette équipe. Veuillez contacter votre administrateur d'équipe.",
+    "provideEmailAndZwiftPowerID": "Fournissez votre adresse e-mail et votre identifiant Zwift Power pour accepter l'invitation à rejoindre l'équipe.",
+    "fillEmailCode": "Un e-mail a été envoyé à votre adresse : {0}, veuillez indiquer les 6 chiffres.",
+    "verificationCode": "Code de vérification ITWatts:",
+    "invalidZwiftPowerID": "L'identifiant Zwift Power que vous avez saisi appartient à un autre utilisateur. Veuillez contacter votre administrateur d'équipe.",
+    "invalidVerificationCode": "Le code de vérification ITWatts que vous avez saisi n'est pas valide. Veuillez réessayer.",
+    "validatingCode": "nous validons présentement votre code d'invitation..."    
+  },
+  "teamInfo": {
+    "pageTitle": "Information",
+    "riders": "Riders"
+  },
+  "teamStrava": {
+    "pageTitle": "Strava",
+    "virtualKm": "Virtuel KM",
+    "nbActivities": "NB activitées"
+  },
+  "teamManage": {
+    "pageTitle": "Gérer"
+  },
+  "teamPowerStats": {    
+    "pageTitle": "Statistiques de Puissance",
+    "myLists": "Mes listes",
+    "addList": "Ajouter une liste",
+    "nameList": "Nom de la liste",
+    "areYouSureRemoveList": "Etes-vous sure de supprimer votre liste '{0}' ?",
+    "riders": "Coureurs:",
+    "3monthsAgo": "3 derniers mois",
+    "1yearAgo": "dernière année",
+    "3yearsAgo": "2 ans passés",
+    "statsInfo": "Les données sur 1 ou 2 ans sont la moyenne des 3 meilleurs efforts, tandis que les données des 3 derniers mois proviennent directement du profil ZwiftPower."
+  },
+  "userProfile": {
+    "title": "Profile utilisateur",
+    "myProfile": "Mes Données",
+    "accountSettings": "Paramètres du compte",
+    "logoutBtn": "Déconnexion",
+    "twitch": "Nom d'utilisateur Twitch",
+    "x": "Nom d'utilisateur X",
+    "youtube": "Nom de ma chaine YouTube",
+    "fb": "Nom d'utilisateur (ou Identifiant) Facebook",
+    "ig": "Nom d'utilisateur Instagram",
+    "primaryTeam": "Équipe primaire"
+  },
+  "profileTeamMembers": {
+    "pageCategory": "Membres {0}"
+  },
+  "swatStrava": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "5.W.4.T Strava"
+  },
+  "profileComponent": {
+    "photo": "Photo profile",
+    "noPhoto": "Vous n'avez aucune photo de profile présentement.",
+    "validateEmail": "Validater mon courriel",
+    "socialMedia": "Réseaux sociaux"
+  },
+  "teamPhotoComponent": {
+    "title": "Photo de bannière d'équipe"
+  },
+  "profileBannerComponent": {
+    "modifyMyProfile": "Modifier mon profile"
+  },
+  "feraPowerTestsComponent": {
+    "powerTest": "Test de puissance | Tests de puissance",
+    "powerTestCreated": "Date du test de puissance",
+    "didYouUseDualRecording": "Avez-vous fait un Dual Recording lors du test ?"
+  },
+  "feraValidationsComponent": {
+    "validation": "Validation de badge | Validations de badge"    
+  },
+  "feraBiometricsComponent": {
+    "biometrics": "Donnée biométrique | Données biométriques",
+    "measureDate": "Date de la mesure"
+  },
+  "feraEquipmentComponent": {
+    "equipment": "Équipements"
+  },
+  "feraPrivacyComponent": {
+    "iAuthorizeMy": "J'authorize mes données à être affichées publiquement dans la {0} afin d'être transparent(e) face à mes performances e-sport.",
+    "listRiders" : "liste des coureurs"
+  },
+  "ridersComponent": {
+    "myTeamRiders": "Les coureurs de mon équipe",
+    "removeRider": "Êtes-vous sûr de vouloir retirer {0} {1} de l'équipe {2} ?",
+    "removeInvitation": "Êtes-vous sûr de vouloir retirer le code d'invitation {0} de l'équipe {1} ?"
+  },
+  "invitesComponent": {
+    "myTeamInvites": "Les demandes d'invitation de mon équipe",
+    "removeRider": "Êtes-vous sûr de vouloir retirer {0} de l'équipe {2} ?",
+    "invitation" : "Demande d'invitation d'équipe"
+  },
+  "stravaSegmentComponent": {
+    "location": "Emplacement",
+    "stravaActivity": "Activité Strava",
+    "activityGpx": "Fichier activité (.gpx)",
+    "gpxActivityFile": "Activité via fichier GPX",
+    "segmentWithResults": "Segments with user results only",
+    "allSegments": "All segments",
+    "viewHiddenSegments": "Voir segment cachés",
+    "reverseCourse": "Parcours inversé",
+    "komMName": "KOM M Nom",
+    "komMTime": "KOM M Temps",
+    "komMSpeed": "KOM M Vitesse",
+    "komFName": "KOM F Nom",
+    "komFTime": "KOM F Temps",
+    "komFSpeed": "KOM F Vitesse",
+    "hisHerTime": "Son Temps",
+    "gap": "Écart",
+    "lastModified": "Date Modif",
+    "windDirection": "Vent Dir",
+    "elevationDiff": "Elev ation Diff",
+    "averageGradient": "Grad ient Moy"
+  },
+  "powerComponent": {
+    "bestEffort": "Meilleur effort sur {0}",
+    "virtual": "Virtuel",
+    "irl": "IRL"
+  },
+  "bannerComponent": {
+    "new": "Nouveau",
+    "newMsg": "Version v1.0 Beta sortie ! Nous accueillons de nouvelles équipes sur notre plateforme virtuelle !"
+  },
+  "lookups" : {
+    "true" : "oui",
+    "false" : "non"
+  },
+  "errors": {
+    "errorOccured": "Oupss, une erreur est survenue...Detail: {0}",
+    "expiredLink" : "Le lien d'invitation a expiré",
+    "invalidZwiftPowerID": "L'identifiant Zwift Power que vous avez saisi n'est pas valide."
+  },  
+  "validations": {
+    "required": "Ce champ est obligatoire",
+    "invalidEmail": "Courriel invalide." 
+  },
+  "dialogs": {
+    "success": "Les changements ont été enregistrés avec succès.",
+    "areYouSure": "Êtes-vous sûr de vouloir supprimer {0} ?"
+  },
+  "actions": {
+    "actions": "Actions",
+    "search": "Rechercher",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "add": "Ajouter",
+    "save": "Sauvegarder",
+    "ok": "OK",
+    "removeRider": "Retirer coureur",
+    "removeInvitation": "Retirer Invitation",
+    "invite": "Invite",
+    "view": "Afficher",
+    "manage": "Gérer",
+    "submit": "Soumettre",
+    "close": "Fermer",
+    "confirm": "Confirmer"
+  },
+  "common": {
+    "date": "Date",
+    "acceptedDate": "Date d'acceptation",
+    "title": "Title",
+    "name": "Nom",
+    "displayName": "Nom d'affichage",
+    "firstName": "Prénom",
+    "lastName" : "Nom",
+    "gender": "Genre",
+    "group": "Groupe",
+    "region": "Région",
+    "email": "Courriel",
+    "primaryTrainer": "Base d'entrainement primaire",
+    "powerMeterDualRecording": "Capteur de puissance (dual recording)",
+    "badge": "Badges",
+    "lastWeightChangeZwift": "Nb jours dernière modification poids (Zwift)",
+    "lastWeightChangeMyWhoosh": "Dernière modification poids (MyWhoosh)",
+    "validatedRaces": "Courses validées",
+    "validatedPowerProfile": "Tests de puissance validés",
+    "serialNumber": "Numéro de série",
+    "id": "Numéro d'identification",
+    "dualRecording": "Dual Recording",
+    "firmware": "Firmware",
+    "firmwareVersion": "Version firmware",
+    "trainerFirmwareVersion": "Version firmware de la base d'entrainement",
+    "powerSourceFirmwareVersion": "Version firmware du capteur de puissance",
+    "model": "Modèle",
+    "trainerModel": "Modèle de la base d'entrainement",
+    "powerSourceModel": "Modèle du capteur de puissance",
+    "whichOne": "Lequel ?",
+    "removeImage" : "Supprimer la photo",
+    "placeImageHere": "Faites glisser votre image ici ou cliquez pour le sélectionner depuis votre appareil.",
+    "placeFitFileHere": "Faites glisser votre fichier .fit ici ou cliquez pour le sélectionner depuis votre appareil.",
+    "primary": "Primaire ?",
+    "powerMeter": "Capteur de puissance | Capteurs de puissance",
+    "yes": "Oui",
+    "no": "Non",
+    "type": "Type",
+    "weight": "Poids",
+    "weightKg": "Poids (kg)",
+    "height": "Grandeur",
+    "heightCm": "Grandeur (cm)",
+    "unit": "Unité",
+    "metric": "Métrique",
+    "imperial": "Impériale",
+    "videoUrl": "Lien vidéo url (youtube, ect)",
+    "value": "Valeur",
+    "weightMeasurements": "Mesure de poids | Mesures de poids",
+    "heightMeasurements": "Mesure de grandeur | Mesures de grandeur",
+    "personal": "Personnel",
+    "teams": "Équipes",
+    "platforms": "Plateformes",
+    "status": "Status",
+    "links": "Liens",
+    "zwiftPower": "Zwift Power",
+    "zwiftPowerID": "Identifiant Zwift Power",
+    "code": "Code",
+    "invite": "Invite",
+    "teamName": "Nom d'équipe court",
+    "teamLink": "Team URL link",
+    "displayTeamName": "Nom d'équipe affichage",
+    "irlTeam" : "Équipe IRL",
+    "toCome": "À venir prochainement...",
+    "team": "Équipe {0}",
+    "validation": "Validation",
+    "power": "Puissance",
+    "segments": "Segments",
+    "info": "Information",
+    "warning": "Attention",
+    "error": "Erreur",
+    "activity": "Activité",
+    "segmentName": "Nom Segment",
+    "switchLang": "English",
+    "6months": "6 mois",
+    "1year": "1 an",
+    "3years": "3 ans",
+    "lifetime": "À vie"
+  }
+}

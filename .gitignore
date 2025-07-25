@@ -1,0 +1,17 @@
+node_modules
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist
+public/images/zwiftpower/output/*
+src/config/config itwatts dev.json
+src/config/config localhost.json
+src/config/config dev.json
+src/config/config prod.json
+src/config/config.json
+user-image
+team-image
+package-lock.json

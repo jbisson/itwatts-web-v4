@@ -1,0 +1,12 @@
+{
+  "serverApi": {
+    "publicHostname": "http://localhost:4500"
+  },  
+  "serverWeb": {
+    "hostname": "http://localhost:8000"
+  },
+  "apiKey": "411060aa-7a7c-42fa-8e47-34335f3129b6",
+  "ui": {
+    "showAllMenus": "false"
+  }
+}

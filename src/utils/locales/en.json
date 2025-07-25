@@ -1,0 +1,452 @@
+{
+  "menu": {
+    "fera": {
+      "title": "FERA",
+      "info": "Information",
+      "rider": "My Data",
+      "allRiders": "All riders",
+      "transparency": "Transparency",
+      "validations": "Validations"
+    },
+    "login": {
+      "title": "Sign in"
+    },
+    "home": {
+      "title": "Home"
+    },
+    "admin": {
+      "title": "Admin",
+      "info": "Info",
+      "users": "Utilisateurs",
+      "discord": "Discord",
+      "zwiftPower": "Zwift Power",
+      "strava": "Strava",      
+      "clubLadderRegistrations": "Inscriptions Club Ladder 2024",      
+      "zrl20242025Round3Registrations": "Inscriptions ZRL 2024-2025 Ronde 3",
+      "zrl20242025Round2Registrations": "Inscriptions ZRL 2024-2025 Ronde 2",
+      "wtrlTTTRegistrations": "Inscriptions WTRL TTT 2024-2025",      
+      "swatInterestForms2024": "Formulaires intérêt 2024",
+      "swatGuestForms2024": "Formulaires invité 2024",
+      "swatMembers": "Membres 5.W.4.T (2024)",
+      "swatMembers2023": "Membres 5.W.4.T (2023)",
+      "swatGuests": "Invité(e)s 5.W.4.T (2024)",
+      "swatGuests2023": "Invité(e)s 5.W.4.T (2023)"
+    },
+    "superAdmin": {
+      "title": "Super Admin",
+      "teams": "Teams"
+    },
+    "teams": {
+      "myTeams": "My Teams"
+    },    
+    "primaryTeam": {
+      "info": "Information",
+      "manage": "Manage",
+      "strava": "Strava",
+      "powerStats": "Power Stats"
+    }
+  },
+  "superAdminTeams": {
+    "pageCategory": "Super Admin",
+    "pageTitle": "Teams"
+  },
+  "home": {
+    "pageCategory": "Home",
+    "pageTitle": "Welcome"    
+  },
+  "cb": {
+    "pageTitle": "",
+    "pageCategory": ""
+  },
+  "feraInfo": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "FERA",
+    "faq": "Frequently asked questions",
+    "whatIsFeraQ": "What is the Fair E-Racing Alliance Mission?",
+    "whatIsFeraA": "FERA is an alliance of community cycling teams dedicated to fair racing on Zwift. The alliance was founded at the end of the year 2022 and intends to develop basic tools that enable participating teams and their leaders to recognize anomalies in data amongst their own riders and determine whether faulty equipment or disingenuous behavior is the cause.",
+    "whatIsFeraA2": "FERA is convinced that the best way to promote integrity is if each team takes responsibility for its own riders instead of denouncing riders from other teams. We aim to provide a platform where teams ranging from those who are well-established to those who are new can be supported, educated, and trusted to promote fair play in the E-sports community.",
+    "howToJoinQ": "Join FERA",
+    "howToJoinA": "FERA has a great interest in welcoming more teams. However, the requirement is that these teams and all their members are committed to fair sport. All teams commit to check suspicious performance values and, if necessary, to terminate their own members if cooperation is not possible and the performance cannot be verified. Tolerance and mutual respect are the basis for friendly and constructive cooperation.",
+    "howToJoinA2": "In general, teams should not have more than two or three representatives at FERA. These representatives should hold a position in the team that enables them to initiate changes and have an impact on the structure and procedures of the team. Ideally, the representatives should have Zwift experience and technical understanding.",
+    "howToJoinA3": "All FERA members are connected via Discord and exchange information there. If you are interested in becoming a member as a team or race organizer, you can join the Discord server via the link below. It leads to the so-called lobby. Please introduce yourself and your team and let us know why you would like to join FERA.",
+    "howToJoinA4": "FERA lobby: https://discord.gg/rBQq8WX7Qs",
+    "knowMoreQ": "How to learn more about FERA",
+    "knowMoreA": "Visit FERA website at https://www.f-e-r-a.org/"
+  },
+  "feraValidations": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "Validations"
+  },
+  "feraAddValidation": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "New Validation"
+  },
+  "feraRider": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "My data",
+    "trainers": "Trainers",
+    "equipment": "Equipment",
+    "powerTests": "Power tests",
+    "biometrics": "Biometrics",
+    "validation": "Validation",
+    "transparency": "Transparency",
+    "privacy": "Privacy"    
+  },
+  "feraAllRiders": {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "All Riders"
+  },
+  "feraTransparency" : {
+    "pageCategory": "Fair E-Racing Alliance Mission",
+    "pageTitle": "Transparency",
+    "zwift": "Zwift",
+    "addBio": "Add a bio to your ZwiftPower profile: {0}. Click on your profile picture (top right), select \"ZwiftPower Profile\" and click on the \"Settings\" tab. Copy all the text below (including the codes) exactly as it is."
+  },
+  "signin": {
+    "pageCategory": "Sign in",
+    "pageTitle": "",
+    "withStrava": "Connect with Strava",
+    "continueWithStrava": "Continue with Strava",
+    "withGoogle": "Connect with Google",
+    "withFacebook": "Connect with swatStrava",
+    "reservedPage": "The page you want to access is restricted.",
+    "allowStravaConsent": "In order to continue, ITWatts needs your consent to access your Strava data. Note that we keep user data privacy seriously and won't be shared.",
+    "loginToContinue": "Please authenticate using the button below to continue.",
+    "giveConcentToContinue": "Please give your consent using the button below to continue."
+  },
+  "teamInvite": {
+    "pageCategory": "Team Invitation",
+    "pageTitle": "",
+    "needLogin" : "In order to accept the team invitation, you first need to authenticate (or create) your ITWatts account using Strava. Click on the click bellow to continue.",
+    "notAuthorized": "You are not authorized to be part of this team. Please contact your team administrator.",
+    "provideEmailAndZwiftPowerID": "Provide your email and your zwift power ID to accept the team invitation.",
+    "fillEmailCode": "An email has been sent to your email: {0}, please indicate the 6 digits numbers.",
+    "verificationCode": "ITWatts verification code:",
+    "invalidZwiftPowerID": "The Zwift Power ID you entered already belong to another user. Please contact your team administrator.",
+    "invalidVerificationCode": "The ITWatts verification code you entered is invalid, try again.",
+    "validatingCode": "we are currently validating your invitation code."
+  },
+  "teamStrava": {
+    "pageTitle": "Strava",
+    "virtualKm": "Virtual KM",
+    "nbActivities": "NB activities"
+  },
+  "teamInfo": {
+    "pageTitle": "Information",
+    "riders": "Riders"
+  },
+  "teamManage": {
+    "pageTitle": "Manage"
+  },
+  "teamPowerStats": {    
+    "pageTitle": "Power stats",
+    "myLists": "My lists",
+    "addList": "Add a list",
+    "nameList": "List name",
+    "areYouSureRemoveList": "Are you sure you want to delete your list '{0}'?",
+    "riders": "Riders:",
+    "3monthsAgo": "3 months ago",
+    "1yearAgo": "1 year ago",
+    "3yearsAgo": "2 years ago",
+    "statsInfo": "The data over 1 or 2 years is the average of the 3 best efforts, while the data from the last 3 months comes directly from the ZwiftPower profile."
+  },
+  "userProfile": {
+    "title": "User Profile",
+    "myProfile": "My Data",
+    "accountSettings": "Account parameters",
+    "logoutBtn": "Logout",
+    "twitch": "Twitch username",
+    "x": "X username",
+    "youtube": "YouTube name channel",
+    "fb": "Facebook username (or ID)",
+    "ig": "Instagram username",
+    "primaryTeam": "Primary team"
+  },
+  "profileTeamMembers": {
+    "pageCategory": "{0} Members"
+  },
+  "profileComponent": {
+    "photo": "Photo Profile",
+    "noPhoto": "You don't have a profile picture at the moment.",
+    "validateEmail": "Validate my email",
+    "socialMedia": "Réseaux sociaux"
+  },
+  "teamPhotoComponent": {
+    "title": "Banner Team Photo"
+  },
+  "profileBannerComponent": {
+    "modifyMyProfile": "Modify my profile"
+  },
+  "feraPowerTestsComponent": {
+    "powerTest": "Power test | Power tests",    
+    "powerTestCreated": "Power test date",
+    "didYouUseDualRecording": "Have you done Dual Recording while doing the test?"
+  },
+  "feraValidationsComponent": {
+    "validation": "Badge validation | Badge validations"    
+  },
+  "feraBiometricsComponent": {
+    "biometrics": "Biometric | Biometrics",
+    "measureDate": "Measure date"
+  },
+  "feraEquipmentComponent": {
+    "equipment": "Equipment"
+  },
+  "feraPrivacyComponent": {
+    "iAuthorizeMy": "I authorize my data to be publicly displayed in the {0} to be transparent about my e-sports performance.",
+    "listRiders" : "list of riders"
+  },
+  "ridersComponent": {
+    "myTeamRiders": "My team riders",
+    "removeRider": "Are you sure you want to remove {0} {1} from the team {2}?",
+    "removeInvitation": "Are you sure you want to remove invitation code {0} from the team {1}?"
+  },
+  "invitesComponent": {
+    "myTeamInvites": "My team invites",
+    "removeRider": "Are you sure you want to remove {0} from the team {2}?",
+    "invitation" : "Team Invitation request"
+  },
+  "stravaSegmentComponent": {
+    "location": "Location",
+    "stravaActivity": "Strava Activity",
+    "activityGpx": "Activity file (.gpx)",
+    "gpxActivityFile": "Activity via GPX file",
+    "segmentWithResults": "Segments with user results only",
+    "allSegments": "All segments",
+    "viewHiddenSegments": "Show hidden segments",
+    "reverseCourse": "Reverse course",
+    "komMName": "KOM M Name",
+    "komMTime": "KOM M Time",
+    "komMSpeed": "KOM M Speed",
+    "komFName": "KOM F Name",
+    "komFTime": "KOM F Time",
+    "komFSpeed": "KOM F Speed",
+    "hisHerTime": "His / Her Time",
+    "gap": "Gap",
+    "lastModified": "Last Mod Date",
+    "windDirection": "Wind Dir",
+    "elevationDiff": "Elev ation Diff",
+    "averageGradient": "Avg Grad ient"
+  },
+  "powerComponent": {
+    "bestEffort": "Best effort for {0}",
+    "virtual": "Virtual",
+    "irl": "IRL"
+  },
+  "bannerComponent": {
+    "new": "New",
+    "newMsg": "Beta v1.0 released! We are now accepting new teams to join our virtual platform!"
+  },
+  "lookups" : {
+    "true" : "yes",
+    "false" : "no"
+  },
+  "errors": {
+    "errorOccured": "Oops, an error has occurred...Detail: {0}",
+    "expiredLink" : "The invitation link has expired.",
+    "invalidZwiftPowerID": "The Zwift Power ID you entered is not valid."
+  },
+  "validations": {
+    "required": "Required field",
+    "invalidEmail": "Invalid email." 
+  },
+  "dialogs": {
+    "success": "The changes have been successfully saved.",
+    "areYouSure": "Are you sure you want to delete {0}?"
+  },
+  "actions": {
+    "actions": "Actions",
+    "search": "Search",
+    "edit": "Modify",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "add": "Add",
+    "save": "Save",
+    "ok": "OK",
+    "removeRider": "Remove Rider",
+    "removeInvitation": "Remove Invitation",
+    "view": "View",
+    "manage": "Manage",
+    "submit": "Submit",
+    "close": "Close",
+    "confirm": "Confirm"
+  },
+  "common": {
+    "date": "Date",
+    "acceptedDate": "Accepted Date",
+    "title": "Titre",
+    "name": "Name",
+    "displayName": "Display Name",
+    "firstName": "First Name",
+    "lastName" : "Last Name",
+    "gender": "Gender",
+    "group": "Group",
+    "region": "Region",
+    "email": "Email",
+    "primaryTrainer": "Primary trainer",
+    "powerMeterDualRecording": "Power meter (dual recording)",
+    "badge": "Badges",
+    "lastWeightChangeZwift": "NB days last weight change (Zwift)",
+    "lastWeightChangeMyWhoosh": "Last weight change (MyWhoosh)",
+    "validatedRaces": "Validated races",
+    "validatedPowerProfile": "Validated power profile",
+    "serialNumber": "Serial number",
+    "id": "Identification Number",    
+    "dualRecording": "Dual Recording",
+    "firmware": "Firmware",
+    "firmwareVersion": "Firmware version",
+    "trainerFirmwareVersion": "Trainer firmware version",
+    "powerSourceFirmwareVersion": "Power source firmware version",
+    "model": "Model",
+    "trainerModel": "Trainer model",
+    "powerSourceModel": "Power source model",
+    "whichOne": "Which one?",
+    "removeImage" : "Delete picture",
+    "placeImageHere": "Drag your image file here or click to select from your device",
+    "placeFitFileHere": "Drag your .fit file here or click to select from your device",
+    "primary": "Primary ?",
+    "powerMeter": "Power meter | Power meters",
+    "yes": "Yes",
+    "no": "No",
+    "type": "Type",
+    "weight": "Weight",
+    "weightKg": "Weight (kg)",
+    "height": "Height",
+    "heightCm": "Height (cm)",
+    "metric": "Metric",
+    "imperial": "Imperial",
+    "videoUrl": "Video link url (youtube, etc.)",
+    "value": "Value",    
+    "weightMeasurements": "Weight measurement | Weight measurements",
+    "heightMeasurements": "Height measurement | Height measurements",
+    "personal": "Personal",
+    "teams": "Teams",
+    "platforms": "Platforms",
+    "status": "Status",
+    "links": "Links",
+    "zwiftPower": "Zwift Power",
+    "zwiftPowerID": "Zwift Power ID",
+    "code": "Code",
+    "invite": "Invite",
+    "teamName": "Team name",
+    "teamLink": "Team URL link",
+    "displayTeamName": "Display Team name",
+    "irlTeam" : "IRL Team",
+    "toCome": "Soon...",
+    "team": "{0} Team",
+    "validator": "Validation",
+    "power": "Power",
+    "segments": "Segments",
+    "info": "Information",
+    "warning": "Warning",
+    "error": "Error",
+    "activity": "Activity",
+    "segmentName": "Segment name",
+    "switchLang": "Français",
+    "6months": "6 months",
+    "1year": "1 year",
+    "3years": "3 years",
+    "lifetime": "Lifetime"
+  },
+  "Modern": "Modern",
+  "eCommerce": "eCommerce",
+  "Analytical": "Analytical",
+  "Classic": "Classic",
+  "Demographical": "Demographical",
+  "Minimal": "Minimal",
+  "Contact": "Contact",
+  "Blog": "Blog",
+  "Posts": "Posts",
+  "Detail": "Detail",
+  "E-Commerce": "E-Commerce",
+  "Shop": "Shop",
+  "List": "List",
+  "Checkout": "Checkout",
+  "Chats": "Chats",
+  "User Profile": "Users Profile",
+  "Profile": "Profile",
+  "Followers": "Followers",
+  "Friends": "Friends",
+  "Gallery": "Gallery",
+  "Email": "Email",
+  "Pricing": "Pricing",
+  "Account Setting": "Account Setting",
+  "FAQ": "FAQ",
+  "Widget": "Widget",
+  "Landing Page": "Landing Page",
+  "Form Elements": "Form Elements",
+  "Autocomplete": "Autocomplete",
+  "Combobox": "Combobox",
+  "Button": "Button",
+  "Checkbox": "Checkbox",
+  "Custom Inputs": "Custom Inputs",
+  "File Inputs": "File Inputs",
+  "Radio": "Radio",
+  "Date Time": "Date Time",
+  "Select": "Select",
+  "Slider": "Slider",
+  "Switch": "Switch",
+  "Form Layout": "Form Layout",
+  "Form Horizontal": "Form Horizontal",
+  "Form Vertical": "Form Vertical",
+  "Form Custom": "Form Custom",
+  "Form Validation": "Form Validation",
+  "Editor": "Editor",
+  "Basic Table": "Basic Table",
+  "Dark Table": "Dark Table",
+  "Density Table": "Density Table",
+  "Fixed Header Table": "Fixed Header Table",
+  "Height Table": "Height Table",
+  "Ui Components": "Ui Components",
+  "Alert": "Alert",
+  "Accordion": "Accordion",
+  "Avatar": "Avatar",
+  "Chip": "Chip",
+  "Dialog": "Dialog",
+  "Menus": "Menus",
+  "Rating": "Rating",
+  "Tabs": "Tabs",
+  "Tooltip": "Tooltip",
+  "Typography": "Typography",
+  "Line": "Line",
+  "Gredient": "Gredient",
+  "Area": "Area",
+  "Candlestick": "Candlestick",
+  "Column": "Column",
+  "Doughnut & Pie": "Doughnut & Pie",
+  "Radialbar & Radar": "Radialbar & Radar",
+  "Login": "Login",
+  "Side Login": "Side Login",
+  "Boxed Login": "Boxed Login",
+  "Register": "Register",
+  "Side Register": "Side Register",
+  "Boxed Register": "Boxed Register",
+  "Forgot Password": "Forgot Password",
+  "Side Forgot Password": "Side Forgot Password",
+  "Boxed Forgot Password": "Boxed Forgot Password",
+  "Two Steps": "Two Steps",
+  "Side Two Steps": "Side Two Steps",
+  "Boxed Two Steps": "Boxed Two Steps",
+  "Error": "Error",
+  "Maintenance": "Maintenance",
+  "Menu Level": "Menu level",
+  "Level 1": "Level 1",
+  "Level 2": "Level 2",
+  "Level 3": "Level 3",
+  "Disabled": "Disabled",
+  "Sub Caption": "Sub Caption",
+  "Outlined": "Outlined",
+  "External Link": "External Link",
+  "Editable Table":"Editable Table",
+  "Cards":"Cards",
+  "Banners":"Banners",
+  "Charts":"Charts",
+  "Material":"Material",
+  "Tabler":"Tabler",
+  "Dashboard":"Dashboard",
+  "Apps":"Apps",
+  "Pages":"Pages",
+  "Forms":"Forms",
+  "Tables":"Tables",
+  "Icons":"Icons"
+}
