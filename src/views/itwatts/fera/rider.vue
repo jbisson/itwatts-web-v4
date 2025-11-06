@@ -54,7 +54,7 @@ async function refresh() {
     } else {
       //tab.value = 'privacy';
     }
-    console.log(`Response from /v1/user: ${JSON.stringify(user.data)}`);
+    // console.log(`Response from /v1/user: ${JSON.stringify(user.data)}`);
   } catch (err: any) {
     if (err.response && err.response.status === 401) {
       router.push({ path: '/itwatts/signin' });
@@ -114,13 +114,13 @@ refresh();
           <div class="mt-5">
             <v-window v-model="tab">
               <v-window-item value="equipment">
-                <Equipment @onSuccess="(msg) => infoAlert = msg" @onError="(msg) => errorAlert = msg" @onLoading="(loadingVal) => loading = loadingVal" loadFromUserProfile='true'/>
+                <Equipment @onSuccess="(msg) => infoAlert = msg" @onError="(msg) => errorAlert = msg" @onLoading="(loadingVal) => loading = loadingVal" :loadFromUserProfile='true'/>
               </v-window-item>
               <v-window-item value="powerTests">
-                <PowerTests @onSuccess="(msg) => infoAlert = msg" @onError="(msg) => errorAlert = msg" @onLoading="(loadingVal) => loading = loadingVal" loadFromUserProfile='true'/>
+                <PowerTests @onSuccess="(msg) => infoAlert = msg" @onError="(msg) => errorAlert = msg" @onLoading="(loadingVal) => loading = loadingVal" :loadFromUserProfile='true'/>
               </v-window-item>
               <v-window-item value="biometrics">
-                <Biometrics @onSuccess="(msg) => infoAlert = msg" @onError="(msg) => errorAlert = msg" @onLoading="(loadingVal) => loading = loadingVal" loadFromUserProfile='true'/>
+                <Biometrics @onSuccess="(msg) => infoAlert = msg" @onError="(msg) => errorAlert = msg" @onLoading="(loadingVal) => loading = loadingVal" :loadFromUserProfile='true'/>
               </v-window-item>
               <v-window-item value="privacy">
                 <Privacy :fera_privacy="privacyConsent" @onSuccess="(msg) => infoAlert = msg" @onError="(msg) => errorAlert = msg" @onLoading="(loadingVal) => loading = loadingVal"/>

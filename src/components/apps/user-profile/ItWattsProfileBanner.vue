@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue';
+import { ref, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { HeartIcon, PhotoIcon, UserCircleIcon, UsersIcon } from 'vue-tabler-icons';
 import profileBg from '@/assets/images/backgrounds/profilebg.jpg';
-import UserImage from '@/assets/images/profile/user-1.jpg';
 
-import Profile from '../../itwatts/Profile.vue'
+import userM from '@/assets/images/profile/user-1.jpg';
+import userF from '@/assets/images/profile/user-3.jpg';
+
+import Profile from '@/components/itwatts/Profile.vue'
 import { useUserProfile } from '@/stores/user-profile';
+import { useRouter, useRoute } from 'vue-router';
+const router = useRouter();
 
 const { t, locale } = useI18n({ useScope: 'global' });
 
 const tab = ref(null);
+
 const items = shallowRef([
     { tab: 'Profile', icon: UserCircleIcon, href: '' },
     { tab: 'Strava', icon: HeartIcon, href: '' },
@@ -21,11 +26,30 @@ const props = defineProps({
   user: Object });
 
 const profileDialogVisible = ref(false);
+const profileUrl = ref();
 let profileDialog = {};
 
-function editProfile() {  
-  profileDialogVisible.value = true;
+function editProfile() {
+  //profileDialogVisible.value = true;
+  router.push({ path: '/itwatts/account-settings' });
 }
+
+async function refresh() {
+  if (props.user && props.user.profile_url) {
+    profileUrl.value = props.user.profile_url;
+  } else if (props.user) {
+    profileUrl.value = props.user.gender === 'F' ? userF : userM;
+  } else {
+    profileUrl.value = userM;
+  }
+}
+
+refresh();
+
+watch(() => props.user ? props.user.profile_url : props.user, (newValue, oldValue) => {
+  refresh();
+});
+
 
 </script>
 
@@ -59,7 +83,7 @@ function editProfile() {
             <div class="avatar-border">
               <v-avatar size="100" class="userImage">
                 <!--<img :src="user?.strava_login.profile_url || UserImage" width="100" :alt="user?.first_name" />-->
-                <img :src="user?.profile_url || UserImage" width="100" :alt="user?.first_name" />
+                <img :src="profileUrl" width="100" :alt="user?.first_name" />
               </v-avatar>
             </div>
               <h5 class="text-h5 mt-3" v-text="user?.first_name + ' ' + user?.last_name"></h5>
@@ -118,7 +142,7 @@ function editProfile() {
       </v-row>
     </div>
   </v-card>
-  <Profile :visible="profileDialogVisible" :user="user" @handledialog="profileDialogVisible = false" @onImageChange="onImageChanged()"></Profile>
+  <Profile :visible="profileDialogVisible" :user="user" @handledialog="profileDialogVisible = false" @onImageChange=""></Profile>
 </template>
 <style lang="scss">
 .avatar-border {

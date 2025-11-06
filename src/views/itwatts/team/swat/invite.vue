@@ -96,7 +96,7 @@ async function refresh() {
         withCredentials: true
       });
       if (responseUser.data) {
-        console.log(`Response from /v1/user: ${JSON.stringify(responseUser.data)}`);
+        // console.log(`Response from /v1/user: ${JSON.stringify(responseUser.data)}`);
         const userObj = responseUser.data;
 
         await checkStravaCompliance(userObj);

@@ -12,11 +12,13 @@ import { useRouter } from 'vue-router'
 
 import config from "@/config/config.json";
 import security from "@/security";
-import { exportUser, exportZrl20242025Round2Form } from '@/utils/export';
-import ZrlSchedule from "@/components/itwatts/ZrlSchedule.vue";
+import { exportUser, export2025PollForm } from '@/utils/export';
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t, locale } = useI18n({ useScope: 'global' });
-const page = ref({ title: t('adminZrl20242025Round2Registrations.pageTitle') });
+const page = ref({ title: t('admin2025PollRegistrations.pageTitle') });
+const team = ref();
+
 const formsResult = reactive([] as any);
 const swatUSersMapZpId = reactive([] as any);
 const formsResultsMapZpId = reactive([] as any);
@@ -26,12 +28,12 @@ const searchValue = ref();
 const router = useRouter()
 const breadcrumbs = ref([
   {
-    text: t('adminZrl20242025Round2Registrations.pageCategory'),
+    text: t('admin2025PollRegistrations.pageCategory'),
     disabled: false,
     to: "#",
   },
   {
-    text: t('adminZrl20242025Round2Registrations.pageTitle'),
+    text: t('admin2025PollRegistrations.pageTitle'),
     disabled: true,
   },
 ]);
@@ -40,19 +42,7 @@ const overallHeaders: Header[] = reactive([
   { text: 'Nom', value: "first_name", sortable: true },
   { text: 'Discord', value: "discord", sortable: true },
   { text: 'Genre', value: "genre", sortable: true },
-  { text: 'Date', value: "date", sortable: true },
-  { text: 'Catégorie', value: "catPreferences", width: 100, sortable: true },
-  { text: 'Horaire 12h00', value: "preferedTime12h00", sortable: true },
-  { text: 'Horaire 18h30', value: "preferedTime18h30", sortable: true },
-  { text: 'Horaire 19h30', value: "preferedTime19h30", sortable: true },
-  { text: 'Ds Pref', value: "dsInterest", sortable: true },
-  { text: 'Capt Pref', value: "capInterest", sortable: true },
-  { text: 'Intérêts courses', value: "raceInterest", sortable: true },
-  { text: 'Zp Team', value: "zpProfilePrimaryTeam", sortable: true },  
-  { text: 'ZwiftRacingApp vELO', value: "zwiftRacingAppRaceRating", sortable: true },
-  { text: 'Zp CP20 watts', value: "zpProfileCP20Watts", sortable: true },
-  { text: 'Zp CP20 w/kg', value: "zpProfileCP20wkg", sortable: true },
-  { text: 'Zp CP5 w/kg', value: "zpProfileCP5wkg", sortable: true },
+  { text: 'Date', value: "date", sortable: true }, 
 ]);
 
 formsResult.value = [];
@@ -63,8 +53,21 @@ function formatDate(date: any) {
 }
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_ZRL_ADMIN'];
-  if (!security.isTokenValid( rolesRequired)) {
+  if (!security.isTokenValid([])) {
+    console.log('Token not valid.');
+    useUserProfile().login_post_back_page = router.currentRoute.value.path;
+    router.push({ path: '/itwatts/signin' });
+    return;
+  }
+
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
+  
+  if (!team.value || !(team.value.managers.includes(useUserProfile().user_id) ||
+    security.isTokenValid(['SUPER_ADMIN']))) {    
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
     return;
@@ -73,7 +76,7 @@ async function refresh() {
   try {
     formsResult.value = [];
     
-    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?groups=swat_2024_2025&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
+    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?team=swat&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
       withCredentials: true,
     });
     
@@ -81,48 +84,36 @@ async function refresh() {
     swatUSersMapZpId.value = new Map();
     formsResultsMapZpId.value = new Map();
 
-    const formsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/forms?name=registerZrl20242025Round2`, {
+    const formsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/forms?name=2025poll`, {
       withCredentials: true,
     });
 
-    usersExport.value = `${exportUser().headers.concat(exportZrl20242025Round2Form().headers).toString()}\n`;
+    usersExport.value = `${exportUser().headers.concat(export2025PollForm(null).headers).toString()}\n`;
     for (const form of formsResponse.data.data) {
       const formContent = JSON.parse(form.content);
       if (!swatUSersMap.get(form.user_id)) {
         continue;
       }
       swatUSersMapZpId.value.set(swatUSersMap.get(form.user_id).zp_id, swatUSersMap.get(form.user_id));
-      const profileStats = swatUSersMap.has(form.user_id) ? swatUSersMap.get(form.user_id).zp_profile.profile_stats : '';
-      
+            
       const formObj = 
         {
           zp_id: swatUSersMap.get(form.user_id).zp_id,
           first_name: swatUSersMap.get(form.user_id).first_name,
           last_name: swatUSersMap.get(form.user_id).last_name,
           genre: swatUSersMap.get(form.user_id).gender,
-          discord: swatUSersMap.get(form.user_id).discord_profile.globalName,
+          discord: swatUSersMap.get(form.user_id).discord_profile ?
+            swatUSersMap.get(form.user_id).discord_profile.globalName ||
+            swatUSersMap.get(form.user_id).discord_profile.displayName : '',
           zpProfilePrimaryTeam: swatUSersMap.get(form.user_id).zp_profile.primary_team_name,
           zwiftRacingAppRaceRating: swatUSersMap.has(formContent.user_id) && swatUSersMap.get(form.user_id).zwift_racing_app_profile ? Math.round(swatUSersMap.get(form.user_id).zwift_racing_app_profile.race.rating) : '',
-          zpProfileCP20Watts: profileStats.w1200,
-          zpProfileCP20wkg: profileStats.wkg1200,
-          zpProfileCP5wkg: profileStats.wkg300,
           date: formatDate(form.created),
-          catPreferences: formContent.catPreferences.join(' '),
-          timeInterest: formContent.timeInterest,
-          dsInterest: formContent.dsInterest,
-          capInterest: formContent.capInterest,
-          comments: formContent.comments,
-          raceInterest: formContent.raceInterest,
-          othersTeamPlayerNames: formContent.othersTeamPlayerNames,
-          preferedTime12h00: formContent.preferedTime12h00,
-          preferedTime18h30: formContent.preferedTime18h30,
-          preferedTime19h30: formContent.preferedTime19h30,
         };
       
       formsResult.value.push(formObj);
       formsResultsMapZpId.value.set(swatUSersMap.get(form.user_id).zp_id, formContent);
 
-      usersExport.value += `${exportUser(swatUSersMap.get(form.user_id)).value.concat(exportZrl20242025Round2Form(formContent).value).toString()}\n`;
+      usersExport.value += `${exportUser(swatUSersMap.get(form.user_id)).value.concat(export2025PollForm(formContent).value).toString()}\n`;
     }    
   } catch (error: any) {
     console.log(`an error occured: ${error} stack: ${error.stack}`);
@@ -137,7 +128,7 @@ async function refresh() {
 async function exportForm() {
   const dateNow = new Date().toISOString().split('T')[0];
   const universalBOM = "\uFEFF";
-  const file = new File([universalBOM + usersExport.value], `${dateNow} zrl-2024-2025-ronde2-5w4t.csv`, {
+  const file = new File([universalBOM + usersExport.value], `${dateNow} sondage 2025-5w4t.csv`, {
     type: 'text/csv',
   })
   const link = document.createElement('a');
@@ -194,14 +185,4 @@ refresh();
       <v-btn color="primary" flat @click="exportForm()">Export</v-btn>
     </v-col>
   </v-row><br>
-
-  <v-card elevation="10" v-if="security.isTokenValid(['SUPER_ADMIN', 'SWAT_ADMIN'])">
-    <div class="pa-5">
-      <v-row>
-        <v-col cols="12">
-          <ZrlSchedule :swatUSersMapZpId="swatUSersMapZpId" :formsResultsMapZpId="formsResultsMapZpId" v-if="swatUSersMapZpId.value && swatUSersMapZpId.value.size > 0"></ZrlSchedule>
-         </v-col>       
-      </v-row>      
-    </div>
-  </v-card>
 </template>

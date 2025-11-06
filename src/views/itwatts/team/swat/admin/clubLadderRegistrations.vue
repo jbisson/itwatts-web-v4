@@ -4,7 +4,6 @@ import { toRefs, ref, onMounted, reactive, watch } from "vue";
 import { useUserProfile } from "@/stores/user-profile";
 
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import CategoryColumn from '@/components/itwatts/CategoryColumnZrl.vue'
 
 import { useI18n } from 'vue-i18n';
 import type { Header, Item, ClickRowArgument } from "vue3-easy-data-table";
@@ -12,8 +11,10 @@ import { useRouter, useRoute } from 'vue-router'
 
 import config from "@/config/config.json";
 import security from "@/security";
-import { exportUser, exportClubLadder2024FormHeadersForm } from '@/utils/export';
-import Schedule from "@/components/itwatts/ZrlSchedule.vue";
+import { exportUser, exportClubLadderFormHeadersForm } from '@/utils/export';
+import { getVeloCategory } from '@/utils/zwiftRacing';
+import { useTeamStore } from '@/stores/apps/teams';
+import ClubLadderSchedule from "@/components/itwatts/ClubLadderSchedule.vue";
 
 const { t, locale } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('adminClubLadderRegistration.pageTitle') });
@@ -22,6 +23,7 @@ const swatUSersMapZpId = reactive([] as any);
 const usersExport = ref('');
 const errorAlert = ref();
 const searchValue = ref();
+const formsResultsMapZpId = reactive([] as any);
 
 const router = useRouter();
 const route = useRoute();
@@ -37,7 +39,6 @@ const breadcrumbs = ref([
   },
 ]);
 
-console.log(`test: ${route.params.username}`);
 const userStoreProfile = useUserProfile();
 
 const overallHeaders: Header[] = reactive([  
@@ -54,6 +55,7 @@ const overallHeaders: Header[] = reactive([
   { text: 'Dispo Dimanche', value: "dimanche", sortable: true },
 
   { text: 'ZwiftRacingApp vELO', value: "zwiftRacingAppRaceRating", sortable: true },
+  { text: 'vELO Cat', value: "zwiftRacingAppRaceRatingCat", sortable: true },
   { text: 'Zp CP20 watts', value: "zpProfileCP20Watts", sortable: true },
   { text: 'Zp CP20 w/kg', value: "zpProfileCP20wkg", sortable: true },
   { text: 'Zp CP5 w/kg', value: "zpProfileCP5wkg", sortable: true },
@@ -67,7 +69,7 @@ function formatDate(date: any) {
 }
 
 async function refresh(loadDefault = false) {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_CLUB_LADDER_ADMIN', 'SWAT_CLUB_LADDER_CAP'];
+  const rolesRequired = ['SUPER_ADMIN', 'SWAT_CLUB_LADDER_ADMIN', 'SWAT_CLUB_LADDER_CAP'];
   if (!security.isTokenValid( rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
@@ -78,7 +80,7 @@ async function refresh(loadDefault = false) {
   try {
     formsResult.value = [];
     
-    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?groups=swat_2024_2025&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
+    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?team=swat&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
       withCredentials: true,
     });
     
@@ -86,11 +88,11 @@ async function refresh(loadDefault = false) {
     const swatUSersMap = new Map(swatUsersResponse.data.data.map((obj: any) => [obj.id, obj]));
     swatUSersMapZpId.value = new Map();
     
-    const formsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/forms?name=registerClubLadder2024-09`, {
+    const formsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/forms?name=registerClubLadder2025-10`, {
       withCredentials: true,
     });
 
-    usersExport.value = `${exportUser().headers.concat(exportClubLadder2024FormHeadersForm().headers).toString()}\n`;
+    usersExport.value = `${exportUser().headers.concat(exportClubLadderFormHeadersForm().headers).toString()}\n`;
     for (const form of formsResponse.data.data) {
       if (!swatUSersMap.has(form.user_id)) {
         console.log(`UserID: ${form.user_id} is not a member anymore.`);
@@ -109,6 +111,7 @@ async function refresh(loadDefault = false) {
           last_name: swatUSersMap.get(form.user_id).last_name,
           genre: swatUSersMap.get(form.user_id).gender,
           zwiftRacingAppRaceRating: swatUSersMap.has(form.user_id) && swatUSersMap.get(form.user_id).zwift_racing_app_profile ? Math.round(swatUSersMap.get(form.user_id).zwift_racing_app_profile.race.rating) : '',
+          zwiftRacingAppRaceRatingCat: 0,
           date: formatDate(form.created),
           capInterest: formContent.capInterest,
           comments: formContent.comments,    
@@ -125,9 +128,11 @@ async function refresh(loadDefault = false) {
           zpProfileCP20wkg: profileStats.wkg1200,
           zpProfileCP5wkg: profileStats.wkg300,
         };
+      formObj.zwiftRacingAppRaceRatingCat = getVeloCategory(formObj.zwiftRacingAppRaceRating);
+      //formsResultsMapZpId.value.set(swatUSersMap.get(form.user_id).zp_id, formContent);
         
       formsResult.value.push(formObj);
-      usersExport.value += `${exportUser(swatUSersMap.get(form.user_id)).value.concat(exportClubLadder2024FormHeadersForm(formContent).value).toString()}\n`;
+      usersExport.value += `${exportUser(swatUSersMap.get(form.user_id)).value.concat(exportClubLadderFormHeadersForm(formContent).value).toString()}\n`;
     }    
   } catch (err: any) {
     errorAlert.value = `Une erreur est survenue...Detail: ${err}`;
@@ -146,7 +151,7 @@ async function loadDefault() {
 async function exportMembres() {
   const dateNow = new Date().toISOString().split('T')[0];
   const universalBOM = "\uFEFF";
-  const file = new File([universalBOM + usersExport.value], `${dateNow} club-ladder-inscriptions-2024-5w4t.csv`, {
+  const file = new File([universalBOM + usersExport.value], `${dateNow} club-ladder-inscriptions-5w4t.csv`, {
     type: 'text/csv',
   })
   const link = document.createElement('a');
@@ -218,7 +223,7 @@ interface TaskType {
                 :search-value="searchValue"
                 alternating>
                 <template #item-first_name="{ first_name, last_name, id, zp_id }">
-                <a :href="'https://zwiftpower.com/profile.php?z=' + zp_id" target="_blank">{{ first_name }} {{ last_name }}</a>
+                  <a :href="'https://zwiftpower.com/profile.php?z=' + zp_id" target="_blank">{{ first_name }} {{ last_name }}</a>
                 </template>
             </EasyDataTable>
           </div>
@@ -229,5 +234,16 @@ interface TaskType {
     <v-col cols="12">
       <v-btn color="primary" flat @click="exportMembres">Export</v-btn>
     </v-col>
-  </v-row><br>
+  </v-row>
+  <v-row>
+      <v-card elevation="10">
+      <div class="pa-5">
+        <v-row>
+          <v-col cols="12">
+            <ClubLadderSchedule :swatUSersMapZpId="swatUSersMapZpId" :formsResultsMapZpId="formsResultsMapZpId" v-if="swatUSersMapZpId.value && swatUSersMapZpId.value.size > 0"></ClubLadderSchedule>
+          </v-col>       
+        </v-row>      
+      </div>
+    </v-card>
+  </v-row>
 </template>

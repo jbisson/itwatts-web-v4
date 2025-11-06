@@ -38,7 +38,7 @@ const errorAlert = ref();
 const teamPhotoDialogVisible = ref(false);
 const teamPhotoBanner = ref();
 const teamPhotoBannerView = ref(false);
-const team = ref();
+const team = ref({});
 
 async function refresh() {  
   if (!security.isTokenValid([])) {
@@ -49,7 +49,8 @@ async function refresh() {
   }
 
   try {
-    loading.value = true; 
+    loading.value = true;
+    await useTeamStore().fetchMyTeams(true);
     if (useTeamStore().myTeams) {
       team.value = useTeamStore().myTeams.find((team: any) => team.name === route.params.teamName);
     } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
@@ -80,7 +81,7 @@ async function refresh() {
     });
     if (response.data) {
       teamPhotoBanner.value = response.data.file_name_path;
-      console.log(response.data.file_name_path);
+      // console.log(response.data.file_name_path);
     }
   } catch (error: any) {    
     return;  
@@ -166,20 +167,28 @@ refresh();
                 <v-img v-if="teamPhotoBannerView" :src="teamPhotoBanner"></v-img>
                 <v-btn v-if="teamPhotoBanner && !teamPhotoBannerView" color="primary" @click="teamPhotoBannerView = true" size="small">{{ t('actions.view') }}</v-btn>
 
-               <TeamPhoto :visible="teamPhotoDialogVisible" :team="team" @handledialog="teamPhotoDialogVisible = false"/>
                <br>
                <v-btn v-if="teamPhotoBannerView && teamPhotoBanner" color="primary" @click="teamPhotoDialogVisible = true" size="small">{{ t('actions.edit') }}</v-btn>
-              </p>              
+              </p>
+              <TeamPhoto :visible="teamPhotoDialogVisible" :team="team" @handledialog="teamPhotoDialogVisible = false"/>
              <br>
              
             </v-col>
           </v-row>
-          <v-row>
+          <v-row v-if="team && team.type === 'virtual' && team.zwiftpower_team_id">
             <v-col cols="12" sm="2">
               <v-label class=" font-weight-medium">{{ t('common.zwiftPower') }}</v-label>
             </v-col>
-            <v-col cols="12" sm="9">
-              <a target="_blank" :href='"https://zwiftpower.com/team.php?id="+team.zwiftpower_team_id'>https://zwiftpower.com/team.php?id={{team.zwiftpower_team_id}}</a>
+            <v-col cols="12" sm="9">              
+                <a target="_blank" :href='"https://zwiftpower.com/team.php?id="+team.zwiftpower_team_id'>https://zwiftpower.com/team.php?id={{team.zwiftpower_team_id}}</a>
+            </v-col>
+          </v-row>
+          <v-row v-if="team && team.type === 'irl' && team.strava_club_id">
+            <v-col cols="12" sm="2">
+              <v-label class=" font-weight-medium">{{ t('common.strava') }}</v-label>
+            </v-col>
+            <v-col cols="12" sm="9">              
+                <a target="_blank" :href='"https://www.strava.com/clubs/"+team.strava_club_id'>https://www.strava.com/clubs/{{team.strava_club_id}}</a>
             </v-col>
           </v-row>
           <v-row>

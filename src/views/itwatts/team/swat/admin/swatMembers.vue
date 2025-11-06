@@ -67,7 +67,7 @@ async function refresh() {
   usersResult.value = [];
 
   try {    
-    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?groups=swat_2024_2025&additionalFields=zp_profile&excludedFields=zp_profile(events)&sortBy=first_name,last_name`,
+    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?team=swat&additionalFields=zp_profile&excludedFields=zp_profile(events)&sortBy=first_name,last_name`,
     {
       withCredentials: true
     });

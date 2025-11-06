@@ -169,6 +169,7 @@ async function refresh() {
       }
       return false;
     });
+    console.log(JSON.stringify(strava_rides[0]));
     strava_rides = strava_rides.filter((ride) => ride.peak_power && ride.peak_power['1']);
 
     if (!maxMonths.value) {
@@ -180,7 +181,7 @@ async function refresh() {
       }).start_date);
       maxMonths.value = (stravaActivityEndDate.value.getFullYear() - stravaActivityStartDate.value.getFullYear()) * 12 +
         (stravaActivityEndDate.value.getMonth() - stravaActivityStartDate.value.getMonth());      
-        console.log(maxMonths.value)
+      // console.log(maxMonths.value)
       powerDialogRange.value = [0, maxMonths.value];
       powerDialogDateRangeChanged();
     }
@@ -214,125 +215,125 @@ onBeforeUpdate(() => {
 
 </script>
 <template>
-  <v-dialog v-model="powerDialogVisible">
-    <v-card>
-      <v-card-item>
-        <v-card-title class="d-flex justify-space-between align-center">
-          <div class="text-h3">
-            {{ props.name }}
-          </div>
-          <v-btn            
-            icon="mdi-close"
-            variant="text"
-            @click="$emit('handledialog')">
-          </v-btn>
-        </v-card-title>
-      </v-card-item>
-      <v-divider class="border-opacity-50"></v-divider>
-      <v-form>
-        <v-card-text>
-          <v-row>
-            <v-col cols="1" class="py-0">
-              <v-text-field
-                  v-model="powerDialogStartDate"
-                  density="compact"
-                  type="text"
-                  variant="outlined"
-                  hide-details
+  <v-form>
+    <v-dialog v-model="powerDialogVisible">
+      <v-card>
+        <v-card-item>
+          <v-card-title class="d-flex justify-space-between align-center">
+            <div class="text-h3">
+              {{ props.name }}
+            </div>
+            <v-btn            
+              icon="mdi-close"
+              variant="text"
+              @click="$emit('handledialog')">
+            </v-btn>
+          </v-card-title>
+        </v-card-item>
+        <v-divider class="border-opacity-50"></v-divider>      
+          <v-card-text>
+            <v-row>
+              <v-col cols="2" class="py-0">
+                <v-text-field
+                    v-model="powerDialogStartDate"
+                    density="compact"
+                    type="text"
+                    variant="outlined"
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="3" class="py-0">
+                  <v-range-slider
+                    v-model="powerDialogRange"
+                    @update:modelValue="powerDialogDateRangeChanged"
+                    @end="powerDialogDateRangeReleased"
+                    :step="1"
+                    :max="maxMonths"
+                    min="0"
+                    strict
+                  >
+                  </v-range-slider>
+                </v-col>
+                <v-col cols="2" class="py-0">
+                  <v-text-field
+                    v-model="powerDialogEndDate"
+                    density="compact"
+                    type="text"
+                    variant="outlined"
+                    hide-details
                 ></v-text-field>
               </v-col>
-              <v-col cols="2" class="py-0">
-              <v-range-slider
-                v-model="powerDialogRange"
-                @update:modelValue="powerDialogDateRangeChanged"
-                @end="powerDialogDateRangeReleased"
-                :step="1"
-                :max="maxMonths"
-                min="0"
-                strict
-              >
-              </v-range-slider>
-            </v-col>
-              <v-col cols="1" class="py-0">
-              <v-text-field
-                v-model="powerDialogEndDate"
-                density="compact"
-                type="text"
-                variant="outlined"
-                hide-details
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <v-chip-group
-                selected-class="text-primary"
-                filter
-                mandatory
-                v-model="powerSource"
-                @click="refresh()"
-              >
-              <v-chip value="strava">Strava</v-chip>
-              <v-chip value="zwiftPower" disabled>Zwift Power</v-chip>
-            </v-chip-group>                        
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <v-chip-group
-                selected-class="text-primary"
-                filter
-                mandatory
-                v-model="powerDialogEffortDuration"
-              >
-              <v-chip value="1" @click="loadGraph(1)">1 Sec</v-chip>
-              <v-chip value="5" @click="loadGraph(5)">5 Secs</v-chip>
-              <v-chip value="15" @click="loadGraph(15)">15 Secs</v-chip>
-              <v-chip value="30" @click="loadGraph(30)">30 Secs</v-chip>
-              <v-chip value="60" @click="loadGraph(60)">1 Min</v-chip>
-              <v-chip value="120" @click="loadGraph(120)">2 Mins</v-chip>
-              <v-chip value="240" @click="loadGraph(240)">4 Mins</v-chip>
-              <v-chip value="300" @click="loadGraph(300)">5 Mins</v-chip>
-              <v-chip value="600" @click="loadGraph(600)">10 Mins</v-chip>
-              <v-chip value="720" @click="loadGraph(720)">12 Mins</v-chip>
-              <v-chip value="1200" @click="loadGraph(1200)">20 Mins</v-chip>
-              <v-chip value="3600" @click="loadGraph(3600)">1 Hr</v-chip>
-              <v-chip value="7200" @click="loadGraph(7200)">2 Hrs</v-chip>
-              <v-chip value="10800" @click="loadGraph(10800)">3 Hrs</v-chip>
-            </v-chip-group>                        
-            </v-col>
-          </v-row>                    
-          <v-row>
-            <v-col cols="12">
-              <h4 class="text-h3">{{ powerDialogDataStravaTitle }}</h4>                       
-              <apexchart @click="clickHandler"
-                type="scatter"
-                height="265"
-                :options="scatterChart.chartOptions"
-                :series="powerDialogDataStravaChart"
-              ></apexchart>
-              <EasyDataTable                      
-                :headers="stravaHeaders"
-                :items="rides.value"
-                alternating
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-chip-group
+                  selected-class="text-primary"
+                  filter
+                  mandatory
+                  v-model="powerSource"
+                  @click="refresh()"
                 >
-                <template #item-start_date="{ start_date }">
-                  {{ start_date.split('T')[0] }}
-                </template>
-                <template #item-distance="{ distance }">
-                  {{ Math.round(distance / 100) / 10 }}
-                </template>
-                <template #item-name="{ name, id }">                          
-                  <a :href="'https://www.strava.com/activities/' + id" target="_blank">{{ name }}</a>
-                </template>
-              </EasyDataTable>
-            </v-col>
-          </v-row> 
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="$emit('handledialog')">{{ t('actions.close') }}</v-btn>
-        </v-card-actions>
-      </v-form>
-    </v-card>
-  </v-dialog>
+                <v-chip value="strava">Strava</v-chip>
+                <v-chip value="zwiftPower" disabled>Zwift Power</v-chip>
+              </v-chip-group>                        
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-chip-group
+                  selected-class="text-primary"
+                  filter
+                  mandatory
+                  v-model="powerDialogEffortDuration"
+                >
+                <v-chip value="1" @click="loadGraph(1)">1 Sec</v-chip>
+                <v-chip value="5" @click="loadGraph(5)">5 Secs</v-chip>
+                <v-chip value="15" @click="loadGraph(15)">15 Secs</v-chip>
+                <v-chip value="30" @click="loadGraph(30)">30 Secs</v-chip>
+                <v-chip value="60" @click="loadGraph(60)">1 Min</v-chip>
+                <v-chip value="120" @click="loadGraph(120)">2 Mins</v-chip>
+                <v-chip value="240" @click="loadGraph(240)">4 Mins</v-chip>
+                <v-chip value="300" @click="loadGraph(300)">5 Mins</v-chip>
+                <v-chip value="600" @click="loadGraph(600)">10 Mins</v-chip>
+                <v-chip value="720" @click="loadGraph(720)">12 Mins</v-chip>
+                <v-chip value="1200" @click="loadGraph(1200)">20 Mins</v-chip>
+                <v-chip value="3600" @click="loadGraph(3600)">1 Hr</v-chip>
+                <v-chip value="7200" @click="loadGraph(7200)">2 Hrs</v-chip>
+                <v-chip value="10800" @click="loadGraph(10800)">3 Hrs</v-chip>
+              </v-chip-group>                        
+              </v-col>
+            </v-row>                    
+            <v-row>
+              <v-col cols="12">
+                <h4 class="text-h3">{{ powerDialogDataStravaTitle }}</h4>                       
+                <apexchart @click="clickHandler"
+                  type="scatter"
+                  height="265"
+                  :options="scatterChart.chartOptions"
+                  :series="powerDialogDataStravaChart"
+                ></apexchart>
+                <EasyDataTable                      
+                  :headers="stravaHeaders"
+                  :items="rides.value"
+                  alternating
+                  >
+                  <template #item-start_date="{ start_date }">
+                    {{ start_date.split('T')[0] }}
+                  </template>
+                  <template #item-distance="{ distance }">
+                    {{ Math.round(distance / 100) / 10 }}
+                  </template>
+                  <template #item-name="{ name, id }">                          
+                    <a :href="'https://www.strava.com/activities/' + id" target="_blank">{{ name }}</a>
+                  </template>
+                </EasyDataTable>
+              </v-col>
+            </v-row> 
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="$emit('handledialog')">{{ t('actions.close') }}</v-btn>
+          </v-card-actions>      
+      </v-card>
+    </v-dialog>
+  </v-form>
 </template>

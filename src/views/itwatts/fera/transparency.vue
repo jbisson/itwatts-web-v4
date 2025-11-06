@@ -45,7 +45,7 @@ async function getBio() {
     });
     zwiftpowerBio.value = response.data.withFERA;
 
-    console.log(`Response from getZpBio: ${JSON.stringify(response.data)}`);
+    // console.log(`Response from getZpBio: ${JSON.stringify(response.data)}`);
   } catch (err: any) {    
     errorAlert.value = t('errors.errorOccured', [err]);
     console.log(`An error occured: ${err} stack: ${err.stack}`);

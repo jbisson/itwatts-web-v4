@@ -5,58 +5,43 @@ import Logo from '@/layouts/blank/logo/ItWattsLogoLight.vue';
 import LogoIcon from '@/layouts/blank/logo/ItWattsLogoIcon.vue';
 //import LogoIcon from '@/layouts/full/logo/LogoIcon.vue';
 import type { LeaderType, TemplateType, ThemeFeatures, PackageType, FooterType, Feature } from '@/types/components/front-pages/index';
+import { useI18n } from 'vue-i18n';
+
+const { t, locale } = useI18n({ useScope: 'global' });
 
 // Footer Menu Links
 const FooterMenu1: FooterType[] = [
+  
 ];
 const FooterMenu2: FooterType[] = [
-    {
-        menu: 'Treeview',
-        link: '/pages/treeview'
-    },
-    {
-        menu: 'Banners',
-        link: '/widgets/banners'
-    },
-    {
-        menu: 'Charts',
-        link: '/widgets/charts'
-    },
-    {
-        menu: 'Gallery Lightbox',
-        link: '/pages/gallery-lightbox'
-    },
-    {
-        menu: 'Social Contacts',
-        link: '/pages/social-media-contacts'
-    }
+  {
+      menu: 'FERA',
+      link: '/fera'
+  },
+  {
+      menu: 'StriveKOM',
+      link: '/strive-kom'
+  },
+  {
+      menu: t('common.packages'),
+      link: '/packages'
+  },
 ];
 const FooterMenu3: FooterType[] = [
-    {
-        menu: 'Form Layout',
-        link: '/forms/form-layouts'
-    },
-    {
-        menu: 'Tables',
-        link: '/tables/basic'
-    },
-    {
-        menu: 'Stepper',
-        link: '/forms/form-elements/stepper'
-    },
-    {
-        menu: 'Datatables',
-        link: '/datatables/basic'
-    },
-    {
-        menu: 'Validation',
-        link: '/forms/form-validation'
-    }
 ];
+
 const FooterMenu4: FooterType[] = [
     {
-        menu: 'ITWatts Support',
-        link: '/forms/form-layouts'
+        menu: t('common.aboutUs'),
+        link: '/about-us'
+    },
+    {
+        menu: t('common.faq'),
+        link: '/faq'
+    },
+    {
+        menu: t('common.support'),
+        link: '/contact-us'
     },
 ];
 
@@ -84,7 +69,7 @@ const FooterMenu4: FooterType[] = [
                         </div>
                     </v-col>
                     <v-col cols="12" lg="3" sm="6">
-                        <h5 class="text-17 mb-sm-8 mb-6  text-white">About</h5>
+                        <h5 class="text-17 mb-sm-8 mb-6  text-white">{{ t('common.features') }}</h5>
                         <div class="d-flex flex-column ga-4">
                             <div v-for="item in FooterMenu2" :key="item.menu">
                                 <RouterLink
@@ -98,21 +83,7 @@ const FooterMenu4: FooterType[] = [
                         </div>
                     </v-col>
                     <v-col cols="12" lg="3" sm="6">
-                        <h5 class="text-17 mb-sm-8 mb-6  text-white">Links</h5>
-                        <div class="d-flex flex-column ga-4">
-                            <div v-for="item in FooterMenu3" :key="item.menu">
-                                <RouterLink
-                                    :to="item.link"
-                                    target="_blank"
-                                    class="text-white text-14 opacity-80 font-weight-regular hover-primary text-decoration-none"
-                                >
-                                    {{ item.menu }}
-                                </RouterLink>
-                            </div>
-                        </div>
-                    </v-col>
-                    <v-col cols="12" lg="3" sm="6">
-                        <h5 class="text-17 mb-sm-8 mb-6  text-white">Help</h5>
+                        <h5 class="text-17 mb-sm-8 mb-6  text-white">{{ t('common.resources') }}</h5>
                             <div class="d-flex flex-column ga-4">
                             <div v-for="item in FooterMenu4" :key="item.menu">
                                 <RouterLink
@@ -133,10 +104,10 @@ const FooterMenu4: FooterType[] = [
                     <div class="d-flex ga-2  justify-sm-start justify-center">
                         <LogoIcon/>
                         <span class="
-                        text-white text-15 opacity-80">All rights reserved by ITWatts.</span>   
+                        text-white text-15 opacity-80">{{ t('common.allRightsReserved') }}</span>   
                     </div>
                     <p class="text-white text-15  d-flex align-center justify-sm-end justify-center pt-sm-0 pt-2">
-                        <span class="opacity-50">Produced by</span>
+                        <span class="opacity-50">{{ t('common.producedBy') }} </span>
                         <a
 
                             href="https://dappsolution.com/"

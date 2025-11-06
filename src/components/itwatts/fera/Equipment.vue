@@ -20,6 +20,7 @@ import 'filepond/dist/filepond.min.css';
 import { Cropper, Preview, CircleStencil } from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 import { useUserProfile } from '@/stores/user-profile';
+import { rules } from '@/utils/rules';
 
 const emit = defineEmits(['onSuccess', 'onError', 'onLoading']);
 const { t, locale } = useI18n({ useScope: 'global' });
@@ -66,15 +67,6 @@ const powerMetersHeaders = ref([
   { title: t('common.validation'), key: 'validation', align: 'center', sortable: true },
   { title: t('actions.actions'), key: 'actions', sortable: false, align: `${props.loadFromUserProfile ? '' : ' d-none'}` },
 ]);
-
-const rules = ref({
-  required: (value: any) => !!value || t('validations.required'),
-  email: (value: any) => {
-      const pattern =
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return pattern.test(value) || t('validations.invalidEmail');
-    },
-});
 
 const FilePond = vueFilePond(FilePondPluginFileEncode, FilePondPluginFileValidateType,
   FilePondPluginFileValidateSize, FilePondPluginImageResize, FilePondPluginImageTransform);
@@ -161,7 +153,6 @@ applyDefaultPowerMeter();
 function applyDefaultTrainer() {
   setTimeout(() => {
     defaultTrainer.id = uuid.v4();
-    console.log('Default: ' + JSON.stringify(defaultTrainer));
     trainerDialogItem.value = Object.assign({}, defaultTrainer);
     cropperTrainerSrc.value = '';
   });
@@ -478,7 +469,7 @@ watch(() => props.user, (newValue, oldValue) => {
                     :item-title="'text'"
                     :item-value="'value'"
                     variant="outlined"
-                    :rules="[rules.required]"
+                    :rules="[rules().required]"
                   ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" sm="6">
@@ -641,7 +632,7 @@ watch(() => props.user, (newValue, oldValue) => {
                     :item-title="'text'"
                     :item-value="'value'"
                     variant="outlined"
-                    :rules="[rules.required]"
+                    :rules="[rules().required]"
                   ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" sm="6">

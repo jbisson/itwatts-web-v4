@@ -1,7 +1,9 @@
-function exportUser(user) {
+import { getVeloCategory } from '@/utils/zwiftRacing';
+
+function exportUser(user?: any) {
   let result = {
-    headers: [],
-    value: [],
+    headers: [] as any,
+    value: [] as any,
   };
   result.headers = [
     'Prénom',
@@ -22,6 +24,7 @@ function exportUser(user) {
     'Zwift (Club 5.W.4.T status)',
     'Zwift (date synchronization)',
     'Zwift Racing App vELO',
+    'Zwift Racing App vELO Cat',
     'Zwift Racing App (date synchronization)',
     'ZP category',
     'ZP zrs',
@@ -63,12 +66,13 @@ function exportUser(user) {
     }
   }
   
-  let primaryTrainer = user.trainers.find((trainer) => trainer.primary);
+  let primaryTrainer = user.trainers.find((trainer: any) => trainer.primary);
   if (primaryTrainer) {
     primaryTrainer = primaryTrainer.model;
   } else {
     console.log('empty for zp_id: ' + user.id)
   }
+  
   result.value = [
     user.first_name,
     user.last_name,
@@ -88,6 +92,7 @@ function exportUser(user) {
     (user.zwift_profile && user.zwift_profile.clubs && user.zwift_profile.clubs.length > 0) ? (user.zwift_profile.clubs[0].clubId === '29068f3d-089c-4a38-842e-f67e8a4d52ef' ? user.zwift_profile.clubs[0].status : '') : ' ',
     user.zwift_profile ? user.zwift_profile.lastSynced : ' ',
     user.zwift_racing_app_profile && user.zwift_racing_app_profile.race ? Math.round(user.zwift_racing_app_profile.race.rating) : ' ',
+    user.zwift_racing_app_profile && user.zwift_racing_app_profile.race ? getVeloCategory(Math.round(user.zwift_racing_app_profile.race.rating)) : ' ',
     user.zwift_racing_app_profile ? user.zwift_racing_app_profile.lastSynced.split('T')[0] : ' ',
     user.zp_profile ? user.zp_profile.category : ' ',
     user.zp_profile ? user.zp_profile.zrs : ' ',
@@ -120,10 +125,12 @@ function exportUser(user) {
   return result;
 }
 
-function exportClubLadder2024FormHeadersForm(form) {
+
+
+function exportClubLadderFormHeadersForm(form?: any) {
   let result = {
-    headers: [],
-    value: [],
+    headers: [] as any,
+    value: [] as any,
   };
 
   result.headers = [
@@ -160,31 +167,97 @@ function exportClubLadder2024FormHeadersForm(form) {
   return result;
 }
 
-function exportZrl20242025Round2Form(form) {
+function export2025PollForm(form: any) {
   let result = {
-    headers: [],
-    value: [],
+    headers: [] as any,
+    value: [] as any,
   };
 
   result.headers = [
-    'Horaire ZRL 12h00',
-    'Horaire ZRL 18h30',
-    'Horaire ZRL 19h30',
+    'Niveau satisfaction',
+    'Recommandation équipe',
+    'Satisfaction activités sociales proposées',
+    'Satisfaction courses proposées',
+    'Satisfaction workouts proposées',
+    'Intérèt club ladder',
+    'Intérèt ZRL',
+    'Intérèt TTT',
+    'Intérèt ITT',
+    'Intérèt FRR',
+    'Intérèt workouts',
+    'Intérèt dirt racing',
+    'Intérèt SRC mywhoosh',
+    'Intérèt echelon mywhoosh',
+    'Intérèt championship mywhoosh',
+    'Horaire adaptée',
+    'Suggestion séries',
+    'Satisfaction intégration',
+    'Ambiance',
+    'Esprit de communauté',
+    'Communication équipe',
+    'Implication des animateurs/organisateurs',
+    'Nouveauté dans l’équipe?',
+    'Aspect est le plus important',
+    'Suggestion améliorations',    
+  ];
+
+  if (!form) {
+    return result;
+  }
+  
+  result.value = [
+    `"${form.satisfactionLevel}"` || ' ',
+    `"${form.swatRecommendation}"` || ' ',
+    `"${form.socialActivitiesQuantity}"` || ' ',    
+    `"${form.racesQuantity}"` || ' ',    
+    `"${form.workoutsQuantity}"` || ' ',
+    `"${form.clubLadderInterest.toString()}"`,
+    `"${form.zrlInterest.toString()}"`,
+    `"${form.tttInterest.toString()}"`,
+    `"${form.ittInterest.toString()}"`,
+    `"${form.frrInterest.toString()}"`,
+    `"${form.workoutInterest.toString()}"`,
+    `"${form.dirtRacingInterest.toString()}"`,
+    `"${form.srcInterest.toString()}"`,
+    `"${form.echelonRacingInterest.toString()}"`,
+    `"${form.championshipInterest.toString()}"`,
+    `"${form.scheduleTime.toString()}"`,
+    `"${form.seriesSugestion.toString()}"`,
+    `"${form.integrationLevel.toString()}"`,
+    `"${form.teamAmbiance.toString()}"`,
+    `"${form.teamSpirit.toString()}"`,
+    `"${form.communicationSatisfaction.toString()}"`,
+    `"${form.organizerComments.toString()}"`,    
+    `"${form.newThingsToSee.toString()}"`,    
+    `"${form.mostImportantThing.toString()}"`,    
+    `"${form.moreSuggestions.toString()}"`,
+  ]; 
+
+  return result;
+}
+
+function exportZrl20252026Round1Form(form: any) {
+  let result = {
+    headers: [] as any,
+    value: [] as any,
+  };
+  
+
+  result.headers = [
+    'Intérêt de course',
+    'Horaire ZRL',
+    'Status Membre vs Invité',
     'Préférence de catégorie',
-    'Expérience ZRL',
-    'Jamais participé TTT',
-    'Connait pas FTS/FAL',
-    'Niveau compétitif',
+    'Expérience courses ZRL',
+    'Choix qui s\'applique',
     'Capitaine d\'équipe',
     'Directeur sportif',
     'Autre courreurs',
     'Commentaires',
-    'Dispo nov12Course',
-    'Dispo nov19Course',
-    'Dispo nov26Course',
-    'Dispo dec3Course',
-    'Dispo dec10Course',
-    'Dispo dec17Course',
+    'Dispo sept16Course',
+    'Dispo sept23Course',
+    'Dispo sept30Course',
+    'Dispo oct7Course',    
   ];
 
   if (!form) {
@@ -192,54 +265,53 @@ function exportZrl20242025Round2Form(form) {
   }
 
   result.value = [
-    `"${form.preferedTime12h00}"` || ' ',
-    `"${form.preferedTime18h30}"` || ' ',
-    `"${form.preferedTime19h30}"` || ' ',
+    form.raceInterest || ' ',
+    form.timeInterest || ' ',
+    form.userStatus || ' ',
     `"${form.catPreferences.toString()}"`,
-    `"${form.experienceInZRL}"` || ' ',    
-    `"${form.neverDidTTT}"` || ' ',
-    `"${form.dontKnowFtsFal}"` || ' ',
-    `"${form.competitiveLevel}"` || ' ',    
+    `"${form.experience.toString()}"`,
+    `"${form.choicesThatApply.toString()}"`,
     `"${form.capInterest.toString()}"`,
     `"${form.dsInterest.toString()}"`,
     `"${form.othersTeamPlayerNames}"` || ' ',
     `"${(form.comment || '').replaceAll(/\n/g,'').replaceAll('"', '\'')}"`,
-    `"${form.nov12Course.toString()}"`,
-    `"${form.nov19Course.toString()}"`,
-    `"${form.nov26Course.toString()}"`,
-    `"${form.dec3Course.toString()}"`,
-    `"${form.dec10Course.toString()}"`,
-    `"${form.dec17Course.toString()}"`,    
-  ]; 
+    `"${form.sept16Course.toString()}"`,
+    `"${form.sept23Course.toString()}"`,
+    `"${form.sept30Course.toString()}"`,
+    `"${form.oct7Course.toString()}"`,
+  ];  
 
   return result;
 }
 
-function exportZrl20242025Round3Form(form) {
+function exportZrl20252026Round2Form(form: any) {
   let result = {
-    headers: [],
-    value: [],
+    headers: [] as any,
+    value: [] as any,
   };
+  
 
   result.headers = [
+    'Horaire ZRL 6h00',
+    'Horaire ZRL 7h00',
+    'Horaire ZRL 8h00',
     'Horaire ZRL 12h00',
     'Horaire ZRL 18h30',
-    'Horaire ZRL 19h30',
+    'Horaire ZRL 19h30',    
+    'Status Membre vs Invité',
     'Préférence de catégorie',
-    'Expérience ZRL',
-    'Jamais participé TTT',
-    'Connait pas FTS/FAL',
-    'Niveau compétitif',
+    'Expérience courses ZRL',
+    'Choix qui s\'applique',
     'Capitaine d\'équipe',
     'Directeur sportif',
     'Autre courreurs',
     'Commentaires',
-    'Dispo jan14Course',
-    'Dispo jan21Course',
-    'Dispo jan28Course',
-    'Dispo 4fevCourse',
-    'Dispo 11fevCourse',
-    'Dispo 18febCourse',
+    'Dispo nov4Course',
+    'Dispo nov11Course',
+    'Dispo nov18Course',
+    'Dispo nov25Course',
+    'Dispo dec2Course',
+    'Dispo dec9Course',
   ];
 
   if (!form) {
@@ -247,33 +319,35 @@ function exportZrl20242025Round3Form(form) {
   }
 
   result.value = [
+    `"${form.preferedTime6h00}"` || ' ',
+    `"${form.preferedTime7h00}"` || ' ',
+    `"${form.preferedTime8h00}"` || ' ',
     `"${form.preferedTime12h00}"` || ' ',
     `"${form.preferedTime18h30}"` || ' ',
-    `"${form.preferedTime19h30}"` || ' ',
-    `"${form.catPreferences.toString()}"`,
-    `"${form.experienceInZRL}"` || ' ',    
-    `"${form.neverDidTTT}"` || ' ',
-    `"${form.dontKnowFtsFal}"` || ' ',
-    `"${form.competitiveLevel}"` || ' ',    
+    `"${form.preferedTime19h30}"` || ' ',    
+    form.userStatus || ' ',
+    `"${form.catPreferences ? form.catPreferences.toString() : form.catPreference.toString()}"`,
+    `"${form.experience.toString()}"`,
+    `"${form.choicesThatApply.toString()}"`,
     `"${form.capInterest.toString()}"`,
     `"${form.dsInterest.toString()}"`,
     `"${form.othersTeamPlayerNames}"` || ' ',
     `"${(form.comment || '').replaceAll(/\n/g,'').replaceAll('"', '\'')}"`,
-    `"${form.course1.toString()}"`,
-    `"${form.course2.toString()}"`,
-    `"${form.course3.toString()}"`,
-    `"${form.course4.toString()}"`,
-    `"${form.course5.toString()}"`,
-    `"${form.course6.toString()}"`,    
-  ]; 
+    `"${form.nov4Course.toString()}"`,
+    `"${form.nov11Course.toString()}"`,
+    `"${form.nov18Course.toString()}"`,
+    `"${form.nov25Course.toString()}"`,
+    `"${form.dec2Course.toString()}"`,
+    `"${form.dec9Course.toString()}"`,
+  ];  
 
   return result;
 }
 
-function exportWTRLZrlForm(form) {
+function exportWTRLZrlForm(form: any) {
   let result = {
-    headers: [],
-    value: [],
+    headers: [] as any,
+    value: [] as any,
   };
 
   result.headers = [
@@ -311,61 +385,10 @@ function exportWTRLZrlForm(form) {
   return result;
 }
 
-function exportZrl2024WinterFormHeadersForm(form) {
+function exportGuestSwatForm(form: any) {
   let result = {
-    headers: [],
-    value: [],
-  };
-
-  result.headers = [
-    'Intérêt de course',
-    'Horaire ZRL',
-    'Status Membre vs Invité',
-    'Préférence de catégorie',
-    'Expérience courses ZRL',
-    'Choix qui s\'applique',
-    'Capitaine d\'équipe',
-    'Directeur sportif',
-    'Autre courreurs',
-    'Commentaires',
-    'Dispo jan23Course',
-    'Dispo jan30Course',
-    'Dispo feb6Course',
-    'Dispo feb13Course',
-    'Dispo feb20Course',
-    'Dispo feb27Course',
-  ];
-
-  if (!form) {
-    return result;
-  }
-
-  result.value = [
-    form.raceInterest || ' ',
-    form.timeInterest || ' ',
-    form.userStatus || ' ',
-    `"${form.catPreferences.toString()}"`,
-    `"${form.experience.toString()}"`,
-    `"${form.choicesThatApply.toString()}"`,
-    `"${form.capInterest.toString()}"`,
-    `"${form.dsInterest.toString()}"`,
-    `"${form.othersTeamPlayerNames}"` || ' ',
-    `"${(form.comment || '').replaceAll(/\n/g,'').replaceAll('"', '\'')}"`,
-    `"${form.jan23Course.toString()}"`,
-    `"${form.jan30Course.toString()}"`,
-    `"${form.feb6Course.toString()}"`,
-    `"${form.feb13Course.toString()}"`,
-    `"${form.feb20Course.toString()}"`,
-    `"${form.feb27Course.toString()}"`,    
-  ]; 
-
-  return result;
-}
-
-function exportGuestSwat2024Form(form) {
-  let result = {
-    headers: [],
-    value: [],
+    headers: [] as any,
+    value: [] as any,
   };
 
   result.headers = [
@@ -413,10 +436,10 @@ function exportGuestSwat2024Form(form) {
   return result;
 }
 
-function exportInterestSwat2024Form(form) {
+function exportInterestSwatForm(form: any) {
   let result = {
-    headers: [],
-    value: [],
+    headers: [] as any,
+    value: [] as any,
   };
 
   result.headers = [
@@ -452,15 +475,9 @@ function exportInterestSwat2024Form(form) {
     'Vélo IRL (hrs)',
     'Integrité - Importance valeur authentique',
     'Integrité - Peu d\'intérêt valider performance',
-    'Integrité - Accepte faire tests',
-    'Respect - Priorisé groupe',
-    'Respect - Respecte adversaires',
     'Respect - Bon perdant',
-    'Respect - Partage success',
-    'Respect - Uniquement objectifs personnels',
     'Engagement - Investir pleinement',
     'Engagement - Intention role actif',
-    'Engagement - Recherche sentiment d\'appartenance',
     'Engagement - Engagement minime',
     'Attitude 5.W.4.T',
     'Implication - Capitaine',
@@ -508,16 +525,10 @@ function exportInterestSwat2024Form(form) {
     `"${form.otherPlatformInterest}"` || ' ',
     `"${form.hoursWorkoutWinter}"` || ' ',
     `"${form.integrityValuesAuthenticPerformances.toString()}"`,
-    `"${form.integrityValuesLowInterestPerformanceValidation.toString()}"`,
-    `"${form.integrityValuesAcceptTests.toString()}"`,
-    `"${form.respectValuesPriorizeGroup.toString()}"`,
-    `"${form.respectValuesRespectOthers.toString()}"`,
-    `"${form.respectValuesBadLooser.toString()}"`,
-    `"${form.respectValuesSharedLost.toString()}"`,
-    `"${form.respectValuesOwnObjectivesOnly.toString()}"`,
+    `"${form.integrityValuesLowInterestPerformanceValidation.toString()}"`,    
+    `"${form.respectValuesBadLooser.toString()}"`,        
     `"${form.engagementValuesInvested.toString()}"`,
     `"${form.engagementValuesTeamMembershipInterest.toString()}"`,
-    `"${form.engagementValuesBelongingToAGroup.toString()}"`,
     `"${form.engagementValuesLowEngagementOnly.toString()}"`,
     `"${form.topSwatValue}"` || ' ',
     `"${form.teamCapitain}"` || ' ',
@@ -534,11 +545,11 @@ function exportInterestSwat2024Form(form) {
 
 export {
   exportUser,
-  exportZrl2024WinterFormHeadersForm,
-  exportZrl20242025Round2Form,
-  exportZrl20242025Round3Form,
-  exportClubLadder2024FormHeadersForm,
-  exportInterestSwat2024Form,
-  exportGuestSwat2024Form,
+  exportZrl20252026Round1Form,
+  exportZrl20252026Round2Form,
+  exportClubLadderFormHeadersForm,
+  export2025PollForm,
+  exportInterestSwatForm,
+  exportGuestSwatForm,
   exportWTRLZrlForm
 }

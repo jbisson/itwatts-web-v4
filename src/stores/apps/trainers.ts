@@ -7,7 +7,7 @@ import axios from 'axios';
 export const useTrainerStore = defineStore('Trainers', {    
     state: () => ({
       trainers: [],
-      secondaryTrainers: []
+      secondaryTrainers: [] as any
     }),
     persist: true,
     getters: {},

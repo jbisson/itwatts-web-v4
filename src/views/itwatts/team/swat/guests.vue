@@ -10,9 +10,11 @@ import { useRouter } from 'vue-router';
 
 import config from "@/config/config.json";
 import security from "@/security";
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t, locale } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('swatGuests.pageTitle') });
+const team = ref();
 const guessUsersResult = reactive([] as any);
 
 const router = useRouter();
@@ -40,14 +42,27 @@ guessUsersResult.value = [];
 const searchValue = ref();
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025'];
-  if (!security.isTokenValid(rolesRequired)) {
+  if (!security.isTokenValid([])) {
+    console.log('Token not valid.');
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
     return;
   }
 
-  if (security.isTokenValid(['SUPER_ADMIN', 'SWAT_ADMIN'])) {
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
+  
+  if (!team.value || !(team.value.managers.includes(useUserProfile().user_id) ||
+    team.value.riders.includes(useUserProfile().user_id) || security.isTokenValid(['SUPER_ADMIN']))) {    
+    useUserProfile().login_post_back_page = router.currentRoute.value.path;
+    router.push({ path: '/itwatts/signin' });
+    return;
+  }
+
+  if (security.isTokenValid(['SUPER_ADMIN'])) {
     /*overallHeaders.push({ text: 'ZP last synced', value: "zp_last_synced", sortable: true });
     overallHeaders.push({ text: 'Zwift 5.W.4.T club status', value: "zwift_status", sortable: true });
     overallHeaders.push({ text: 'Zwift last synced', value: "zwift_last_synced", sortable: true });

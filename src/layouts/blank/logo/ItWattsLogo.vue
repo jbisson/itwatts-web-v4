@@ -7,7 +7,7 @@ import ItWattsBikeLogo from '@/assets/images/itwatts/logos/Itwatts_bike_only_whi
 </script>
 <template>
     <div class="logo">
-        <RouterLink to="/home">          
+        <RouterLink to="/">          
           <img :src="ITWattsBike" alt="home" height="20" class="me-3"/>
           <img :src="ITWattsLogo" alt="home" height="20"/>
         </RouterLink>

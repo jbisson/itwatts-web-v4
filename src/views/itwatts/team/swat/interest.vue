@@ -86,15 +86,9 @@ const otherPlatformInterest = ref([]);
 const racesOrEvents = ref('');
 const integrityValuesAuthenticPerformances = ref([]);
 const integrityValuesLowInterestPerformanceValidation = ref([]);
-const integrityValuesAcceptTests = ref([]);
-const respectValuesPriorizeGroup = ref([]);
-const respectValuesRespectOthers = ref([]);
 const respectValuesBadLooser = ref([]);
-const respectValuesSharedLost = ref([]);
-const respectValuesOwnObjectivesOnly = ref([]);
 const engagementValuesInvested = ref([]);
 const engagementValuesTeamMembershipInterest = ref([]);
-const engagementValuesBelongingToAGroup = ref([]);
 const engagementValuesLowEngagementOnly = ref([]);
 
 let clubs = [] as any;
@@ -161,7 +155,7 @@ async function refresh() {
   
   swatNames.value = [];
   try {    
-    let response = await axios.get(`${config.serverApi.publicHostname}/v1/users?groups=swat_2023_2024,swat_2024_2025&fields=first_name,last_name&sortBy=first_name`,
+    let response = await axios.get(`${config.serverApi.publicHostname}/v1/users?team=swat&fields=first_name,last_name&sortBy=first_name`,
     { withCredentials: true });
     for (let i = 0;i < response.data.data.length;i++) {
       swatNames.value.push(`${response.data.data[i].first_name} ${response.data.data[i].last_name}`);
@@ -211,16 +205,10 @@ function bodyContentToForm(content : any) {
   clubLadderInterest.value = content.clubLadderInterest || [];
   otherPlatformInterest.value = content.otherPlatformInterest || [];  
   integrityValuesAuthenticPerformances.value = content.integrityValuesAuthenticPerformances || [];
-  integrityValuesLowInterestPerformanceValidation.value = content.integrityValuesLowInterestPerformanceValidation || [];
-  integrityValuesAcceptTests.value = content.integrityValuesAcceptTests || [];
-  respectValuesPriorizeGroup.value = content.respectValuesPriorizeGroup || [];
-  respectValuesRespectOthers.value = content.respectValuesRespectOthers || [];
-  respectValuesBadLooser.value = content.respectValuesBadLooser || [];
-  respectValuesSharedLost.value = content.respectValuesSharedLost || [];
-  respectValuesOwnObjectivesOnly.value = content.respectValuesOwnObjectivesOnly || [];
+  integrityValuesLowInterestPerformanceValidation.value = content.integrityValuesLowInterestPerformanceValidation || [];  
+  respectValuesBadLooser.value = content.respectValuesBadLooser || [];  
   engagementValuesInvested.value = content.engagementValuesInvested || [];
-  engagementValuesTeamMembershipInterest.value = content.engagementValuesTeamMembershipInterest || [];
-  engagementValuesBelongingToAGroup.value = content.engagementValuesBelongingToAGroup || [];
+  engagementValuesTeamMembershipInterest.value = content.engagementValuesTeamMembershipInterest || [];  
   engagementValuesLowEngagementOnly.value = content.engagementValuesLowEngagementOnly || [];  
   partOfVirtualTeam.value = content.partOfVirtualTeam;
   virtualTeam.value = content.virtualTeam;
@@ -302,16 +290,10 @@ function formToBodyContent() {
     virtualRacesParticipation: virtualRacesParticipation.value,
     virtualRacesNeverParticated: virtualRacesNeverParticated.value,
     integrityValuesAuthenticPerformances: integrityValuesAuthenticPerformances.value,
-    integrityValuesLowInterestPerformanceValidation: integrityValuesLowInterestPerformanceValidation.value,
-    integrityValuesAcceptTests: integrityValuesAcceptTests.value,
-    respectValuesPriorizeGroup: respectValuesPriorizeGroup.value,
-    respectValuesRespectOthers: respectValuesRespectOthers.value,
+    integrityValuesLowInterestPerformanceValidation: integrityValuesLowInterestPerformanceValidation.value,    
     respectValuesBadLooser: respectValuesBadLooser.value,
-    respectValuesSharedLost: respectValuesSharedLost.value,
-    respectValuesOwnObjectivesOnly: respectValuesOwnObjectivesOnly.value,
     engagementValuesInvested: engagementValuesInvested.value,
-    engagementValuesTeamMembershipInterest: engagementValuesTeamMembershipInterest.value,
-    engagementValuesBelongingToAGroup: engagementValuesBelongingToAGroup.value,
+    engagementValuesTeamMembershipInterest: engagementValuesTeamMembershipInterest.value,    
     engagementValuesLowEngagementOnly: engagementValuesLowEngagementOnly.value,
   }
 }
@@ -722,21 +704,15 @@ refresh();
             </div>
             <v-checkbox :label="t('swatInterest.formQuestions.integrityValuesAuthenticPerformances')" hide-details="auto" value="yes" v-model="integrityValuesAuthenticPerformances"></v-checkbox>
             <v-checkbox :label="t('swatInterest.formQuestions.integrityValuesLowInterestPerformanceValidation')" hide-details="auto" value="yes" v-model="integrityValuesLowInterestPerformanceValidation"></v-checkbox>
-            <v-checkbox :label="t('swatInterest.formQuestions.integrityValuesAcceptTests')" hide-details="auto" value="yes" v-model="integrityValuesAcceptTests"></v-checkbox>
             <div class="text-h6 my-3">
               Valeur de respect :
             </div>
-            <v-checkbox :label="t('swatInterest.formQuestions.respectValuesPriorizeGroup')" hide-details="auto" value="yes" v-model="respectValuesPriorizeGroup"></v-checkbox>
-            <v-checkbox :label="t('swatInterest.formQuestions.respectValuesRespectOthers')" hide-details="auto" value="yes" v-model="respectValuesRespectOthers"></v-checkbox>
-            <v-checkbox :label="t('swatInterest.formQuestions.respectValuesBadLooser')" hide-details="auto" value="yes" v-model="respectValuesBadLooser"></v-checkbox>
-            <v-checkbox :label="t('swatInterest.formQuestions.respectValuesSharedLost')" hide-details="auto" value="yes" v-model="respectValuesSharedLost"></v-checkbox>
-            <v-checkbox :label="t('swatInterest.formQuestions.respectValuesOwnObjectivesOnly')" hide-details="auto" value="yes" v-model="respectValuesOwnObjectivesOnly"></v-checkbox>
+            <v-checkbox :label="t('swatInterest.formQuestions.respectValuesBadLooser')" hide-details="auto" value="yes" v-model="respectValuesBadLooser"></v-checkbox>            
             <div class="text-h6 my-3">
               Valeur d’engagement :
             </div>
             <v-checkbox :label="t('swatInterest.formQuestions.engagementValuesInvested')" hide-details="auto" value="yes" v-model="engagementValuesInvested"></v-checkbox>
-            <v-checkbox :label="t('swatInterest.formQuestions.engagementValuesTeamMembershipInterest')" hide-details="auto" value="yes" v-model="engagementValuesTeamMembershipInterest"></v-checkbox>
-            <v-checkbox :label="t('swatInterest.formQuestions.engagementValuesBelongingToAGroup')" hide-details="auto" value="yes" v-model="engagementValuesBelongingToAGroup"></v-checkbox>
+            <v-checkbox :label="t('swatInterest.formQuestions.engagementValuesTeamMembershipInterest')" hide-details="auto" value="yes" v-model="engagementValuesTeamMembershipInterest"></v-checkbox>            
             <v-checkbox :label="t('swatInterest.formQuestions.engagementValuesLowEngagementOnly')" hide-details="auto" value="yes" v-model="engagementValuesLowEngagementOnly"></v-checkbox>
         </UiParentCard>
       </v-col>

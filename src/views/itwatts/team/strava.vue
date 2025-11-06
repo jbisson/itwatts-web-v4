@@ -41,9 +41,11 @@ const errorOccured = ref(false);
 
 const powerDialogVisible = ref(false);
 const powerDialogUserID = ref();
-const powerDialogData = reactive([] as any);
-const powerDialogStravaRides = reactive([] as any);
 const powerDialogStravaActivities = reactive([] as any);
+const filterOptions = reactive([] as any);
+
+const riderListDialogVisible = ref(false);
+const riderListDialogUsers = reactive([] as any);
 
 const range = ref();
 const timeRange = ref('months6');
@@ -62,6 +64,7 @@ const segmentDialogUserID = ref();
 const segmentDialogVisible = ref(false);
 const segmentDialogName = ref();
 const segmentDialogStravaTopSegments = reactive([] as any);
+const itemsSelected = ref<Item[]>([]);
 
 let allUsersStravaTopSegments = new Map();
 
@@ -73,7 +76,7 @@ const overallHeaders: Header[] = reactive([
   { text: 'NB Top10 KOM', value: "top10_koms", sortable: true },
   { text: 'NB Top1 KOM', value: "top1_koms", sortable: true },
   { text: t('teamStrava.nbActivities'), value: "nb_activities", sortable: true },
-  { text: t('actions.actions'), value: "analysis", sortable: false },
+  { text: t('actions.actions'), value: "analysis", width: 10, sortable: false },
 ]);
 
 usersResult.value = [];
@@ -147,8 +150,6 @@ async function refresh() {
           useUserProfile().strava_preferences.hidden_segments = user.strava_preferences.hidden_segments;
         }
         if (user.strava_login) {
-          user.name = `${user.first_name} ${user.last_name}`;
-          
           user.km_total = 0;
           user.km_virtual = 0;
           user.km_irl = 0;
@@ -231,6 +232,24 @@ function isAnalysisButtonsDisplayed(id: any) {
     security.isTokenValid(['SUPER_ADMIN']);
 }
 
+function onFilterChanged(filterSelection: any) {
+  if (filterSelection) {
+    filterOptions.value = [{
+      field: 'id',
+      comparison: 'in',
+      criteria: filterSelection.user_ids
+      }];
+  } else {
+    filterOptions.value = [];
+    itemsSelected.value = [];
+  }  
+}
+
+function openNewListDialog() {
+  riderListDialogUsers.value = itemsSelected.value;
+  riderListDialogVisible.value = true;
+}
+
 watch(() => [], refresh);
 refresh();
 
@@ -285,7 +304,7 @@ refresh();
                 <v-list-item-title>TODO</v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu>      
+          </v-menu>
           </template>
         </v-card-item>
         <v-card-text>
@@ -305,6 +324,7 @@ refresh();
             </v-chip-group>
             </v-col>
           </v-row>
+          <RiderList v-if="team" @onFilterChanged="onFilterChanged" :visible="riderListDialogVisible" :teamName="team.name" :users="riderListDialogUsers.value" @handledialog="riderListDialogVisible = false"></RiderList>
           <v-row>
             <v-col cols="6" sm="4" lg="4">
               <v-text-field
@@ -316,27 +336,34 @@ refresh();
                 density="compact"
               ></v-text-field><br>
             </v-col>
+            <v-col class="text-sm-right">
+              <v-btn v-if="itemsSelected.length > 0" color="primary" @click="openNewListDialog()"><v-icon class="mr-2">mdi-account-multiple-plus</v-icon>{{ t('teamPowerStats.addList') }}</v-btn>
+            </v-col>
           </v-row>
-          <div class="align-center">
-            <EasyDataTable
-              :search-field="['name', 'zp_id'] "
-              :search-value="searchValue"
-              :headers="overallHeaders"
-              :items="usersResult.value"
-              alternating
-              >
-              <template #item-name="{ name, strava_url, id }">
-                <a :href="'/itwatts/user/profile/' + id" target="_blank">{{ name }}</a>
-                <!--<a :href="strava_url" target="_blank">{{ name }}</a>-->
-              </template>
-              <template #item-analysis="{ id, first_name, last_name, strava_rides, gender, strava_url }">                
-                <v-btn color="primary" class="mb-1 mt-1" v-if="isAnalysisButtonsDisplayed(id)" @click="openPowerGraph({id, first_name, last_name, strava_rides})" size="x-small">{{  t('common.power') }}</v-btn>
-                <v-btn color="primary" class="mb-1" v-if="isAnalysisButtonsDisplayed(id)" @click="openStravaSegmentGraph({id, first_name, last_name, strava_rides, gender, strava_url})" size="x-small">{{  t('common.segments') }}</v-btn>                
-              </template>
-            </EasyDataTable>
+          <v-row>
+            <v-col cols="12">
+              <EasyDataTable
+                v-model:items-selected="itemsSelected"
+                :search-field="['first_name', 'last_name', 'zp_id'] "
+                :search-value="searchValue"
+                :headers="overallHeaders"
+                :items="usersResult.value"
+                :filter-options="filterOptions.value"
+                alternating
+                >
+                <template #item-name="{ first_name, last_name, strava_url, id }">
+                  <a :href="'/itwatts/user/profile/' + id" target="_blank">{{ first_name }} {{ last_name }}</a>
+                  <!--<a :href="strava_url" target="_blank">{{ name }}</a>-->
+                </template>
+                <template #item-analysis="{ id, first_name, last_name, strava_rides, gender, strava_url }">                
+                  <v-btn color="primary" class="mb-1 mt-1" v-if="isAnalysisButtonsDisplayed(id)" @click="openPowerGraph({id, first_name, last_name, strava_rides})" size="x-small">{{  t('common.power') }}</v-btn>
+                  <v-btn color="primary" class="mb-1" v-if="isAnalysisButtonsDisplayed(id)" @click="openStravaSegmentGraph({id, first_name, last_name, strava_rides, gender, strava_url})" size="x-small">{{  t('common.segments') }}</v-btn>                
+                </template>
+              </EasyDataTable>
             <Power :visible="powerDialogVisible" :name="powerDialogName" :stravaActivites="powerDialogStravaActivities" @handledialog="powerDialogVisible = false" :userID="powerDialogUserID" @loginRequired="onLoginRequired()"></Power>
-            <StravaSegment :visible="segmentDialogVisible" :name="segmentDialogName" :userStravaTopSegments="segmentDialogStravaTopSegments" @handledialog="segmentDialogVisible = false" :gender="segmentDialogGender" :userID="segmentDialogUserID" :stravaAthleteID="segmentDialogStravaAthleteID" @loginRequired="onLoginRequired()"></StravaSegment>
-          </div>
+            <StravaSegment :visible="segmentDialogVisible" :name="segmentDialogName" :userStravaTopSegments="segmentDialogStravaTopSegments" @handledialog="segmentDialogVisible = false" :gender="segmentDialogGender" :userID="segmentDialogUserID" :stravaAthleteID="segmentDialogStravaAthleteID" @loginRequired="onLoginRequired()"></StravaSegment>          
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
     </v-col>  

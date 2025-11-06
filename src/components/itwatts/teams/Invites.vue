@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import { uuid } from 'vue-uuid';
 import config from "@/config/config.json";
 
+import { rules } from '@/utils/rules';
 import { useUserProfile } from '@/stores/user-profile';
 import { remove } from 'lodash';
 
@@ -29,19 +30,11 @@ const warningAlert = ref();
 const errorAlert = ref();
 const search = ref();
 
-const rules = ref({
-  required: (value: any) => !!value || t('validations.required'),
-  email: (value: any) => {
-      const pattern =
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return pattern.test(value) || t('validations.invalidEmail');
-    },
-});
-
 const invitesHeaders = ref([
   { title: t('common.date'), key: 'created', sortable: true },
   { title: t('common.email'), key: 'email', sortable: true, width: '30%' },
   { title: t('common.zwiftPowerID'), key: 'zp_id', sortable: true },
+  { title: t('common.stravaAthleteID'), key: 'strava_athlete_id', sortable: true },
   { title: t('common.code'), key: 'code', sortable: true },  
   { title: t('common.status'), key: 'status', sortable: true },  
   { title: t('common.acceptedDate'), key: 'accepted_date', sortable: true },    
@@ -82,7 +75,7 @@ function closeRemoveInvitationDialog() {
 }
 
 async function refresh() {
-
+  
 }
 
 function applyDefaultInvite() {
@@ -104,7 +97,8 @@ async function saveRiderInviteDialog() {
     loading.value = true;
     const response = await axios.post(`${config.serverApi.publicHostname}/v1/teams/${props.team.id}/rider-invite`, {      
       email: invitationDialogItem.value.email,
-      zp_id: invitationDialogItem.value.zp_id,
+      zp_id: parseInt(invitationDialogItem.value.zp_id),
+      strava_athlete_id: parseInt(invitationDialogItem.value.strava_athlete_id),
     }, {
       withCredentials: true
     });
@@ -147,7 +141,7 @@ refresh();
               <v-btn color="primary" variant="flat" dark v-bind="props" density="compact" icon="mdi-plus"></v-btn>
             </template>
             <v-card>
-              <v-card-title class="d-flex justify-space-between align-center bg-primary">
+              <v-card-title class="d-flex justify-space-between align-center">
                 <div class="text-h3">{{ t('invitesComponent.invitation') }}</div>               
                 <v-btn
                   icon="mdi-close"
@@ -161,7 +155,7 @@ refresh();
                     <v-progress-linear
                     v-if="loading"
                     indeterminate
-                    streamf
+                    stream
                     color="primary"            
                   ></v-progress-linear>
                     <v-col cols="12" sm="10">
@@ -196,19 +190,33 @@ refresh();
                       variant="outlined"
                       hide-details="auto"
                       v-model="invitationDialogItem.email"
-                      :rules="[rules.required, rules.email]"
+                      :rules="[rules().required, rules().email]"
                       ></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="team.type === 'virtual'">
                     <v-col cols="12" sm="10">
                       <v-text-field
+                      type="number"
                       :label="t('common.zwiftPowerID')"
                       color="primary"
                       variant="outlined"
                       hide-details="auto"
                       v-model="invitationDialogItem.zp_id"
-                      :rules="[rules.required]"
+                      :rules="[(value: any) => team.type === 'virtual' ?  !!value || t('validations.required') : true]"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row v-if="team.type === 'irl'">
+                    <v-col cols="12" sm="10">
+                      <v-text-field
+                      type="number"
+                      :label="t('common.stravaAthleteID')"
+                      color="primary"
+                      variant="outlined"
+                      hide-details="auto"
+                      v-model="invitationDialogItem.strava_athlete_id"
+                      :rules="[(value: any) => team.type === 'irl' ?  !!value || t('validations.required') : true]"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -216,8 +224,8 @@ refresh();
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn variant="tonal" color="error" @click="closeInviteDialog()">{{ t('actions.cancel') }}</v-btn>
-                <v-btn variant="flat" color="primary" dark @click="saveRiderInviteDialog()" :disabled="!isInviteFormValid || loading">{{ t('actions.invite') }}</v-btn>
+                <v-btn color="error" @click="closeInviteDialog()">{{ t('actions.cancel') }}</v-btn>
+                <v-btn color="primary" dark @click="saveRiderInviteDialog()" :disabled="!isInviteFormValid || loading">{{ t('actions.invite') }}</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -229,8 +237,8 @@ refresh();
                 }}</v-card-title>                              
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn variant="tonal" color="error" @click="closeRemoveInvitationDialog">{{ t('actions.cancel') }}</v-btn>
-                <v-btn variant="flat" color="primary" @click="confirmRemoveInvitationDialog(removeRiderDialogItem.code)">{{ t('actions.ok') }}</v-btn>
+                <v-btn color="error" @click="closeRemoveInvitationDialog">{{ t('actions.cancel') }}</v-btn>
+                <v-btn color="primary" @click="confirmRemoveInvitationDialog(removeRiderDialogItem.code)">{{ t('actions.ok') }}</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>

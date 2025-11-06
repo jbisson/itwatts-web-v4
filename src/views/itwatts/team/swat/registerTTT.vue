@@ -13,11 +13,11 @@ import security from "@/security";
 import { formatDateToYYYYMMDD, shortDate } from '@/utils/date';
 
 import wtrlWallBanner from '@/assets/images/itwatts/wtrl/5w4t_wtrl_banner.png';
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t, locale } = useI18n({ useScope: 'global' });
-
-// theme breadcrumb
 const page = ref({ title: t('swatRegisterTTT.pageTitle') });
+const team = ref();
 const router = useRouter();
 const breadcrumbs = ref([
   {
@@ -89,15 +89,22 @@ async function refresh() {
   formName = `registerWTRLTTT${formatDateToYYYYMMDD(nextTursday)}`;
   
   if (!security.isTokenValid([])) {
+    console.log('Token not valid.');
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
     return;
   }
 
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025'];  
-  if (!security.isTokenValid(rolesRequired)) {
-    errorAlert.value = `Cette page est exclusivement réservés aux membres 5.W.4.T 2024-2025. Avez-vous complété votre formulaire d'admission ?`;
-    hideForm.value = true;
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
+  
+  if (!team.value || !(team.value.managers.includes(useUserProfile().user_id) ||
+    team.value.riders.includes(useUserProfile().user_id) || security.isTokenValid(['SUPER_ADMIN']))) {    
+    useUserProfile().login_post_back_page = router.currentRoute.value.path;
+    router.push({ path: '/itwatts/signin' });
     return;
   }
   
@@ -156,10 +163,6 @@ const validateStatus = ref([
 
 const validateCheckbox = ref([
   (value: any) => value.length > 0,
-]);
-
-const rulesRequired = ref([
-  (value: any) => !!value || 'Ce champ est obligatoire.',
 ]);
 
 function bodyContentToForm(content : any) {  
@@ -365,7 +368,7 @@ refresh();
       </v-col>
       <v-col cols="12" v-if="!hideForm">
         <UiParentCard title="Préférence d'équipe">
-          <v-radio-group inline hide-details="auto" v-model="preferredTeam" :rules="rulesRequired">
+          <v-radio-group inline hide-details="auto" v-model="preferredTeam" :rules="[rules.required]">
             <v-radio label="Je préfère être dans une équipe de même niveau que moi (ou moin) afin de pouvoir aider mon équipe d'avantage." color="primary" value="low"></v-radio>  
             <v-radio label="Je préfère être dans une équipe de même niveau que moi (ou plus) et je suis prèt à me sacrifier pour l'équipe si nécessaire." color="primary" value="high"></v-radio>              
           </v-radio-group>
@@ -385,7 +388,7 @@ refresh();
             <b>Capitaine d'équipe</b>
           </v-col>
           <v-col>
-            <v-radio-group inline hide-details="auto" v-model="capInterest" :rules="rulesRequired">
+            <v-radio-group inline hide-details="auto" v-model="capInterest" :rules="[rules.required]">
               <v-radio label="Aucun / Peu" color="primary" value="litle"></v-radio>
               <v-radio label="Moyennement" color="primary" value="medium"></v-radio>
               <v-radio label="Beaucoup" color="primary" value="a_lot"></v-radio>        
@@ -397,7 +400,7 @@ refresh();
             <b>Directeur sportif</b>
           </v-col>
           <v-col>
-            <v-radio-group inline hide-details="auto" v-model="dsInterest" :rules="rulesRequired">
+            <v-radio-group inline hide-details="auto" v-model="dsInterest" :rules="[rules.required]">
               <v-radio label="Aucun / Peu" color="primary" value="litle"></v-radio>
               <v-radio label="Moyennement" color="primary" value="medium"></v-radio>
               <v-radio label="Beaucoup" color="primary" value="a_lot"></v-radio>        
@@ -411,7 +414,7 @@ refresh();
             <div class="text-subtitle-1 text-grey-darken-1 mb-3">
               Comment avez-vous aimé votre expérience lors de votre dernier TTT ? (Utilisez la boite de commentaire ci-bas pour expliaction s'il y a lieu)
             </div>
-            <v-validation v-slot="{ validate, errorMessages, isValid }" v-model="rating" :rules="rulesRequired">
+            <v-validation v-slot="{ validate, errorMessages, isValid }" v-model="rating" :rules="[rules.required]">
               <v-rating
               v-model="rating"
               class="ma-2"

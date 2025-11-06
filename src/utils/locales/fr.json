@@ -16,7 +16,8 @@
     },
     "superAdmin": {
       "title": "Super Admin",
-      "teams": "Équipes"
+      "teams": "Équipes",
+      "users": "Utilisateurs"
     },
     "teams": {
       "myTeams": "Mes équipes"
@@ -39,6 +40,23 @@
   "cb": {
     "pageTitle": "",
     "pageCategory": ""
+  },
+  "accountSettings": {
+    "pageTitle": "Paramètres du compte",
+    "pageCategory": "",
+    "account": "Account",
+    "preferences": "Preferences",
+    "virtualPlatform": "Virtual Platforms",
+    "connections": "Connexions",
+    "noTeam1": "Vous n’êtes actuellement associé à aucune équipe. Contactez votre gestionnaire d’équipe pour recevoir une invitation.",
+    "noTeam2": "Si vous êtes un gestionnaire d’équipe et souhaitez créer votre équipe (IRL ou virtuelle), {0}",
+    "contactUs": "contactez-nous",
+    "emailNotValidated": "Votre courriel n'est pas validé présentement. Cliquer sur {0} afin de recevoir un code à votre addresse courriel.",
+    "sendMeACode": "m'envoyer un code",
+    "verifyCode": "Vérifier code",
+    "verifiedEmail": "Courriel vérifié",
+    "emailSent": "Un courriel vous a été envoyé à l'instant, veuillez cliquer sur le lien envoyé afin de valider votre courriel.",
+    "changePicture": "Changez votre photo de profil à partir d’ici."
   },
   "feraInfo": {
     "pageCategory": "Fair E-Racing Alliance Mission",
@@ -88,6 +106,10 @@
     "pageCategory": "Super Admin",
     "pageTitle": "Teams"
   },
+  "superAdminUsers": {
+    "pageCategory": "Super Admin",
+    "pageTitle": "Utilisateurs"
+  },
   "privacy": {
     "pageCategory": "Accueil",
     "pageTitle": "Confidentialité",
@@ -103,6 +125,7 @@
     "pageCategory": "Se connecter",
     "pageTitle": "",
     "withStrava": "S'authentifier avec Strava",
+    "consentStrava": "J'autorise le partage de mes données Strava",
     "continueWithStrava": "Continuez avec Strava",
     "withGoogle": "S'authentifier avec Google",
     "withFacebook": "S'authentifier avec Facebook",
@@ -116,6 +139,7 @@
     "pageTitle": "",
     "needLogin" : "Pour accepter l'invitation à l'équipe, vous devez d'abord vous authentifier (ou créer) votre compte ITWatts en utilisant Strava. Cliquez sur le lien ci-dessous pour continuer.",
     "notAuthorized": "Vous n'êtes pas autorisé à faire partie de cette équipe. Veuillez contacter votre administrateur d'équipe.",
+    "provideEmail": "Fournissez votre adresse e-mail pour accepter l'invitation à rejoindre l'équipe.",
     "provideEmailAndZwiftPowerID": "Fournissez votre adresse e-mail et votre identifiant Zwift Power pour accepter l'invitation à rejoindre l'équipe.",
     "fillEmailCode": "Un e-mail a été envoyé à votre adresse : {0}, veuillez indiquer les 6 chiffres.",
     "verificationCode": "Code de vérification ITWatts:",
@@ -149,7 +173,8 @@
   },
   "userProfile": {
     "title": "Profile utilisateur",
-    "myProfile": "Mes Données",
+    "pageCategory": "",
+    "myProfile": "Mon profil",
     "accountSettings": "Paramètres du compte",
     "logoutBtn": "Déconnexion",
     "twitch": "Nom d'utilisateur Twitch",
@@ -158,6 +183,11 @@
     "fb": "Nom d'utilisateur (ou Identifiant) Facebook",
     "ig": "Nom d'utilisateur Instagram",
     "primaryTeam": "Équipe primaire"
+  },
+  "profileDropDown": {
+    "myProfile": "Mon profil",
+    "accountSettings": "Paramètres du compte",
+    "signOut": "Se déconnecter"
   },
   "profileTeamMembers": {
     "pageCategory": "Membres {0}"
@@ -227,7 +257,11 @@
     "lastModified": "Date Modif",
     "windDirection": "Vent Dir",
     "elevationDiff": "Elev ation Diff",
-    "averageGradient": "Grad ient Moy"
+    "averageGradient": "Grad ient Moy",
+    "distance": "Distance"
+  },
+  "stravaLocationComponent": {
+    "searchArea": "Zone de recherche"
   },
   "powerComponent": {
     "bestEffort": "Meilleur effort sur {0}",
@@ -238,6 +272,10 @@
     "new": "Nouveau",
     "newMsg": "Version v1.0 Beta sortie ! Nous accueillons de nouvelles équipes sur notre plateforme virtuelle !"
   },
+  "connectionsComponent": {
+    "consentStrava": "Consentement au partage de vos données Strava avec ITWatts pour activer la synchronisation des activités et le suivi des performances.",
+    "consentDiscord": "Connectez votre identifiant Discord avec ITWatts pour permettre une meilleure communication avec les coureurs de votre équipe."
+  },
   "lookups" : {
     "true" : "oui",
     "false" : "non"
@@ -245,7 +283,9 @@
   "errors": {
     "errorOccured": "Oupss, une erreur est survenue...Detail: {0}",
     "expiredLink" : "Le lien d'invitation a expiré",
-    "invalidZwiftPowerID": "L'identifiant Zwift Power que vous avez saisi n'est pas valide."
+    "invalidZwiftPowerID": "L'identifiant Zwift Power que vous avez saisi n'est pas valide.",
+    "invalidListName": "Ce nom de list existe déjà",
+    "codeNotValid": "Le code n'a pu être valider, veuillez recommencer."
   },  
   "validations": {
     "required": "Ce champ est obligatoire",
@@ -271,7 +311,8 @@
     "manage": "Gérer",
     "submit": "Soumettre",
     "close": "Fermer",
-    "confirm": "Confirmer"
+    "confirm": "Confirmer",
+    "addUser": "Ajouter Utilisateur"
   },
   "common": {
     "date": "Date",
@@ -286,6 +327,7 @@
     "region": "Région",
     "email": "Courriel",
     "primaryTrainer": "Base d'entrainement primaire",
+    "primaryTeam": "Équipe principale",
     "powerMeterDualRecording": "Capteur de puissance (dual recording)",
     "badge": "Badges",
     "lastWeightChangeZwift": "Nb jours dernière modification poids (Zwift)",
@@ -322,13 +364,14 @@
     "value": "Valeur",
     "weightMeasurements": "Mesure de poids | Mesures de poids",
     "heightMeasurements": "Mesure de grandeur | Mesures de grandeur",
-    "personal": "Personnel",
+    "personal": "Détails personnels",
     "teams": "Équipes",
     "platforms": "Plateformes",
     "status": "Status",
     "links": "Liens",
     "zwiftPower": "Zwift Power",
     "zwiftPowerID": "Identifiant Zwift Power",
+    "stravaAthleteID": "Identifiant Strava",
     "code": "Code",
     "invite": "Invite",
     "teamName": "Nom d'équipe court",
@@ -349,6 +392,23 @@
     "6months": "6 mois",
     "1year": "1 an",
     "3years": "3 ans",
-    "lifetime": "À vie"
+    "lifetime": "À vie",
+    "city": "Ville",
+    "location": "Emplacement",
+    "packages": "Forfaits",
+    "aboutUs": "À propos de nous",
+    "support": "Support",
+    "faq": "FAQ",
+    "features": "Fonctionnalités",
+    "resources": "Ressources",
+    "allRightsReserved": "Tous droits réservés par ITWatts.",
+    "producedBy": "Produit par",
+    "zwift": "Zwift",
+    "myWhoosh": "MyWhoosh",
+    "stravaLastLogin": "Strava dernière connexion",
+    "strava": "Strava",
+    "discord": "Discord",
+    "connect": "Connecter",
+    "connected": "Connecté"
   }
 }

@@ -12,9 +12,11 @@ import { useUserProfile } from '@/stores/user-profile';
 import config from '@/config/config.json';
 import security from '@/security';
 import { decodeBase64 } from '@/utils/string';
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('swatIrlCalendar.pageTitle') });
+const team = ref();
 const usersResult = reactive([] as any);
 const router = useRouter();
 const breadcrumbs = ref([
@@ -32,8 +34,21 @@ const breadcrumbs = ref([
 usersResult.value = [];
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025', 'SWAT_GUEST_MEMBER'];
-  if (!security.isTokenValid(rolesRequired)) {
+  if (!security.isTokenValid([])) {
+    console.log('Token not valid.');
+    useUserProfile().login_post_back_page = router.currentRoute.value.path;
+    router.push({ path: '/itwatts/signin' });
+    return;
+  }
+
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
+  
+  if (!team.value || !(team.value.managers.includes(useUserProfile().user_id) ||
+    team.value.riders.includes(useUserProfile().user_id) || security.isTokenValid(['SUPER_ADMIN']))) {    
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
     return;

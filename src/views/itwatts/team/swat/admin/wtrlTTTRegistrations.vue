@@ -111,7 +111,7 @@ function addLabels() {
 addLabels();
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_WTRL_TTT_ADMIN'];
+  const rolesRequired = ['SUPER_ADMIN'];
   if (!security.isTokenValid( rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
@@ -121,7 +121,7 @@ async function refresh() {
   try {
     formsResult.value = [];
     
-    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?groups=swat_2024_2025&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
+    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?team=swat&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
       withCredentials: true,
     });
     // console.log(JSON.stringify(swatUsersResponse.data));

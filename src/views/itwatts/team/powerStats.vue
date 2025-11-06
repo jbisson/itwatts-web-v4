@@ -14,20 +14,16 @@ import { useTeamStore } from '@/stores/apps/teams';
 
 import zwiftPower from '@/assets/images/itwatts/logos/zwift_power.png';
 import strava from '@/assets/images/itwatts/logos/strava.png';
+import RiderList from "@/components/itwatts/teams/RiderList.vue";
 
 const { t, locale } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('teamPowerStats.pageTitle') });
 const usersResult = reactive([] as any);
 const itemsSelected = ref<Item[]>([]);
-const zpPreferencesList = reactive([] as any);
 const filterOptions = reactive([] as any);
-const dialogUsers = reactive([] as any);
 const searchValue = ref();
-const dialog = ref(false);
-const dialogConfirmDeleteList = ref(false);
-const isFormValid = ref();
-const chip = ref(true);
-const dialogListName = ref();
+const riderListDialogVisible = ref(false);
+const riderListDialogUsers = reactive([] as any);
 const filterSelection = ref();
 const loading = ref(false);
 const infoAlert = ref();
@@ -67,12 +63,7 @@ const overallHeaders: Header[] = reactive([
   { text: '20min (w/kg)', value: "zp_profile.wkg1200", sortable: true },   
 ]);
 
-const rules = ref({
-  required: (value: any) => !!value || t('validations.required'),
-});
-
 usersResult.value = [];
-
 async function refresh() {
   if (!security.isTokenValid([])) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
@@ -111,8 +102,7 @@ async function refresh() {
   }
 
   usersResult.value = [];
-  zpPreferencesList.value = [];
-
+  
   try {
     loading.value = true;
     const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?team=${route.params.teamName}&additionalFields=zp_profile(processed),zp_profile(profile_stats)&sortBy=first_name,last_name`,
@@ -158,10 +148,6 @@ async function refresh() {
       }
 
       usersResult.value.push(user);
-      
-      if (user.zp_preferences && user.id === useUserProfile().user_id) {
-        zpPreferencesList.value = user.zp_preferences.my_lists;
-      }
     }    
   } catch (err: any) {
     if (err.response && err.response.status === 401) {
@@ -174,62 +160,23 @@ async function refresh() {
 }
 
 function openNewListDialog() {
-  dialogUsers.value = itemsSelected;
-  dialog.value = true;
+  riderListDialogUsers.value = itemsSelected.value;
+  riderListDialogVisible.value = true;
 }
 
-async function save() {
-  const zp_ids = dialogUsers.value.map((user: any) => user.zp_id);
-  
-  zpPreferencesList.value.push({
-    name: dialogListName.value,
-    zp_ids: zp_ids
-  });
-
-  await axios.patch(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}`,
-  {
-    zp_preferences: {
-      my_lists: zpPreferencesList.value
-    }
-  },
-  {
-    withCredentials: true
-  });
-  dialog.value = false;
-}
-
-function showDialogRemoveList(list: any) {
-  dialogListName.value = list.name;
-  dialogConfirmDeleteList.value = true;
-}
-
-async function deleteList() {
-  zpPreferencesList.value = zpPreferencesList.value.filter((list: any) => list.name !== dialogListName.value);
-  await axios.patch(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}`,
-  {
-    zp_preferences: {
-      my_lists: zpPreferencesList.value
-    }
-  },
-  {
-    withCredentials: true
-  });
-  dialogConfirmDeleteList.value = false;
-}
-
-function filterDataTable() {  
-  if (filterSelection.value) {
+function onFilterChanged(filterSelection: any) {
+  if (filterSelection) {
     filterOptions.value = [{
-      field: 'zp_id',
+      field: 'id',
       comparison: 'in',
-      criteria: filterSelection.value.zp_ids
+      criteria: filterSelection.user_ids
       }];
   } else {
     filterOptions.value = [];
     itemsSelected.value = [];
-  }
-  
+  }  
 }
+
 watch(() => [], refresh);
 refresh();
 
@@ -327,28 +274,7 @@ refresh();
             </v-chip-group>                        
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12">     
-              <v-chip-group
-                v-model="filterSelection"
-                selected-class="text-primary"
-                @update:modelValue="filterDataTable"
-                column>
-                <v-chip  
-                  variant="outlined"            
-                  v-for="list in zpPreferencesList.value"
-                  :key="list"
-                  :value="list"
-                  filter
-                  >
-                  {{ list.name }}
-                  <template #close>
-                    <v-icon icon="mdi-close-circle" @click.stop="showDialogRemoveList(list)" />
-                  </template>
-                </v-chip>
-              </v-chip-group>
-            </v-col>
-          </v-row>
+          <RiderList v-if="team" @onFilterChanged="onFilterChanged" :visible="riderListDialogVisible" :teamName="team.name" :users="riderListDialogUsers.value" @handledialog="riderListDialogVisible = false"></RiderList>
           <v-row>
             <v-col cols="6" sm="4" lg="3">
               <v-text-field
@@ -360,7 +286,7 @@ refresh();
                 density="compact"
               ></v-text-field>
             </v-col>
-            <v-col cols="9" sm="9" lg="9" class="text-sm-right">
+            <v-col class="text-sm-right">
               <v-btn v-if="itemsSelected.length > 0" color="primary" @click="openNewListDialog()"><v-icon class="mr-2">mdi-account-multiple-plus</v-icon>{{ t('teamPowerStats.addList') }}</v-btn>
             </v-col>
           </v-row>
@@ -380,49 +306,6 @@ refresh();
                   <a :href="'https://zwiftpower.com/profile.php?z=' + zp_id" target="_blank">{{ name }}</a>
                 </template>
             </EasyDataTable>
-            <v-dialog v-model="dialog" max-width="500">
-              <v-card>
-                <v-form ref="myform" v-model="isFormValid">   
-                  <v-card-text>
-                    <h4 class="text-h3 mb-4">{{ t('teamPowerStats.addList') }}</h4>
-                    <p>
-                      <v-text-field
-                        v-model="dialogListName"
-                        variant="outlined"
-                        :placeholder="t('teamPowerStats.nameList')"
-                        hide-details
-                        density="compact"
-                        :rules="[rules.required]"
-                      ></v-text-field>
-                    </p><br>
-                    <h4 class="text-h6 mb-4">{{ t('teamPowerStats.riders') }}</h4>
-                    <div class="my-5 text-subtitle-1 lh-md">
-                      <span
-                        v-for="(user,lineNumber) of dialogUsers.value" 
-                        v-bind:key="lineNumber" >
-                        - {{ user.first_name }} {{ user.last_name }}<br/>
-                      </span><br>
-                    </div>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn variant="tonal" color="error" @click="dialog = false">{{ t('actions.cancel') }}</v-btn>
-                    <v-btn variant="flat" color="primary" @click="save" :disabled="!isFormValid">{{ t('actions.save') }}</v-btn>                    
-                  </v-card-actions>
-                </v-form>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="dialogConfirmDeleteList" max-width="500">
-              <v-card>
-                <v-card-text class="mb-4">
-                  <h4 class="text-h4 mb-5">{{ t('actions.confirm') }}</h4>
-                  {{ t('teamPowerStats.areYouSureRemoveList', [dialogListName]) }}
-                </v-card-text>                
-                <v-card-actions>
-                  <v-btn variant="tonal" color="error" @click="dialogConfirmDeleteList = false">{{ t('actions.cancel') }}</v-btn>
-                  <v-btn variant="flat" color="primary" @click="deleteList()">{{ t('common.yes') }}</v-btn>                    
-                  </v-card-actions>
-              </v-card>
-            </v-dialog>
           </div>
         </v-card-text>
       </v-card>

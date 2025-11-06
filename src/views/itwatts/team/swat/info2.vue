@@ -13,9 +13,11 @@ import config from '@/config/config.json';
 import security from '@/security';
 import { decodeBase64 } from '@/utils/string';
 import { addUserCompliance } from '@/utils/zp';
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('swatInfo.pageTitle') });
+const team = ref();
 const userResult = reactive([] as any);
 const loading = ref(false);
 const errorOccured = ref(false);
@@ -32,12 +34,24 @@ const breadcrumbs = ref([
     disabled: true,
   },
 ]);
-const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025'];
-
 const userStoreProfile = useUserProfile();
 
 async function refresh() {
-  if (!security.isTokenValid(rolesRequired)) {
+  if (!security.isTokenValid([])) {
+    console.log('Token not valid.');
+    useUserProfile().login_post_back_page = router.currentRoute.value.path;
+    router.push({ path: '/itwatts/signin' });
+    return;
+  }
+
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
+  
+  if (!team.value || !(team.value.managers.includes(useUserProfile().user_id) ||
+    team.value.riders.includes(useUserProfile().user_id) || security.isTokenValid(['SUPER_ADMIN']))) {    
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
     return;
@@ -71,7 +85,6 @@ async function refresh() {
           
             userStoreProfile.user_id = user.id;
             userStoreProfile.zp_id = user.zp_id,
-            userStoreProfile.fb_username = user.fb_username,
             userStoreProfile.first_name = user.first_name,
             userStoreProfile.last_name = user.last_name,
             userStoreProfile.email = user.email;

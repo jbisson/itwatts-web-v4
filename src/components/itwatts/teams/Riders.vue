@@ -30,8 +30,7 @@ const ridersHeaders = ref([
   { title: t('common.firstName'), key: 'first_name', align: 'start' },
   { title: t('common.lastName'), key: 'last_name', sortable: true },
   { title: t('common.gender'), key: 'gender', sortable: true, width: 10},
-  { title: t('common.email'), key: 'email', sortable: true, width: '40%' },
-  { title: t('common.zwiftPower'), key: 'zp_id', sortable: true },
+  { title: t('common.email'), key: 'email', sortable: true, width: '40%' },    
   
   { title: t('actions.actions'), key: 'actions', sortable: false },
 ]);
@@ -78,6 +77,12 @@ async function refresh() {
     if (!props.team.riders || !props.team.riders.toString()) {
       return;
     }
+
+    if (props.team.type === 'virtual') {
+      ridersHeaders.value.push({ title: t('common.zwiftPowerID'), key: 'zp_id', sortable: true });
+    } else {
+      ridersHeaders.value.push({ title: t('common.stravaAthleteID'), key: 'strava_athlete_id', sortable: true });
+    }
     const allValidUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?id=${props.team.riders.toString()}`,
     {
       withCredentials: true
@@ -91,6 +96,7 @@ async function refresh() {
           gender: user.gender,
           email: user.email,
           zp_id: user.zp_id,
+          strava_athlete_id: user.strava_url.replace('https://www.strava.com/athletes/', ''),
         });
       }
       riders.value = allValidUsers;
@@ -145,7 +151,10 @@ refresh();
       </template>
       <template v-slot:item.zp_id="{ item }">
         <a :href="'https://zwiftpower.com/profile.php?z=' + item.zp_id" target="_blank">{{ item.zp_id }}</a>
-      </template>     
+      </template>
+      <template v-slot:item.strava_athlete_id="{ item }">
+        <a :href="'https://www.strava.com/athletes/' + item.strava_athlete_id" target="_blank">{{ item.strava_athlete_id }}</a>
+      </template>
       <template v-slot:item.actions="{ item }">
         <div class="d-flex align-center">
           <v-tooltip :text="t('actions.removeRider')">

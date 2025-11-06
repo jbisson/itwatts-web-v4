@@ -12,6 +12,7 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { uuid } from 'vue-uuid';
 import config from "@/config/config.json";
+import { rules } from '@/utils/rules';
 
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css';
@@ -59,15 +60,6 @@ const heightHeaders = ref([
   { title: t('common.validation'), key: 'validation', align: 'center', sortable: true },
   { title: t('actions.actions'), key: 'actions', sortable: false, align: `${props.loadFromUserProfile ? '' : ' d-none'}` },
 ]);
-
-const rules = ref({
-  required: (value: any) => !!value || t('validations.required'),
-  email: (value: any) => {
-      const pattern =
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return pattern.test(value) || t('validations.invalidEmail');
-    },
-});
 
 const FilePond = vueFilePond(FilePondPluginFileEncode, FilePondPluginFileValidateType,
   FilePondPluginFileValidateSize);
@@ -346,7 +338,7 @@ watch(() => props.user, (newValue, oldValue) => {
                   @click="closeWeightDialog()">
                 </v-btn>
               </v-card-title>
-              <v-card-text>                              
+              <v-card-text>
                 <v-container class="px-0">
                   <v-row>
                     <v-col cols="12" sm="10">
@@ -360,7 +352,7 @@ watch(() => props.user, (newValue, oldValue) => {
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="10">
-                      <DatePicker hide-details="auto" v-model="weightDialogItem.date" :rules="[rules.required]" :label="t('feraBiometricsComponent.measureDate')"/>
+                      <DatePicker hide-details="auto" v-model="weightDialogItem.date" :rules="[rules().required]" :label="t('feraBiometricsComponent.measureDate')"/>
                     </v-col>
                   </v-row>
                   <v-row align="center">
@@ -371,7 +363,7 @@ watch(() => props.user, (newValue, oldValue) => {
                       hide-details="auto"
                       v-model="weightDialogItem.weight_metric_value"
                       type="number"
-                      :rules="[rules.required]"
+                      :rules="[rules().required]"
                       ></v-text-field>
                       <v-text-field
                       v-if="weightDialogItem.unit === 'imperial'"
@@ -379,13 +371,13 @@ watch(() => props.user, (newValue, oldValue) => {
                       hide-details="auto"
                       v-model="weightDialogItem.weight_imperial_value"
                       type="number"
-                      :rules="[rules.required]"
+                      :rules="[rules().required]"
                       ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="10">
-                      <v-radio-group inline hide-details="auto" v-model="weightDialogItem.unit" :rules=[rules.required] v-on:change="calculateWeightUnit(weightDialogItem.value.unit)">
+                      <v-radio-group inline hide-details="auto" v-model="weightDialogItem.unit" :rules=[rules().required] v-on:change="calculateWeightUnit(weightDialogItem.value.unit)">
                         <v-radio :label="t('common.metric')" color="primary" value="metric"></v-radio>
                         <v-radio :label="t('common.imperial')" color="primary" value="imperial"></v-radio>                  
                       </v-radio-group>
@@ -496,7 +488,7 @@ watch(() => props.user, (newValue, oldValue) => {
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="10">
-                      <DatePicker hide-details="auto" v-model="heightDialogItem.date" :rules="[rules.required]" :label="t('feraBiometricsComponent.measureDate')"/>
+                      <DatePicker hide-details="auto" v-model="heightDialogItem.date" :rules="[rules().required]" :label="t('feraBiometricsComponent.measureDate')"/>
                     </v-col>
                   </v-row>
                   <v-row align="center" v-if="heightDialogItem.unit === 'metric'">
@@ -505,7 +497,7 @@ watch(() => props.user, (newValue, oldValue) => {
                       :label="'(cm)'"
                       hide-details="auto"
                       v-model="heightDialogItem.height_metric_value"
-                      :rules="[rules.required]"
+                      :rules="[rules().required]"
                       ></v-text-field>                      
                     </v-col>
                   </v-row>
@@ -515,7 +507,7 @@ watch(() => props.user, (newValue, oldValue) => {
                       :label="'(ft)'"
                       hide-details="auto"
                       v-model="heightDialogItem.height_ft_imperial_value"
-                      :rules="[rules.required]"
+                      :rules="[rules().required]"
                       ></v-text-field>
                     </v-col>
                     <v-col align="center" cols="12" sm="3">
@@ -523,13 +515,13 @@ watch(() => props.user, (newValue, oldValue) => {
                       :label="'(in)'"
                       hide-details="auto"
                       v-model="heightDialogItem.height_in_imperial_value"
-                      :rules="[rules.required]"
+                      :rules="[rules().required]"
                       ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12" sm="10">
-                      <v-radio-group inline hide-details="auto" v-model="heightDialogItem.unit" :rules=[rules.required] v-on:change="calculateHeightUnit(weightDialogItem.value.unit)">
+                      <v-radio-group inline hide-details="auto" v-model="heightDialogItem.unit" :rules=[rules().required] v-on:change="calculateHeightUnit(weightDialogItem.value.unit)">
                         <v-radio :label="t('common.metric')" color="primary" value="metric"></v-radio>
                         <v-radio :label="t('common.imperial')" color="primary" value="imperial"></v-radio>                  
                       </v-radio-group>

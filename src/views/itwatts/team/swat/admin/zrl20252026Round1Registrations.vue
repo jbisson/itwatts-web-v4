@@ -12,11 +12,11 @@ import { useRouter } from 'vue-router'
 
 import config from "@/config/config.json";
 import security from "@/security";
-import { exportUser, exportZrl20242025Round3Form } from '@/utils/export';
+import { exportUser, exportZrl20252026Round1Form } from '@/utils/export';
 import ZrlSchedule from "@/components/itwatts/ZrlSchedule.vue";
 
 const { t, locale } = useI18n({ useScope: 'global' });
-const page = ref({ title: t('adminZrl20242025Round3Registrations.pageTitle') });
+const page = ref({ title: t('adminZrl20252026Round1Registrations.pageTitle') });
 const formsResult = reactive([] as any);
 const swatUSersMapZpId = reactive([] as any);
 const formsResultsMapZpId = reactive([] as any);
@@ -26,12 +26,12 @@ const searchValue = ref();
 const router = useRouter()
 const breadcrumbs = ref([
   {
-    text: t('adminZrl20242025Round3Registrations.pageCategory'),
+    text: t('adminZrl20252026Round1Registrations.pageCategory'),
     disabled: false,
     to: "#",
   },
   {
-    text: t('adminZrl20242025Round3Registrations.pageTitle'),
+    text: t('adminZrl20252026Round1Registrations.pageTitle'),
     disabled: true,
   },
 ]);
@@ -63,7 +63,7 @@ function formatDate(date: any) {
 }
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_ZRL_ADMIN'];
+  const rolesRequired = ['SUPER_ADMIN'];
   if (!security.isTokenValid( rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
@@ -73,7 +73,7 @@ async function refresh() {
   try {
     formsResult.value = [];
     
-    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?groups=swat_2024_2025&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
+    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?team=swat&additionalFields=zp_profile(profile_stats),zp_profile(bio),zp_profile(processed),zp_profile(last_modified),zp_profile(category),zp_profile(zrs),zp_profile(race_ranking)`, {
       withCredentials: true,
     });
     
@@ -81,11 +81,11 @@ async function refresh() {
     swatUSersMapZpId.value = new Map();
     formsResultsMapZpId.value = new Map();
 
-    const formsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/forms?name=registerZrl20242025Round3`, {
+    const formsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/forms?name=registerZrl20252026Round1`, {
       withCredentials: true,
     });
 
-    usersExport.value = `${exportUser().headers.concat(exportZrl20242025Round3Form().headers).toString()}\n`;
+    usersExport.value = `${exportUser().headers.concat(exportZrl20252026Round1Form().headers).toString()}\n`;
     for (const form of formsResponse.data.data) {
       const formContent = JSON.parse(form.content);
       if (!swatUSersMap.get(form.user_id)) {
@@ -100,7 +100,7 @@ async function refresh() {
           first_name: swatUSersMap.get(form.user_id).first_name,
           last_name: swatUSersMap.get(form.user_id).last_name,
           genre: swatUSersMap.get(form.user_id).gender,
-          discord: swatUSersMap.get(form.user_id).discord_profile.globalName,
+          discord: swatUSersMap.get(form.user_id).discord_profile ? swatUSersMap.get(form.user_id).discord_profile.globalName : '',
           zpProfilePrimaryTeam: swatUSersMap.get(form.user_id).zp_profile.primary_team_name,
           zwiftRacingAppRaceRating: swatUSersMap.has(formContent.user_id) && swatUSersMap.get(form.user_id).zwift_racing_app_profile ? Math.round(swatUSersMap.get(form.user_id).zwift_racing_app_profile.race.rating) : '',
           zpProfileCP20Watts: profileStats.w1200,
@@ -122,7 +122,7 @@ async function refresh() {
       formsResult.value.push(formObj);
       formsResultsMapZpId.value.set(swatUSersMap.get(form.user_id).zp_id, formContent);
 
-      usersExport.value += `${exportUser(swatUSersMap.get(form.user_id)).value.concat(exportZrl20242025Round3Form(formContent).value).toString()}\n`;
+      usersExport.value += `${exportUser(swatUSersMap.get(form.user_id)).value.concat(exportZrl20252026Round1Form(formContent).value).toString()}\n`;
     }    
   } catch (error: any) {
     console.log(`an error occured: ${error} stack: ${error.stack}`);
@@ -195,7 +195,7 @@ refresh();
     </v-col>
   </v-row><br>
 
-  <v-card elevation="10" v-if="security.isTokenValid(['SUPER_ADMIN', 'SWAT_ADMIN'])">
+  <v-card elevation="10" v-if="security.isTokenValid(['SUPER_ADMIN'])">
     <div class="pa-5">
       <v-row>
         <v-col cols="12">

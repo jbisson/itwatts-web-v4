@@ -41,7 +41,7 @@ async function refresh() {
     if (token.value.id && 
       !token.value.id.startsWith('facebook') &&
       !token.value.id.startsWith('google') &&
-      !token.value.id.startsWith('strava')) {        
+      !token.value.id.startsWith('strava')) {
       /*const profile = {
         user_id: token.value.id,
         zp_id: token.value.zp_id,
@@ -55,16 +55,17 @@ async function refresh() {
 
       //useUserProfile().setProfile(profile);      
       useUserProfile().user_id = token.value.id;
+      useUserProfile().profile_url = token.value.profile_url;
       await useUserProfile().fetchUserProfile();
-      await useTeamStore().fetchMyTeams();
+      await useTeamStore().fetchMyTeams(true);
       useUserProfile().setPrimaryTeam(useTeamStore().myTeams);      
 
       if (useUserProfile().login_post_back_page) {
         path =  useUserProfile().login_post_back_page;
         query = useUserProfile().login_post_back_page_query;
-        useUserProfile().login_post_back_page = '';
-      } 
-      if (useUserProfile().primary_team) {
+        useUserProfile().login_post_back_page = '';        
+      }
+      else if (useUserProfile().primary_team) {
         path =  `/itwatts/team/${useUserProfile().primary_team.name}/info`;
       } else {
         path =  `/itwatts/user/profile/${useUserProfile().user_id}`;

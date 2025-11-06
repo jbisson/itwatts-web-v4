@@ -105,8 +105,8 @@ function onAddFile(error, file) {
   //console.log(test);
 }
 
-async function refresh() {
-  //console.log(props.user.profile_url);
+async function refresh() {  
+  // console.log(`Profile.vue ${props.user.profile_url}`);
   cropperSrc.value = '';
   infoAlert.value = '';
   errorAlert.value = '';
@@ -152,7 +152,7 @@ async function onSave() {
               'Content-Type': 'multipart/form-data',
             },
               withCredentials: true,
-          });
+          });          
           location.reload();
         } catch (err: any) {
           errorAlert.value = t('errors.errorOccured', [err]);
@@ -201,7 +201,7 @@ async function sendEmailLink() {
     infoAlert.value = `Un courriel vous a été envoyé à l'instant, veuillez cliquer sur le lien envoyé afin de valider votre courriel.`;
   } catch (err: any) {
     console.log(`Error while send email validation. ${err} stack: ${err.stack}`);
-    errorAlert.value = `Oupss, une erreur est survenue...Detail: sendEmailLink ${err}`;
+    errorAlert.value = t('errors.errorOccured', [err]);
   }
 }
 
@@ -217,91 +217,85 @@ async function sendEmailLink() {
 </style>
 
 <template>
+  <v-form>
   <v-dialog v-model="dialog" max-width="700">
     <v-card>
       <v-card-title class="d-flex justify-space-between align-center bg-primary">
         <div class="text-h3">
           {{ user.first_name }} {{ user.last_name }}
         </div>
-        <v-btn            
+        <v-btn
           icon="mdi-close"
           variant="text"
           @click="$emit('handledialog')">
         </v-btn>
       </v-card-title>      
-      <v-form>   
-        <v-card-title>
-          <v-row>
-            <v-col>
-              <v-progress-linear
-                v-if="loading"
-                indeterminate
-                stream
-                color="primary"            
-              ></v-progress-linear>
-                  <v-alert
+      <v-card-title>
+        <v-row>
+          <v-col>
+            <v-progress-linear
+              v-if="loading"
+              indeterminate
+              stream
+              color="primary"            
+            ></v-progress-linear>
+                <v-alert
+                style="white-space: pre-line;"
+                density="compact"
+                type="info"
+                title="Succès"
+                :text="infoAlert"
+                v-if="infoAlert"
+              ></v-alert>
+                <v-alert
                   style="white-space: pre-line;"
                   density="compact"
-                  type="info"
-                  title="Succès"
-                  :text="infoAlert"
-                  v-if="infoAlert"
+                  type="error"
+                  title="Erreur"
+                  :text="errorAlert"
+                  v-if="errorAlert"
                 ></v-alert>
-                  <v-alert
-                    style="white-space: pre-line;"
-                    density="compact"
-                    type="error"
-                    title="Erreur"
-                    :text="errorAlert"
-                    v-if="errorAlert"
-                  ></v-alert>
-                  <v-alert
-                    style="white-space: pre-line;"
-                    density="compact"
-                    type="warning"
-                    title="Attention"
-                    :text="warningAlert"
-                    v-if="warningAlert"
-                ></v-alert>
-            </v-col>   
-          </v-row> 
+                <v-alert
+                  style="white-space: pre-line;"
+                  density="compact"
+                  type="warning"
+                  title="Attention"
+                  :text="warningAlert"
+                  v-if="warningAlert"
+              ></v-alert>
+          </v-col>   
+        </v-row> 
         </v-card-title>
-      </v-form>
-      <v-card-title>{{ t('profileComponent.photo') }}</v-card-title>
-        <v-form>   
-          <v-card-text >
-            <v-row>
-              <v-col cols="12" sm="6">
-                <p v-if="!user.profile_url" class="text-error">{{ t('profileComponent.noPhoto') }}</p>
-                <v-img v-if="user.profile_url" :src="user.profile_url"></v-img><br>
-                <file-pond 
-                ref="filePondRef"
-                :label-idle="t('common.placeImageHere')" allow-multiple="false" max-files="1" accepted-file-types="image/jpeg, image/png" allowImagePreview="false" @addfile="onAddFile" @removefile="onRemoveFile"/>
-                <div v-if="cropperSrc">
-                  <cropper
-                  ref="cropperRef"              
-                  class="cropper"
-                  :src="cropperSrc"
-                  @change="onChange"
-                  :debounce="false"
-                  :stencil-props="{
-                    previewClass: 'preview'
-                  }"
-                  :stencil-component="CircleStencil"
-                ></cropper><br>
-                  <v-btn color="primary" @click="zoomIn()" size="x-small">+</v-btn>&nbsp;&nbsp;&nbsp;
-                  <v-btn color="primary" @click="zoomOut()" size="x-small">-</v-btn>
-                </div>
-                </v-col> 
-            </v-row> 
-          </v-card-text>
-        </v-form>
+        <v-card-title>{{ t('profileComponent.photo') }}</v-card-title>        
+        <v-card-text >
+          <v-row>
+            <v-col cols="12" sm="6">
+              <p v-if="!user.profile_url" class="text-error">{{ t('profileComponent.noPhoto') }}</p>
+              <v-img v-if="user.profile_url" :src="user.profile_url"></v-img><br>
+              <file-pond 
+              ref="filePondRef"
+              :label-idle="t('common.placeImageHere')" allow-multiple="false" max-files="1" accepted-file-types="image/jpeg, image/png" allowImagePreview="false" @addfile="onAddFile" @removefile="onRemoveFile"/>
+              <div v-if="cropperSrc">
+                <cropper
+                ref="cropperRef"              
+                class="cropper"
+                :src="cropperSrc"
+                @change="onChange"
+                :debounce="false"
+                :stencil-props="{
+                  previewClass: 'preview'
+                }"
+                :stencil-component="CircleStencil"
+              ></cropper><br>
+                <v-btn color="primary" @click="zoomIn()" size="x-small">+</v-btn>&nbsp;&nbsp;&nbsp;
+                <v-btn color="primary" @click="zoomOut()" size="x-small">-</v-btn>
+              </div>
+              </v-col> 
+          </v-row> 
+        </v-card-text>        
         <v-divider class="mx-4 mb-1"></v-divider>
-        <v-card-title>{{ t('common.personal') }}</v-card-title>
-      <v-form>   
+        <v-card-title>{{ t('common.personal') }}</v-card-title>      
         <v-card-text>
-          <v-row>   
-          </v-row>
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field variant="outlined" hide-details v-model="user.first_name" :label="t('common.firstName')" :disabled="true"></v-text-field>
@@ -336,23 +330,20 @@ async function sendEmailLink() {
           </v-row> 
         </v-card-text>
         <v-divider class="mx-4 mb-1"></v-divider>
-        <v-card-title>{{ t('common.platforms') }}</v-card-title>
-        <v-form>   
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field variant="outlined" hide-details v-model="user.zp_id" label="Zwift Power ID" disabled></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field variant="outlined" hide-details v-model="user.mywhoosh_id" label="MyWhoosh ID"></v-text-field>
-              </v-col>
-            </v-row> 
-          </v-card-text>
-        </v-form>
-        <v-card-title>{{ t('common.teams') }}</v-card-title>
-        <v-form>   
+        <v-card-title>{{ t('common.platforms') }}</v-card-title>        
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field variant="outlined" hide-details v-model="user.zp_id" label="Zwift Power ID" disabled></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field variant="outlined" hide-details v-model="user.mywhoosh_id" label="MyWhoosh ID"></v-text-field>
+            </v-col>
+          </v-row> 
+        </v-card-text>        
+        <v-card-title>{{ t('common.teams') }}</v-card-title>        
           <v-card-text>
             <v-row>
               <v-col cols="12" sm="6">                
@@ -363,39 +354,36 @@ async function sendEmailLink() {
                 :item-title="'display_name'"
                 :item-value="'id'"
                 variant="outlined"
-            ></v-autocomplete>
+                ></v-autocomplete>
               </v-col>
             </v-row> 
-          </v-card-text>
-        </v-form>
+          </v-card-text>        
         <v-divider class="mx-4 mb-1"></v-divider>        
-        <v-card-title>{{ t('profileComponent.socialMedia') }}</v-card-title>
-        <v-form>   
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field variant="outlined" hide-details v-model="user.twitch_username" :label="t('userProfile.twitch')"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field variant="outlined" hide-details v-model="user.x_username" :label="t('userProfile.x')"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field variant="outlined" hide-details v-model="user.youtube_username" :label="t('userProfile.youtube')"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field variant="outlined" hide-details v-model="user.fb_username" :label="t('userProfile.fb')"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field variant="outlined" hide-details v-model="user.ig_username" :label="t('userProfile.ig')"></v-text-field>
-              </v-col>
-            </v-row> 
-          </v-card-text>
-        </v-form>
+        <v-card-title>{{ t('profileComponent.socialMedia') }}</v-card-title>        
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field variant="outlined" hide-details v-model="user.twitch_username" :label="t('userProfile.twitch')"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field variant="outlined" hide-details v-model="user.x_username" :label="t('userProfile.x')"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field variant="outlined" hide-details v-model="user.youtube_username" :label="t('userProfile.youtube')"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field variant="outlined" hide-details v-model="user.fb_username" :label="t('userProfile.fb')"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field variant="outlined" hide-details v-model="user.ig_username" :label="t('userProfile.ig')"></v-text-field>
+            </v-col>
+          </v-row> 
+        </v-card-text>
         <v-card-actions>
-          <v-btn variant="tonal" color="error" @click="$emit('handledialog')">{{ t('actions.cancel') }}</v-btn>
-          <v-btn variant="flat" color="primary" @click="onSave()">{{ t('actions.save') }}</v-btn>
-        </v-card-actions>
-      </v-form>
+          <v-btn color="error" @click="$emit('handledialog')">{{ t('actions.cancel') }}</v-btn>
+          <v-btn color="primary" @click="onSave()">{{ t('actions.save') }}</v-btn>
+        </v-card-actions>      
     </v-card>
   </v-dialog>
+  </v-form>
 </template>

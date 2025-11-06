@@ -8,6 +8,8 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router'
 import config from "@/config/config.json";
 import security from "@/security";
+import { useTeamStore } from '@/stores/apps/teams';
+import { rules } from '@/utils/rules';
 
 const { t, locale } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('superAdminTeams.pageTitle') });
@@ -26,9 +28,9 @@ const breadcrumbs = ref([
 const userStoreProfile = useUserProfile();
 
 const teamsHeaders = ref([
-  { title: t('common.id'), key: 'id', align: 'start' },
-  { title: t('common.name'), key: 'name', sortable: true },
-  { title: t('common.displayName'), key: 'display_name', sortable: false }, 
+  { title: t('common.displayName'), key: 'display_name', sortable: false },  
+  { title: t('common.name'), key: 'name', sortable: true },  
+  { title: t('common.type'), key: 'type', sortable: false },
   
   { title: t('actions.actions'), key: 'actions', sortable: false },
 ]);
@@ -37,7 +39,7 @@ const invitesHeaders = ref([
   { title: t('common.code'), key: 'code', align: 'start' },
   { title: t('common.email'), key: 'email', align: 'start' },
   { title: t('common.date'), key: 'created', sortable: true },  
-  { title: 'Accepted Date', key: 'accepted_date', sortable: true },
+  { title: t('common.acceptedDate'), key: 'accepted_date', sortable: true },
   { title: t('common.status'), key: 'status', sortable: true },
 ]);
 
@@ -58,6 +60,8 @@ const defaultTeam = {
   name: '',
   display_name: '',
   zwiftpower_team_id: 0,
+  type: 'virtual',
+  strava_club_id: '',
   link: '',
 }
 
@@ -72,7 +76,7 @@ async function refresh() {
   const rolesRequired = ['SUPER_ADMIN'];
   if (!security.isTokenValid(rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
-    router.push({ path: '/itwatts/super-admin/teams' });
+    router.push({ path: '/itwatts/signin' });
     return;
   }
 
@@ -147,8 +151,8 @@ function deleteTeam(item: any) {
 
 async function editTeam(item: any) {
   teamDialogItem.value = Object.assign({}, 
-    teams.value.find((trainer: any) => trainer.id === item.id)
-  );
+    teams.value.find((team: any) => team.id === item.id)
+  );  
   teamDialog.value = true;
 }
 
@@ -174,6 +178,8 @@ async function saveTeam() {
       teamDialogItem.value.id = team.data.id;
       teams.value.push(teamDialogItem.value);
     }
+    useTeamStore().fetchTeams(true);
+    useTeamStore().fetchMyTeams(true);
   } catch (err: any) {
     errorAlert.value = t('errors.errorOccured', [err]);
     console.log(`Error: ${err} stack: ${err.stack}`);
@@ -213,7 +219,7 @@ refresh();
     :breadcrumbs="breadcrumbs"
   ></BaseBreadcrumb>
   <v-row>
-    <v-col cols="12" sm="12" lg="8">      
+    <v-col>      
       <v-alert
         style="white-space: pre-line;"
         density="compact"
@@ -238,7 +244,7 @@ refresh();
     </v-col>
   </v-row>
   <v-row>
-    <v-col cols="12" sm="12" lg="8">    
+    <v-col>    
       <v-progress-linear
           v-if="loading"
           indeterminate
@@ -269,7 +275,7 @@ refresh();
                     </v-card-title>
                     <v-card-text>                              
                       <v-container class="px-0">
-                        <v-row>
+                        <v-row v-if="teamDialogItem.id">
                           <v-col cols="12" sm="9">
                             <v-text-field
                             :label="t('common.id')"
@@ -285,6 +291,7 @@ refresh();
                             :label="t('common.name')"
                             hide-details="auto"
                             v-model="teamDialogItem.name"
+                            :rules="[rules().required]"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -294,15 +301,41 @@ refresh();
                             :label="t('common.displayName')"
                             hide-details="auto"
                             v-model="teamDialogItem.display_name"
+                            :rules="[rules().required]"
                             ></v-text-field>
                           </v-col>
                         </v-row>
                         <v-row>
                           <v-col cols="12" sm="6">
+                            <v-select
+                              variant="outlined"
+                              hide-details
+                              :items="['virtual', 'irl']"
+                              v-model="teamDialogItem.type"
+                              label="Type"
+                              :rules="[rules().required]"
+                              ></v-select>
+                          </v-col>
+                        </v-row>
+                        <v-row v-if="teamDialogItem.type === 'virtual'">
+                          <v-col cols="12" sm="6">
                             <v-text-field
+                            type="number"
                             label="Zwiftpower Team ID"
                             hide-details="auto"
                             v-model="teamDialogItem.zwiftpower_team_id"
+                            :rules="[(value: any) => teamDialogItem.type === 'virtual' ?  !!value || t('validations.required') : true]"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                        <v-row v-if="teamDialogItem.type === 'irl'">
+                          <v-col cols="12" sm="6">
+                            <v-text-field
+                            type="number"
+                            label="Strava Club ID"
+                            hide-details="auto"
+                            v-model="teamDialogItem.strava_club_id"
+                            :rules="[(value: any) => teamDialogItem.type === 'irl' ?  !!value || t('validations.required') : true]"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -385,8 +418,8 @@ refresh();
             <template v-slot:item.created="{ value }">
               {{ value.split('T')[0] }}
             </template>
-            <template v-slot:item.name="{ value }">
-              <a :href="'/itwatts/team/' + value + '/info'">{{ value }}</a>
+            <template v-slot:item.display_name="{ item }">
+              <a :href="'/itwatts/team/' + item.name + '/info'">{{ item.display_name }}</a>
             </template>
             <template v-slot:item.primary="{ value }">
               <v-checkbox hide-details color="primary" disabled :model-value="value">

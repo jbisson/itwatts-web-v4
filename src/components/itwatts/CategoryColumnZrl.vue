@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import RiderTeamItemCard from './FRiderTeamItemCard.vue'
+import RiderTeamItemCard from './RiderTeamItemCard.vue'
 import type { id } from 'vuetify/lib/locale/index.mjs';
 
 const props = defineProps({
     column: Object,
 });
 
-const emit = defineEmits(['onSuccess', 'deleteTeam']);
+const emit = defineEmits(['onSuccess',  'deleteTeam', 'exportTeam']);
 
 // common components
 const dialog = ref(false);
@@ -58,6 +58,7 @@ function save() {
               <v-list-item value="Edit">
                 <v-list-item-title @click="dialog = true">Modifier</v-list-item-title>
                 <v-list-item-title @click="emit('deleteTeam', column.name)">Supprimer</v-list-item-title>
+                <v-list-item-title @click="emit('exportTeam', column.name)">Export</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -78,7 +79,7 @@ function save() {
                 v-model="column.time"
                 variant="outlined"
                 hide-details
-                :items="['midi', '19h30']"
+                :items="['6h00', '7h00', '8h00', 'midi', '18h30', '19h30']"
                 label="Heure"
               ></v-select>
               <br><br>

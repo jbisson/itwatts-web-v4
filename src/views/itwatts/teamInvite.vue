@@ -14,6 +14,7 @@ import { storeToRefs } from 'pinia'
 import { useUserProfile } from '@/stores/user-profile';
 import config from '@/config/config.json';
 import security from '@/security';
+import { rules } from '@/utils/rules';
 
 const { t } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('teamInvite.pageTitle') });
@@ -22,7 +23,8 @@ const loading = ref(false);
 const infoAlert = ref();
 const warningAlert = ref();
 const errorAlert = ref();
-const teamCode = ref(false);
+const provideEmail = ref(false);
+const provideZwiftPowerID = ref(false);
 const email = ref();
 const zpID = ref();
 const isFormValid = ref();
@@ -42,29 +44,26 @@ const breadcrumbs = ref([
   },
 ]);
 
-const rules = ref({
-  required: (value: any) => !!value || t('validations.required'),
-  email: (value: any) => {
-      const pattern =
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return pattern.test(value) || t('validations.invalidEmail');
-    },
-});
-
 const userStoreProfile = useUserProfile();
 
 async function refresh() {
-  const code = new URLSearchParams(window.location.search).get('code');  
+  const code = new URLSearchParams(window.location.search).get('code');
+  // console.log('user zp_id: ' + useUserProfile().zp_id);
+  // console.log('user zp_id: ' + useUserProfile().email);
+  // console.log('code length: ' + code.length);
   if (!security.isLoggedIn() || !useUserProfile().user_id) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     useUserProfile().login_post_back_page_query = router.currentRoute.value.query;
     return;
-  } else if (code && (code.length === 32 || (code.length === 64 && useUserProfile().zp_id && useUserProfile().email))) {
-    await validateCode();
-    //teamCode.value = true;
+  } else if (!code || !(code.length === 32 || code.length === 64)) {
+    errorAlert.value = t('errors.expiredLink');
   } else {
+    console.log('Validating code');
+    await validateCode();    
+  } /* else {
+    console.log('Requesting email and zpID');
     teamCode.value = true;
-  }
+  }*/
 }
 
 async function validateCode() {
@@ -73,33 +72,39 @@ async function validateCode() {
     loading.value = true;
     infoAlert.value = '';
     errorAlert.value = '';
-    const response = await axios.post(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}/accept-team-invite?code=${code}`,
+    const response = await axios.post(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}/accept-team-invite?code=${code}&lang=${useUserProfile().lang}`,
     {
       email: email.value,
-      zp_id: zpID.value,
+      zp_id: parseInt(zpID.value),
       email_code: emailCode.value,
     },
     {
       withCredentials: true,
     });
-      
-    useUserProfile().login_post_back_page = '/itwatts/fera/rider';
+  
+    // Need to re-populate user token with zp_id / email
     window.location.href = `${config.serverApi.publicHostname}/auth/strava`;
   } catch (err: any) {
-    console.log(`an error occured: ${err} stack: ${err.stack}`);
+    console.log(`an error occured2: ${err} stack: ${err.stack}`);    
     if (err.response && err.response.status === 401) {
       router.push({ path: '/itwatts/signin' });
-    } else if (err.response && err.response.status === 304) {
-      errorAlert.value = t('errors.expiredLink');      
-    } else if (err.response && err.response.status === 403) {
+    } else if (err.response && err.response.status === 304) {      
+      errorAlert.value = t('errors.expiredLink');
+    } else if (err.response && err.response.status === 403) {      
       errorAlert.value = t('teamInvite.notAuthorized');      
-    } else if (err.response && err.response.data && err.response.data.message.includes('zp_id')) {
+    } else if (err.response && err.response.data && err.response.data.message.includes('Invalid zp_id')) {      
       errorAlert.value = t('teamInvite.invalidZwiftPowerID');
     } else if (err.response && err.response.data && err.response.data.message.includes('Invalid email_code')) {
       errorAlert.value = t('teamInvite.invalidVerificationCode');
+    } else if (err.response && err.response.data && err.response.data.message.includes('email required')) {
+      provideEmail.value = true;
+    } else if (err.response && err.response.data && err.response.data.message.includes('email and zp_id required')) {
+      provideEmail.value = true;
+      provideZwiftPowerID.value = true;
     } else if (err.response && err.response.data && err.response.data.message.includes('email_code required')) {
       infoAlert.value = t('teamInvite.fillEmailCode', [email.value]);
-      teamCode.value = false;
+      provideEmail.value = false;
+      provideZwiftPowerID.value = false;
       emailCodeRequired.value = true;
     } else {
       errorAlert.value = t('errors.errorOccured', [err]);
@@ -149,7 +154,7 @@ refresh();
           v-if="loading"
           indeterminate
           stream
-          color="primary"            
+          color="primary"
         ></v-progress-linear>
       <v-card>
         <v-card-text>
@@ -157,13 +162,13 @@ refresh();
             <p class="my-4 text-subtitle-1"  v-if="!security.isLoggedIn() || !useUserProfile().user_id">{{ t('teamInvite.needLogin') }}
               <a :href="config.serverApi.publicHostname + '/auth/strava'" class="social-button" id="strava-connect"> <span>{{ t('signin.withStrava') }}</span></a>
             </p>
-            <p class="my-4 text-subtitle-1" v-if="teamCode">              
+            <p class="my-4 text-subtitle-1" v-if="provideEmail || provideZwiftPowerID">              
               <v-row>
                 <v-col>
-                  <span>{{ t('teamInvite.provideEmailAndZwiftPowerID') }}</span>
+                  <span>{{ provideZwiftPowerID ? t('teamInvite.provideEmailAndZwiftPowerID') : t('teamInvite.provideEmail') }}</span>
                 </v-col>
               </v-row>
-              <v-row>
+              <v-row v-if="provideEmail">
                 <v-col>
                   <v-text-field
                     :label="t('common.email')"
@@ -171,19 +176,20 @@ refresh();
                     variant="outlined"
                     hide-details="auto"
                     v-model="email"
-                    :rules="[rules.required, rules.email]"
+                    :rules="[rules().required, rules().email]"
                   ></v-text-field>
                 </v-col>
               </v-row>
-              <v-row>
+              <v-row v-if="provideZwiftPowerID">
                 <v-col>
                   <v-text-field
                   :label="t('common.zwiftPowerID')"
+                  type="number"
                   color="primary"
                   variant="outlined"
                   hide-details="auto"
                   v-model="zpID"
-                  :rules="[rules.required]"
+                  :rules="[rules().required]"
                   ></v-text-field>
                 </v-col>
               </v-row>

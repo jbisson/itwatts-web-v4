@@ -51,7 +51,7 @@ async function refresh() {
     } else {
       tab.value = 'privacy';
     }
-    console.log(`Response from /v1/user: ${JSON.stringify(user.data)}`);
+    // console.log(`Response from /v1/user: ${JSON.stringify(user.data)}`);
   } catch (err: any) {
     if (err.response && err.response.status === 401) {
       router.push({ path: '/itwatts/signin' });

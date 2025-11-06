@@ -29,7 +29,7 @@ const breadcrumbs = ref([
   },
 ]);
 
-const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN'];
+const rolesRequired = ['SUPER_ADMIN'];
 const userStoreProfile = useUserProfile();
 
 refresh();

@@ -40,7 +40,7 @@ const overallHeaders: Header[] = reactive([
 usersResult.value = [];
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN'];
+  const rolesRequired = ['SUPER_ADMIN'];
   if (!security.isTokenValid( rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/team/signin' });
@@ -54,7 +54,7 @@ async function refresh() {
       withCredentials: true,
     });
 
-    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?groups=swat_2023_2024,swat_2024_2025`, {
+    const swatUsersResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users?team=swat`, {
       withCredentials: true,
     });
 

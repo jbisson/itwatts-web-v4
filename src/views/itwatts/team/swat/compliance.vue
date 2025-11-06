@@ -68,7 +68,7 @@ const overallHeaders: Header[] = reactive([
   { text: 'Lien strava ITWatts', width: 50, value: "strava_url_compliance", sortable: true },  
 ]);
 
-if (security.isTokenValid(['SUPER_ADMIN', 'SWAT_ADMIN'])) {
+if (security.isTokenValid(['SUPER_ADMIN'])) {
   // overallHeaders.push({ text: 'ZP dernier événement (nb jours)', value: "admin_zp_nb_days_last_event", width: 50, sortable: true });
   overallHeaders.push({ text: 'Actions', value: "admin_comments", width: 95, sortable: true });
   overallHeaders.push({ text: '', value: "admin_action", width: 50, sortable: true });
@@ -82,7 +82,7 @@ const rulesRequired = ref([
 ]);
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN'];
+  const rolesRequired = ['SUPER_ADMIN'];
   if (!security.isTokenValid(rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
@@ -123,7 +123,7 @@ async function refresh() {
   }
 
   try {
-    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?groups=swat_2023_2024&sortBy=first_name,last_name`,
+    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?team=swat&sortBy=first_name,last_name`,
     {
       withCredentials: true
     });
@@ -132,75 +132,73 @@ async function refresh() {
 
       addUserCompliance(user);
 
-      if (user.roles.includes('SWAT_MEMBER')) {
-        usersResult.value.push(user);      
+      usersResult.value.push(user);      
 
-        const userNotCompliant = {
-            id: user.id,
-            admin_comments: user.admin_comments,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            discord_id: user.discord_id,
-          };
-        if (useUserProfile().user_id === user.id) {
-          dialogDiscordTestUser.value = userNotCompliant;
-        }
-
-        if (user.discord_profile_compliance === '✅') {
-          stats.discord_profile_compliance += 1;  
-        } else {
-          usersNotCompliant.value.discord_profile_compliance.push(userNotCompliant)
-        }
-
-        if (user.zwift_name_compliance === '✅') {
-          stats.zwift_name_compliance += 1;  
-        } else {
-          usersNotCompliant.value.zwift_name_compliance.push(userNotCompliant)
-        }
-
-        if (user.zwift_status_compliance === '✅') {
-          stats.zwift_status_compliance += 1;  
-        } else {
-          usersNotCompliant.value.zwift_status_compliance.push(userNotCompliant)
-        }
-
-        if (user.zp_bio_compliance === '✅') {
-          stats.zp_bio_compliance += 1;  
-        } else {
-          usersNotCompliant.value.zp_bio_compliance.push(userNotCompliant)
-        }
-
-        if (user.zp_primary_team_name_compliance === '✅') {
-          stats.zp_primary_team_name_compliance += 1;  
-        } else {
-          usersNotCompliant.value.zp_primary_team_name_compliance.push(userNotCompliant)
-        }
-
-        if (user.zp_nb_days_last_updated_weight_compliance === '✅') {
-          stats.zp_nb_days_last_updated_weight_compliance += 1;  
-        } else {
-          usersNotCompliant.value.zp_nb_days_last_updated_weight_compliance.push(userNotCompliant)
-        }
-
-        if (user.zp_dual_compliance === '✅') {
-          stats.zp_dual_compliance += 1;  
-        } else {
-          usersNotCompliant.value.zp_dual_compliance.push(userNotCompliant)
-        }
-
-        if (user.zp_strava_compliance === '✅') {
-          stats.zp_strava_compliance += 1;  
-        } else {
-          usersNotCompliant.value.zp_strava_compliance.push(userNotCompliant)
-        }
-        
-
-        if (user.strava_url_compliance === '✅') {
-          stats.strava_url_compliance += 1;  
-        } else {
-          usersNotCompliant.value.strava_url_compliance.push(userNotCompliant)
-        }
+      const userNotCompliant = {
+          id: user.id,
+          admin_comments: user.admin_comments,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          discord_id: user.discord_id,
+        };
+      if (useUserProfile().user_id === user.id) {
+        dialogDiscordTestUser.value = userNotCompliant;
       }
+
+      if (user.discord_profile_compliance === '✅') {
+        stats.discord_profile_compliance += 1;  
+      } else {
+        usersNotCompliant.value.discord_profile_compliance.push(userNotCompliant)
+      }
+
+      if (user.zwift_name_compliance === '✅') {
+        stats.zwift_name_compliance += 1;  
+      } else {
+        usersNotCompliant.value.zwift_name_compliance.push(userNotCompliant)
+      }
+
+      if (user.zwift_status_compliance === '✅') {
+        stats.zwift_status_compliance += 1;  
+      } else {
+        usersNotCompliant.value.zwift_status_compliance.push(userNotCompliant)
+      }
+
+      if (user.zp_bio_compliance === '✅') {
+        stats.zp_bio_compliance += 1;  
+      } else {
+        usersNotCompliant.value.zp_bio_compliance.push(userNotCompliant)
+      }
+
+      if (user.zp_primary_team_name_compliance === '✅') {
+        stats.zp_primary_team_name_compliance += 1;  
+      } else {
+        usersNotCompliant.value.zp_primary_team_name_compliance.push(userNotCompliant)
+      }
+
+      if (user.zp_nb_days_last_updated_weight_compliance === '✅') {
+        stats.zp_nb_days_last_updated_weight_compliance += 1;  
+      } else {
+        usersNotCompliant.value.zp_nb_days_last_updated_weight_compliance.push(userNotCompliant)
+      }
+
+      if (user.zp_dual_compliance === '✅') {
+        stats.zp_dual_compliance += 1;  
+      } else {
+        usersNotCompliant.value.zp_dual_compliance.push(userNotCompliant)
+      }
+
+      if (user.zp_strava_compliance === '✅') {
+        stats.zp_strava_compliance += 1;  
+      } else {
+        usersNotCompliant.value.zp_strava_compliance.push(userNotCompliant)
+      }
+      
+
+      if (user.strava_url_compliance === '✅') {
+        stats.strava_url_compliance += 1;  
+      } else {
+        usersNotCompliant.value.strava_url_compliance.push(userNotCompliant)
+      }      
     }
 
     stats.total += stats.discord_profile_compliance +

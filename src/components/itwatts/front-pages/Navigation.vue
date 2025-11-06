@@ -89,13 +89,13 @@ const isActive = (href: string) => route.path === href;
                     ]"
                 >
                     {{ item.menu }}
-                    <v-chip v-if="item.badge" class="font-weight-semibold h-23" color="primary" size="small" rounded="pill" label> New </v-chip>
+                    <v-chip v-if="item.badge" class="font-weight-semibold h-23" color="primary" size="small" rounded="pill" label> {{ t('bannerComponent.new') }} </v-chip>
                 </RouterLink>
                
             </div>
         </div>
 
-        <v-btn class="d-md-none d-flex w-full text-white h-43 px-5 transform-none" color="primary"  href="/auth/login" target="_blank">
+        <v-btn class="d-md-none d-flex w-full text-white h-43 px-5 transform-none" color="primary"  href="/itwatts/signin" target="_blank">
             <span class="text-white">Log in</span>
         </v-btn>
     </div>

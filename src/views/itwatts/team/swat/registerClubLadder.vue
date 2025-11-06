@@ -12,6 +12,7 @@ import { useUserProfile } from '@/stores/user-profile';
 import config from "@/config/config.json";
 import security from "@/security";
 import clubLadderBanner from '@/assets/images/itwatts/clubladder/clubLadderBanner.png';
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t, locale } = useI18n({ useScope: 'global' });
 
@@ -30,6 +31,7 @@ const breadcrumbs = ref([
   },
 ]);
 
+const team = ref();
 const frequency = ref();
 const saved = ref();
 const isFormValid = ref();
@@ -47,25 +49,43 @@ const userFormResult = ref([]);
 const loading = ref(false);
 const hideForm = ref(false);
 const errorAlert = ref();
-const formName = 'registerClubLadder2024-09';
+const formName = 'registerClubLadder2025-10';
 
 async function refresh() {
   if (!security.isTokenValid([])) {
+    console.log('Token not valid.');
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
     return;
   }
 
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025'];  
-  if (!security.isTokenValid(rolesRequired)) {
-    errorAlert.value = `Cette page est exclusivement réservés aux membres 5.W.4.T 2024-2025. Avez-vous complété votre formulaire d'admission ?`;
-    hideForm.value = true;
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
+  
+  if (!team.value || !(team.value.managers.includes(useUserProfile().user_id) ||
+    team.value.riders.includes(useUserProfile().user_id) || security.isTokenValid(['SUPER_ADMIN']))) {    
+    useUserProfile().login_post_back_page = router.currentRoute.value.path;
+    router.push({ path: '/itwatts/signin' });
     return;
   }
   
   loading.value = true;
   try {
-    let response = await axios.get(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}?fields=zwift_racing_app_profile`,
+    let response = await axios.get(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}/forms/${formName}`,
+      {
+        withCredentials: true
+      });
+      if (response.data) {      
+        userFormResult.value = response.data.content;
+        bodyContentToForm(JSON.parse(response.data.content));
+        hideForm.value = true;
+        saved.value = true;
+      }
+
+    /*let response = await axios.get(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}?fields=zwift_racing_app_profile`,
     {
       withCredentials: true
     });
@@ -77,17 +97,8 @@ async function refresh() {
       hideForm.value = true;
       return;
     } else {
-      response = await axios.get(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}/forms/${formName}`,
-      {
-        withCredentials: true
-      });
-      if (response.data) {      
-        userFormResult.value = response.data.content;
-        bodyContentToForm(JSON.parse(response.data.content));
-        hideForm.value = true;
-        saved.value = true;
-      }
-    }    
+      
+    }    */
   } catch (err: any) {
     if (err.response && err.response.status === 404) {
       // Normal for the form to receive a 404...

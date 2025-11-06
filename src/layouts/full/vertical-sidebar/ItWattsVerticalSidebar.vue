@@ -46,7 +46,7 @@ function showMenu(item: any) {
 }
 
 async function populateTeams() {
-  console.log('populateTeams');
+  // console.log('populateTeams');
   sidebarMenu.value = [...sidebarItems];
   const teamMenu = {
     header: t('menu.teams.myTeams'),
@@ -59,7 +59,7 @@ async function populateTeams() {
       team.riders.includes(useUserProfile().user_id)) {
       const teamItem = {
         title: team.display_name,
-        to: `/itwatts/team/${team.name}/info`,
+        to: `/itwatts/team/${team.name}/info-team`,
         security: [],
       };
       

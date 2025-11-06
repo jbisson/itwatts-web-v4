@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router';
 
 import config from "@/config/config.json";
 import security from "@/security";
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t, locale } = useI18n({ useScope: 'global' });
 const page = ref({ title: t('swatPerformanceAnalysis.pageTitle') });
@@ -25,6 +26,7 @@ const isFormValid = ref();
 const chip = ref(true);
 const dialogListName = ref();
 const filterSelection = ref();
+const team = ref();
 
 const router = useRouter();
 const breadcrumbs = ref([
@@ -64,15 +66,24 @@ const rulesRequired = ref([
 usersResult.value = [];
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025'];
-  if (!security.isTokenValid(rolesRequired)) {
+  if (!security.isTokenValid([])) {
+    console.log('Token not valid.');
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
     return;
   }
 
-  if (security.isTokenValid(['SUPER_ADMIN', 'SWAT_ADMIN'])) {
-
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
+  
+  if (!team.value || !(team.value.managers.includes(useUserProfile().user_id) ||
+    team.value.riders.includes(useUserProfile().user_id) || security.isTokenValid(['SUPER_ADMIN']))) {    
+    useUserProfile().login_post_back_page = router.currentRoute.value.path;
+    router.push({ path: '/itwatts/signin' });
+    return;
   }
   
   interface ResponseData {
@@ -111,7 +122,7 @@ function openNewListDialog() {
 }
 
 async function save() {
-  const zp_ids = dialogUsers.value.map((user) => user.zp_id);
+  const zp_ids = dialogUsers.value.map((user: any) => user.zp_id);
   
   zpPreferencesList.value.push({
     name: dialogListName.value,
@@ -130,13 +141,13 @@ async function save() {
   dialog.value = false;
 }
 
-function showDialogRemoveList(list) {
+function showDialogRemoveList(list: any) {
   dialogListName.value = list.name;
   dialogConfirmDeleteList.value = true;
 }
 
 async function deleteList() {
-  zpPreferencesList.value = zpPreferencesList.value.filter((list) => list.name !== dialogListName.value);
+  zpPreferencesList.value = zpPreferencesList.value.filter((list: any) => list.name !== dialogListName.value);
   await axios.patch(`${config.serverApi.publicHostname}/v1/users/${useUserProfile().user_id}`,
   {
     zp_preferences: {

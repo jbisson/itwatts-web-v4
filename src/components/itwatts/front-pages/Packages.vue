@@ -11,11 +11,11 @@ const IndividualPackages: PackageType[] = [
       {
         tagtext: false,
         caption: 'Solo Core',
-        subtext: 'Use for single end product which end users can be charged for.',
+        subtext: 'Offer individual cyclists essential and performance analysis tools to ride smarter.',
         price: 0,
         period: '',
         buttontext: 'Get it now',
-        url: '/',
+        url: '/itwatts/signin',
         disable: false,
         list: [
             {
@@ -42,23 +42,17 @@ const IndividualPackages: PackageType[] = [
                 icon: true,
                 disable: false
             },
-            {
-                listtitle: '',
-                status: false,
-                icon: true,
-                disable: false
-            }
         ]
     },
     {
         tagtext: true,
         caption: 'Solo Pro',
-        subtext: 'Use in unlimited end products end users can be charged for.',
+        subtext: 'Offer personalized insights, and deeper performance analytics.',
         price: 0,
         period: 'CAD /year',
         buttontext: 'Subscribe Now',
         disable: false,
-        url: '/',
+        url: '/itwatts/signin',
         list: [
             {
                 listtitle: '<b>12 months</b> of performance data',
@@ -84,23 +78,17 @@ const IndividualPackages: PackageType[] = [
                 icon: true,
                 disable: false
             },
-            {
-                listtitle: '',
-                status: false,
-                icon: true,
-                disable: false
-            }
         ]
     },
     {
         tagtext: false,
         caption: 'Solo Ultimate',
-        subtext: 'Use in unlimited end products end users can be charged for.',
+        subtext: 'Delivers the complete premium experience package with elite-level performance analytics.',
         price: 0, //50
         period: 'CAD /year',
         buttontext: 'Subscribe Now',
         disable: false,
-        url: '/',
+        url: '/itwatts/signin',
         list: [
             {
                 listtitle: '<b>Lifetime history</b> performance data',
@@ -139,12 +127,12 @@ const Packages: PackageType[] = [
     {
         tagtext: false,
         caption: 'Team Virtual',
-        subtext: 'Use for single end product which end users can’t be charged for.',
+        subtext: 'Connects riders in an online environment such as Zwift or MyWhoosh. Contact us to get your virtual team created.',
         price: 0,
         period: '',
-        buttontext: 'Get it now',
+        buttontext: 'Contact Us',
         disable: false,
-        url: '/',
+        url: '/contact-us',
         list: [
             {
                 listtitle: '<b>Fair E-Racing Alliance <br>Mission</b> access program',
@@ -184,8 +172,7 @@ const Packages: PackageType[] = [
             },            
         ]
     },
-
-    {
+    /*{
         tagtext: false,
         caption: 'Team Virtual Pro',
         subtext: 'Use for unlimited end products end users can’t be charged for.',
@@ -232,23 +219,17 @@ const Packages: PackageType[] = [
                 disable: false
             },            
         ]
-    },
+    },*/
     {
         tagtext: false,
         caption: 'Team IRL',
-        subtext: 'Use for unlimited end products end users can’t be charged for.',
+        subtext: 'Supports cycling teams that ride outside. Contact us to get your IRL team created.',
         price: 0, // 100
         period: 'CAD /year',
-        buttontext: 'Subscribe Now',
+        buttontext: 'Contact Us',
         disable: false,
-        url: '/',
-        list: [
-            {
-                listtitle: '',
-                status: false,
-                icon: true,
-                disable: false
-            },            
+        url: '/contact-us',
+        list: [          
             {
                 listtitle: '<b>12 months</b> of performance data',
                 status: false,
@@ -281,7 +262,7 @@ const Packages: PackageType[] = [
             },
         ]
     },
-    {
+    /*{
       tagtext: false,
       caption: 'Team Ultimate',
       subtext: 'Use for unlimited end products end users can’t be charged for.',
@@ -328,7 +309,7 @@ const Packages: PackageType[] = [
                 disable: false
             },  
         ]
-    },
+    },*/
 ];
 
 </script>
@@ -356,7 +337,7 @@ const Packages: PackageType[] = [
                 </v-col>
             </v-row>
             <v-row class="d-flex justify-center">
-                <v-col cols="12" lg="3" sm="6" v-for="card in packageType == 'individual' ? IndividualPackages : Packages" :key="card.caption">
+                <v-col cols="12" lg="4" sm="6" v-for="card in packageType == 'individual' ? IndividualPackages : Packages" :key="card.caption">
                     <v-card elevation="0" class="rounded-16 pa-6 border">
                         <div class="pb-4">
                             <div class="d-flex ga-2 align-center">
@@ -393,7 +374,7 @@ const Packages: PackageType[] = [
                                 </v-list-item-title>
                             </v-list-item>
                         </v-list>
-                        <v-btn color="primary" size="large" class="mt-4 font-weight-medium"  href="card.url" target="_blank" flat block :disabled="card.disable">{{
+                        <v-btn color="primary" size="large" class="mt-4 font-weight-medium"  :href="card.url" target="_blank" flat block :disabled="card.disable">{{
                             card.buttontext
                         }}</v-btn>
                     </v-card>

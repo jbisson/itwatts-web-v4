@@ -44,7 +44,7 @@ const breadcrumbs = ref([
 const userStoreProfile = useUserProfile();
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025'];
+  const rolesRequired = ['SUPER_ADMIN'];
   if (!security.isTokenValid(rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
     router.push({ path: '/itwatts/signin' });
@@ -61,13 +61,13 @@ async function refresh() {
   members.value = [];
 
   try {
-    const profileImagesResponse = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/images?name=profile&sortBy=first_name,last_name`,
+    const profileImagesResponse = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/user-images?name=profile`,
     {
       withCredentials: true
     });
-    const profileImagesUsers = new Map(profileImagesResponse.data.data.map(i => [i.user_id, `/user-image/${i.file_name}`]));
+    const profileImagesUsers = new Map(profileImagesResponse.data.data.map(i => [i.user_id, i.file_name_path]));
 
-    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?groups=swat_2024_2025&sortBy=first_name,last_name`,
+    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?team=swat&sortBy=first_name,last_name`,
     {
       withCredentials: true
     });
@@ -77,12 +77,12 @@ async function refresh() {
         continue;
       }
       //user.name = `${user.first_name} ${user.last_name}`;
-      user.name = `${user.first_name}`;
       members.value.push(
       {
           id: '#1Followers_Barney',
           avatar: profileImagesUsers.get(user.id),
-          name: `${user.name}`,
+          first_name: `${user.first_name}`,
+          last_name: `${user.last_name}`,
           location: user.region,
           follow: 1
       });
@@ -151,22 +151,22 @@ refresh();
             ></v-progress-linear>
           </div>
           <p class="container">
-            <p>
+            
               <br><br><br><br><br><br><br><br><br>
-          <v-row style="margin: 0px">            
-                <v-col cols="12" md="4" sm="6" v-for="(card, i) in members.value" :key="i">                  
-                    <v-card flat style="background-color: white;">
-                        <v-card-text class="text-center" >
-                            <div class="align-center" >
-                              <p style="font-family: NFLpackers;color: #000000;letter-spacing: 3px;font-size:4rem;">{{ card.name }}</p>
-                              <br><br>
-                              <img :src="card.avatar" :alt="card.avatar" width="250" />                                
-                            </div>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-            </v-row>
-          </p>
+        <v-row style="margin: 0px">            
+              <v-col cols="12" md="4" sm="6" v-for="(card, i) in members.value" :key="i">                  
+                  <v-card flat style="background-color: white;">
+                      <v-card-text class="text-center" >
+                          <div class="align-center" >
+                            <p style="color: #000000;letter-spacing: 3px;font-size:2rem;">{{ card.first_name }}<br></br>{{ card.last_name }}</p>
+                            <br><br>
+                            <img :src="card.avatar" :alt="card.avatar" width="250" />                                
+                          </div>
+                      </v-card-text>
+                  </v-card>
+              </v-col>
+          </v-row>
+          
           </p>
     </v-col>    
   </v-row>

@@ -68,7 +68,7 @@ async function refresh() {
             withCredentials: true,
           });
           emailVerified.value = response.status === 200;
-        } catch (error) {
+        } catch (error: any) {
           // 400 expected.
           if (error.response.status !== 400) {
             console.log(`Error while trying to validate email ${error} ${error.stack}`);

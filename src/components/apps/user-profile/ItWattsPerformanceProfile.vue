@@ -51,7 +51,7 @@ refresh();
           <br>        
           
           <v-data-table class="no-border" :items="performanceProfileItems"
-            :sort-by="[{ key: 'model', order: 'asc' }]" hide-default-footer hide-default-header>
+            :sort-by="[{ key: 'model', order: 'asc' }]" hide-default-footer hide-default-header v-if="false">
             <template v-slot:top>
             </template>
             <template v-slot:item.validation="{ value }">

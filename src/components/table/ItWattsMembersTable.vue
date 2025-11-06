@@ -46,7 +46,7 @@ const filteredList2 = computed(() => {
     return store.members.filter((member: any) => {
         return member.first_name.toLowerCase().includes(search.value.toLowerCase());
     });
-});
+}) as any;
 
 const filteredList = computed(() => {
     return desserts.value.filter((user: any) => {

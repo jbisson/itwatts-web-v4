@@ -1,9 +1,6 @@
-{
-  "menu": {    
-    "swatHome": {
-      "title": "Accueil"
-    },
-    "raccoonRace": {
+{   
+  "menuSwat": {    
+    "raccoonRace": {      
       "title": "Course du Raton",
       "info": "Information",
       "registration": "Inscription",
@@ -19,11 +16,6 @@
       "info": "Information",
       "resultsRound": "Résultats Ronde 4"
     },
-    "premierTechEndoXLevisRace": {
-      "title": "Course PT X Endo Lévis",
-      "info": "Information",
-      "resultsRound1": "Résultats"
-    },
     "swat": {
       "title": "5.W.4.T (old)",
       "frr": "Flamme Rouge",
@@ -31,12 +23,12 @@
       "irlCalendar": "Calendrier IRL",
       "compliance": "Conformité",
       "performanceAnalysis": "Analyse Performance",
-      "members": "Membres (2024-2025)",
-      "guests": "Invité(e)s (2024-2025)",
+      "members": "Membres (2025-2026)",
+      "guests": "Invité(e)s (2025-2026)",
       "participation": "Participation",
       "registerZrl": "Inscription ZRL 2024-2025 Ronde 3",
       "registerTTT": "Inscription WTRL Team Time Trial",
-      "registerClubLadder": "Inscription Club Ladder 2024"
+      "registerClubLadder": "Inscription Club Ladder"
     },
     "admin": {
       "title": "Admin",
@@ -45,29 +37,16 @@
       "discord": "Discord",
       "zwiftPower": "Zwift Power",
       "strava": "Strava",      
-      "clubLadderRegistrations": "Inscriptions Club Ladder 2024",      
-      "zrl20242025Round3Registrations": "Inscriptions ZRL 2024-2025 Ronde 3",
-      "zrl20242025Round2Registrations": "Inscriptions ZRL 2024-2025 Ronde 2",
-      "wtrlTTTRegistrations": "Inscriptions WTRL TTT 2024-2025",      
-      "swatInterestForms2024": "Formulaires intérêt 2024",
-      "swatGuestForms2024": "Formulaires invité 2024",
-      "swatMembers": "Membres 5.W.4.T (2024)",
-      "swatMembers2023": "Membres 5.W.4.T (2023)",
-      "swatGuests": "Invité(e)s 5.W.4.T (2024)",
-      "swatGuests2023": "Invité(e)s 5.W.4.T (2023)"
-    },    
-    "gcqc": {
-      "title": "Grosse Course",
-      "info": "Information",
-      "resultsRound1": "Résultats",
-      "signups": "Inscriptions"
-    },    
-    "itt": {
-      "title": "Les Chronos ITTWatts",
-      "info": "Information",
-      "results": "Résultats",
-      "results_serie17": "Résultats Série 17",
-      "signups": "Inscriptions"
+      "clubLadderRegistrations": "Inscriptions Club Ladder",      
+      "zrl20252026Round1Registrations": "Inscriptions ZRL 2025-2026 Ronde 1",
+      "zrl20252026Round2Registrations": "Inscriptions ZRL 2025-2026 Ronde 2",
+      "swatAcademyRegistrations": "Inscriptions 5.W.4.T Académie",
+      "2025poll": "Sondage 2025",
+      "wtrlTTTRegistrations": "Inscriptions WTRL TTT",
+      "swatInterestForms": "Formulaires intérêt",
+      "swatGuestForms": "Formulaires invité",
+      "swatMembers": "Membres 5.W.4.T",
+      "swatGuests": "Invité(e)s 5.W.4.T"
     }
   },
   "lists": {
@@ -100,11 +79,7 @@
   "adminInfo": {
     "pageCategory": "Admin",
     "pageTitle": "Info"
-  },
-  "adminUsers": {
-    "pageCategory": "Admin",
-    "pageTitle": "Utilisateurs"
-  },
+  },  
   "adminZwiftpower": {
     "pageCategory": "Admin",
     "pageTitle": "5.W.4.T Zwiftpower"
@@ -113,46 +88,45 @@
     "pageCategory": "Admin",
     "pageTitle": "Inscriptions ZRL 2024 ronde3"
   },
-  "adminZrl20242025Round2Registrations": {
+  "adminZrl20252026Round1Registrations": {
     "pageCategory": "Admin",
-    "pageTitle": "Inscriptions ZRL 2024-2025 ronde 2"
+    "pageTitle": "Inscriptions ZRL 2025-2026 ronde 1"
   },
-  "adminZrl20242025Round3Registrations": {
+  "adminZrl20252026Round2Registrations": {
     "pageCategory": "Admin",
-    "pageTitle": "Inscriptions ZRL 2024-2025 ronde 3"
+    "pageTitle": "Inscriptions ZRL 2025-2026 ronde 2"
   },
-  
+  "adminSwatAcademyRegistrations": {
+    "pageCategory": "Admin",
+    "pageTitle": "Inscriptions 5.W.4.T Académie"
+  },
+  "admin2025PollRegistrations": {
+    "pageCategory": "Admin",
+    "pageTitle": "Sondage 2025"
+  }, 
   "wtrlTTTRegistrations": {
     "pageCategory": "Admin",
     "pageTitle": "Inscriptions WTRL TTT 2024-2025"
   },
   "adminClubLadderRegistration": {
     "pageCategory": "Admin",
-    "pageTitle": "Inscriptions Club Ladder 2024"
+    "pageTitle": "Inscriptions Club Ladder"
   },
-  "swatInterestForms2024": {
+  "swatInterestForms": {
     "pageCategory": "Admin",
-    "pageTitle": "Formulaires Intérêt 2024"
+    "pageTitle": "Formulaires Intérêt"
   },
-  "swatGuestForms2024": {
+  "swatGuestForms": {
     "pageCategory": "Admin",
-    "pageTitle": "Formulaires Invité 2024"
+    "pageTitle": "Formulaires Invité"
   },
   "adminSwatMembers": {
     "pageCategory": "Admin",
-    "pageTitle": "Membres 5.W.4.T (2024)"
-  },
-  "adminSwatMembers2023": {
-    "pageCategory": "Admin",
-    "pageTitle": "Membres 5.W.4.T (2023)"
+    "pageTitle": "Membres 5.W.4.T"
   },
   "adminSwatGuests": {
     "pageCategory": "Admin",
-    "pageTitle": "Invité(e)s 5.W.4.T (2024)"
-  },
-  "adminSwatGuests2023": {
-    "pageCategory": "Admin",
-    "pageTitle": "Invité(e)s 5.W.4.T (2023)"
+    "pageTitle": "Invité(e)s 5.W.4.T"
   },
   "atomasInfo": {
     "pageCategory": "Course Atomas",
@@ -181,6 +155,10 @@
     "pageCategory": "Course Atomas",
     "pageTitle": "Résultats Ronde %{roundNumber}",
     "cumulative": "Cummulatif"
+  },
+  "rpvPloop": {
+    "pageCategory": "RPV",
+    "pageTitle": "Catégories P-Loop"
   },
   "dataDeletion": {
     "pageCategory": "Accueil",
@@ -255,6 +233,10 @@
     "pageCategory": "5.W.4.T",
     "pageTitle": "Calendrier IRL"
   },
+  "swatMerch": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Boutique"
+  },
   "swatDiscord": {
     "pageCategory": "5.W.4.T",
     "pageTitle": "Discord"
@@ -265,7 +247,7 @@
   },
   "swatMembers": {
     "pageCategory": "5.W.4.T",
-    "pageTitle": "Membres 5.W.4.T (2024-2025)"
+    "pageTitle": "Membres 5.W.4.T"
   },
   "swatCompliance": {
     "pageCategory": "5.W.4.T",
@@ -273,15 +255,27 @@
   },
   "swatGuests": {
     "pageCategory": "5.W.4.T",
-    "pageTitle": "Invité(e)s 5.W.4.T (2024-2025)"
+    "pageTitle": "Invité(e)s 5.W.4.T"
   },
   "swatParticipation": {
     "pageCategory": "5.W.4.T",
     "pageTitle": "Participation 5.W.4.T"
   },
-  "swatRegisterZrl2024winter": {
+  "swatRegisterZrl2025Round1": {
     "pageCategory": "5.W.4.T",
-    "pageTitle": "Inscription ZRL 2024"
+    "pageTitle": "Inscription ZRL 2025"
+  },
+  "swatRegisterZrl20252026Round2": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Inscription ZRL 2025 Ronde 2"
+  },
+  "swatRegisterAcademy": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Inscription 5.W.4.T Academie"
+  },
+  "swatSubscription2026": {
+    "pageCategory": "5.W.4.T",
+    "pageTitle": "Re-Inscription 5.W.4.T 2026"
   },
   "swatRegisterZrl": {
     "pageCategory": "5.W.4.T",
@@ -360,15 +354,9 @@
       "hoursWorkoutWinter": "Combien d'heures environ par semaine consacrez-vous au vélo (entraînements, rides, courses) lors de la saison estivale ?",
       "integrityValuesAuthenticPerformances": "Je trouve important de pouvoir démontrer que mes performances virtuelles sont authentiques.",
       "integrityValuesLowInterestPerformanceValidation": "J'ai peu d'intérêt à valider mes performances en virtuel, car je ne vois pas l’utilité.",
-      "integrityValuesAcceptTests": "J’accepte de réaliser tous les tests nécessaires (avec l’aide du 5.W.4.T, au besoin) pour valider que mes données virtuelles (par exemple, base d'entraînement, grandeur, poids, etc) sont authentiques.",
-      "respectValuesPriorizeGroup": "J’ai tendance à prioriser le bien-être du groupe, au-delà de mon propre gain personnel.",
-      "respectValuesRespectOthers": "Je respecte mes adversaires en reconnaissant leurs efforts.",
-      "respectValuesBadLooser": "Je suis capable d’être un bon perdant et d’accepter les défaites.",
-      "respectValuesSharedLost": "Je partage autant les succès que les échecs de mes coéquipiers.",
-      "respectValuesOwnObjectivesOnly": "Je roule virtuellement uniquement pour atteindre mes objectifs sportifs personnels.",
+      "respectValuesBadLooser": "Je suis capable d’être un bon perdant et d’accepter les défaites.",            
       "engagementValuesInvested": "Je cherche une équipe dans laquelle je pourrai m’investir pleinement.",
       "engagementValuesTeamMembershipInterest": "J’ai l’intention de jouer un rôle actif au sein de l’équipe et j’aimerais collaborer avec les autres membres dans l’atteinte des objectifs communs.",
-      "engagementValuesBelongingToAGroup": "Je cherche une équipe pour laquelle j’aimerais ressentir un sentiment d’appartenance.",
       "engagementValuesLowEngagementOnly": "J’ai beaucoup d’autres activités que le cyclisme virtuel, donc mon engagement envers l’équipe sera minime.",
       "topSwatValue": "Parmis les valeurs sportives suivantes, quel serait la valeur la plus importantes à vos yeux ?",
       "teamCapitain": "Capitaine d'équipe sur une série de course (style ZRL, Club Ladder)",
@@ -380,11 +368,11 @@
   },
   "swatAdmission": {
     "pageCategory": "5.W.4.T",
-    "pageTitle": "Processus d'admission 5.W.4.T 2024-2025"
+    "pageTitle": "Processus d'admission 5.W.4.T 2025-2026"
   },
   "swatRegisterClubLadder": {
     "pageCategory": "5.W.4.T",
-    "pageTitle": "Inscription Club Ladder 2024"
+    "pageTitle": "Inscription Club Ladder"
   },
   "Modern": "Moderne",
   "eCommerce": "commerce électronique",

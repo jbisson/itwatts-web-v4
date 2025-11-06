@@ -28,7 +28,7 @@ const router = useRouter();
 const { t } = useI18n({ useScope: 'global' });
 
 const userID = useRoute().params['userID'];
-const page = ref({ title: 'Profile' });
+const page = ref({ title: t('userProfile.title') });
 const user = reactive([] as any);
 
 const infoAlert = ref();
@@ -36,7 +36,7 @@ const warningAlert = ref();
 const errorAlert = ref();
 const breadcrumbs = ref([
   {
-    text: t('userProfile.title'),
+    text: t('userProfile.pageCategory'),
     disabled: false,
     href: '#',
     //href: '/itwatts/team/swat/members'
@@ -49,9 +49,7 @@ const breadcrumbs = ref([
 ]);
 
 async function refresh() {
-  const rolesRequired = [];
-
-  if (!security.isTokenValid(rolesRequired)) {
+  if (!security.isTokenValid([])) {
     router.push({ path: '/itwatts/signin' });
     return;
   }

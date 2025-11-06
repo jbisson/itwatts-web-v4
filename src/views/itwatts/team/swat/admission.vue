@@ -13,6 +13,7 @@ import { useRemembered } from '@/stores/remembered';
 
 import config from "@/config/config.json";
 import security from "@/security";
+import { useTeamStore } from '@/stores/apps/teams';
 
 const { t, locale } = useI18n({ useScope: 'global' });
 
@@ -68,8 +69,9 @@ const zwiftpowerBioWithClubLogoAndClub = ref();
 const zwiftpowerBioWithoutLogo = ref();
 const validInterestForm = ref(false);
 const emailCode = ref('');
+const team = ref();
 let zpID = ref();
-let formData;
+let formData: any;
 
 const validateZwiftPowerIDRules = ref([
     (v: string) => !!v || t('interest.validation.zwiftPowerIDRequired'),
@@ -85,8 +87,14 @@ async function refresh() {
     router.push({ path: '/itwatts/signin' });
     return;
   }
+
+  if (useTeamStore().myTeams) {
+    team.value = useTeamStore().myTeams.find((team: any) => team.name === 'swat');
+  } else if (security.isTokenValid(['SUPER_ADMIN']) && useTeamStore().teams) {
+    team.value = useTeamStore().teams.find((team: any) => team.name === 'swat');
+  }
   
-  if (security.isTokenValid(['SWAT_MEMBER_2024_2025'])) {
+  if (security.isTokenValid([]) && team.value) {
     stepVisible.value = true;
     validInterestForm.value = true;
     step.value = 6;
@@ -138,11 +146,11 @@ async function refresh() {
       withCredentials: true
     });
     if (response.data) {
-      console.log(`Response from /v1/user: ${JSON.stringify(response.data)}`);
+      // console.log(`Response from /v1/user: ${JSON.stringify(response.data.strava_login)}`);
       const userObj = response.data;
       email.value = userObj.email;
 
-      if (userObj.groups.includes('SWAT_MEMBER_2024_2025')) {
+      if (team.value) {
         stepVisible.value = true;
         validInterestForm.value = true;
         step.value = 6;
@@ -150,7 +158,9 @@ async function refresh() {
       }
 
       if (!userObj.strava_login || !userObj.strava_login.scope.includes('read_all')) {
-        router.push({ path: '/itwatts/signin' });
+        useUserProfile().login_post_back_page = router.currentRoute.value.path;
+        const scope = 'read,read_all,profile:read_all,profile:write,activity:read_all';
+        router.push({ path: '/itwatts/signin', query: { scope: scope } });
       }      
 
       await checkDiscordCompliance(userObj);
@@ -227,7 +237,7 @@ async function getZpBio(user: any) {
 async function checkZwiftPowerProfileCompliance(user: any) {
   zwiftPowerDualRecordingValid.value = false;
 
-  if (!user.zp_id) {
+  if (!user.zp_id || !user.zp_profile) {
     return;
   }
 
@@ -434,7 +444,7 @@ const rules = ref({
 });
 
 function linkDiscordAccount() {
-  window.location.href = `${config.serverApi.publicHostname}/v1/discord/linkAccount?redirect_uri=${config.serverWeb.hostname}/itwatts/team/swat-old/admission`;  
+  window.location.href = `${config.serverApi.publicHostname}/v1/discord/linkAccount?redirect_uri=${config.serverWeb.hostname}/itwatts/team/swat-old/admission`;
 }
 
 function next() {
@@ -510,7 +520,7 @@ async function fetchZwiftPowerAccount() {
 async function acceptSwatMemberOnZwiftPower() {
   try {
     loading.value = true;
-    errorAlert.error = '';
+    errorAlert.value = '';
     let response = await axios.post(`${config.serverApi.publicHostname}/v1/zp-team/19126/member/${useUserProfile().zp_id}/accept`,
     {
     },
@@ -656,7 +666,7 @@ refresh();
             Afin de complèter votre enrôlement au sein du 5.W.4.T et avoir votre status officiel de membre 5.W.4.T, il est nécessaire de complèter ce processus.
             ITWatts vous guidera à travers les différentes étapes. Cliquer sur "Commencer maintenant" pour commencer le processus.
             <br><br>
-            A la fin du processus, vous receverez votre status officiel <b>"Membres 5.W.4.T 2024-2025"</b> et tous les privilèges associés.
+            A la fin du processus, vous receverez votre status officiel <b>"Membres 5.W.4.T 2025-2026"</b> et tous les privilèges associés.
           </p><br><br>
           <div v-if="!security.isLoggedIn() || !useUserProfile().user_id">
             <p class="my-4 text-body-1 text-10"><br>
@@ -969,9 +979,7 @@ refresh();
                 <b>Une fois complété, cliquer sur</b> <v-btn color="primary" flat @click="syncZwiftProfile()" :disabled="loading">J'ai modifié mon identifiant dans mon profile Zwift</v-btn>
               </p>
               <p v-if="validZwiftCompanionClub && validZwiftCompanionName && !validZwiftCompanionWeight" class="my-4 text-body-1 text-10">
-                <div class="d-flex justify-center">
-                  <h2 class="mb-1">3 - Poids</h2><br><br>                  
-                </div>
+                  <h2 class="mb-1">3 - Poids</h2><br><br>                
                 Votre poids n'a pas été modifié de plus de 6 mois. <b>Veuillez modifier votre poids dans votre profile Zwift.</b>
                 (Si votre poids n'a pas changé, veuillez forcer une légère modification (ex: 0.1kg)) afin que ITWatts puisse détecter les changements.
                 <br><br>

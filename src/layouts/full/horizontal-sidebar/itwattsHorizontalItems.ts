@@ -63,125 +63,87 @@ const horizontalItems: menu[] = [
     ],
   },
   {
-    title: "menu.swat.title",
-    to: "/itwatts/team/swat-old",
-    security: ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_MEMBER_2024_2025', 'SWAT_GUEST_2024_2025'],
-    extraclass: "",
-    children: [
-      {
-        title: "menu.swat.info",
-        to: "/itwatts/team/swat-old/info",
-      },
-      {
-        title: "menu.swat.irlCalendar",
-        to: "/itwatts/team/swat-old/irl-calendar",
-      },
-      {
-        title: "menu.swat.participation",
-        to: "/itwatts/team/swat-old/participation",
-      },
-      {
-        title: "menu.swat.members",
-        to: "/itwatts/team/swat-old/members",
-      },
-      {
-        title: "menu.swat.guests",
-        to: "/itwatts/team/swat-old/guests",
-      },
-      {
-        title: "menu.swat.performanceAnalysis",
-        to: "/itwatts/team/swat-old/performance-analysis",
-      },
-      {
-        title: "menu.swat.registerTTT",
-        to: "/itwatts/team/swat-old/register-ttt",
-      },
-      {
-        title: "menu.swat.registerClubLadder",
-        to: "/itwatts/team/swat-old/register-clubladder",
-      },
-      {
-        title: "menu.swat.registerZrl",
-        to: "/itwatts/team/swat-old/register-zrl",
-      },
-    ],
-  },
-  {
-    title: "menu.admin.title",
+    title: "menuSwat.admin.title",
     to: "/itwatts/team/swat/admin",
-    security: ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_WTRL_TTT_ADMIN', 'SWAT_CLUB_LADDER_ADMIN'],
+    security: ['SUPER_ADMIN'],
     extraclass: "",
     children: [
       {
-        title: "menu.admin.info",
-        to: "/itwatts/team/swat-old/admin/info",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.swat.participation",
+        to: "/itwatts/team/swat/participation",
       },
       {
-        title: "menu.admin.users",
-        to: "/itwatts/team/swat-old/admin/users",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.swat.registerTTT",
+        to: "/itwatts/team/swat/register-ttt",
       },
       {
-        title: "menu.admin.discord",
-        to: "/itwatts/team/swat-old/admin/discord",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.swat.registerClubLadder",
+        to: "/itwatts/team/swat/register-clubladder",
       },
       {
-        title: "menu.admin.zwiftPower",
-        to: "/itwatts/team/swat-old/admin/zwiftpower",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.swat.registerZrl",
+        to: "/itwatts/team/swat/register-zrl",
+      },
+      {
+        title: "menuSwat.admin.discord",
+        to: "/itwatts/team/swat/admin/discord",
+        security: ['SUPER_ADMIN']
+      },
+      {
+        title: "menuSwat.admin.zwiftPower",
+        to: "/itwatts/team/swat/admin/zwiftpower",
+        security: ['SUPER_ADMIN']
       },      
       {
-        title: "menu.admin.swatInterestForms2024",
-        to: "/itwatts/team/swat-old/admin/swat-interest-forms2024",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.admin.swatInterestForms",
+        to: "/itwatts/team/swat/admin/swat-interest-forms",
+        security: ['SUPER_ADMIN']
       },
       {
-        title: "menu.admin.swatGuestForms2024",
-        to: "/itwatts/team/swat-old/admin/swat-guest-forms2024",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.admin.swatGuestForms",
+        to: "/itwatts/team/swat/admin/swat-guest-forms",
+        security: ['SUPER_ADMIN']
       },
       {
-        title: "menu.admin.swatMembers",
-        to: "/itwatts/team/swat-old/admin/swat-members",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.admin.swatMembers",
+        to: "/itwatts/team/swat/admin/swat-members",
+        security: ['SUPER_ADMIN']
       },      
       {
-        title: "menu.admin.swatMembers2023",
-        to: "/itwatts/team/swat-old/admin/swat-members2023",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.admin.swatGuests",
+        to: "/itwatts/team/swat/admin/swat-guests",
+        security: ['SUPER_ADMIN']
       },
       {
-        title: "menu.admin.swatGuests",
-        to: "/itwatts/team/swat-old/admin/swat-guests",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.admin.wtrlTTTRegistrations",
+        to: "/itwatts/team/swat/admin/wtrlTTT-registrations",
+        security: ['SUPER_ADMIN', 'SWAT_WTRL_TTT_ADMIN']
       },
       {
-        title: "menu.admin.swatGuests2023",
-        to: "/itwatts/team/swat-old/admin/swat-guests2023",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN']
+        title: "menuSwat.admin.clubLadderRegistrations",
+        to: "/itwatts/team/swat/admin/clubladder-registrations",
+        security: ['SUPER_ADMIN', 'SWAT_CLUB_LADDER_ADMIN', 'SWAT_CLUB_LADDER_CAP']
       },
       {
-        title: "menu.admin.wtrlTTTRegistrations",
-        to: "/itwatts/team/swat-old/admin/wtrlTTT-registrations",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_WTRL_TTT_ADMIN']
+        title: "menuSwat.admin.zrl20252026Round2Registrations",
+        to: "/itwatts/team/swat/admin/zrl20252026-round2-registrations",
+        security: ['SUPER_ADMIN']
       },
       {
-        title: "menu.admin.clubLadderRegistrations",
-        to: "/itwatts/team/swat-old/admin/clubladder-registrations",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_CLUB_LADDER_ADMIN', 'SWAT_CLUB_LADDER_CAP']
+        title: "menuSwat.admin.swatAcademyRegistrations",
+        to: "/itwatts/team/swat/admin/swat-academy-registrations",
+        security: ['SUPER_ADMIN', 'SWAT_MENTORS']
+      },
+      {
+        title: "menuSwat.admin.2025poll",
+        to: "/itwatts/team/swat/admin/2025poll-registrations",
+        security: ['SUPER_ADMIN']
+      },
+      {
+        title: "menuSwat.atomasRace.title",
+        to: "/itwatts/atomas/results",
+        security: ['SUPER_ADMIN']
       },      
-      {
-        title: "menu.admin.zrl20242025Round2Registrations",
-        to: "/itwatts/team/swat-old/admin/zrl20242025-round2-registrations",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_ZRL_ADMIN']
-      },
-      {
-        title: "menu.admin.zrl20242025Round3Registrations",
-        to: "/itwatts/team/swat-old/admin/zrl20242025-round3-registrations",
-        security: ['SUPER_ADMIN', 'SWAT_ADMIN', 'SWAT_ZRL_ADMIN']
-      },
     ],
   },
   {
@@ -193,6 +155,11 @@ const horizontalItems: menu[] = [
       {
         title: "menu.superAdmin.teams",
         to: "/itwatts/super-admin/teams",
+        security: ['SUPER_ADMIN']
+      },
+      {
+        title: "menu.superAdmin.users",
+        to: "/itwatts/super-admin/users",
         security: ['SUPER_ADMIN']
       },
     ]

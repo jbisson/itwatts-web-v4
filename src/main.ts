@@ -8,6 +8,9 @@ import vuetify from './plugins/vuetify';
 import '@/scss/style.scss';
 import PerfectScrollbar from 'vue3-perfect-scrollbar';
 import VueApexCharts from 'vue3-apexcharts';
+import PolylineEncoded from 'polyline-encoded';
+import PolylineDecorator from 'leaflet-polylinedecorator';
+
 import VueTablerIcons from 'vue-tabler-icons';
 import { fakeBackend } from '@/utils/helpers/fake-backend';
 import 'vue3-carousel/dist/carousel.css';
@@ -42,6 +45,9 @@ app.use(VueTablerIcons);
 app.use(i18n);
 app.use(Maska);
 app.use(VueApexCharts);
+app.use(PolylineEncoded);
+app.use(PolylineDecorator);
+
 app.use(vuetify).mount('#app');
 app.component('Icon', Icon);
 //ScrollTop Use

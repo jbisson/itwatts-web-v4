@@ -52,7 +52,7 @@ const overallHeaders: Header[] = reactive([
 ]);
 
 async function refresh() {
-  const rolesRequired = ['SUPER_ADMIN', 'SWAT_ADMIN'];
+  const rolesRequired = ['SUPER_ADMIN'];
 
   if (!security.isTokenValid(rolesRequired)) {
     useUserProfile().login_post_back_page = router.currentRoute.value.path;
@@ -62,7 +62,7 @@ async function refresh() {
 
   guessUsersResult.value = [];
 
-  if (security.isTokenValid(['SUPER_ADMIN', 'SWAT_ADMIN'])) {
+  if (security.isTokenValid(['SUPER_ADMIN'])) {
     overallHeaders.push({ text: 'ZP last synced', value: "zp_last_synced", sortable: true });
     overallHeaders.push({ text: 'Zwift 5.W.4.T club status', value: "zwift_status", sortable: true });
     overallHeaders.push({ text: 'Zwift last synced', value: "zwift_last_synced", sortable: true });
@@ -79,7 +79,7 @@ async function refresh() {
   loading.value = true;
   errorAlert.value = '';
   try {    
-    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?groups=swat_guest_2024_2025&additionalFields=zp_profile&excludedFields=zp_profile(events)&sortBy=first_name,last_name`,
+    const response = await axios.get<ResponseData>(`${config.serverApi.publicHostname}/v1/users?team=swat&additionalFields=zp_profile&excludedFields=zp_profile(events)&sortBy=first_name,last_name`,
     {
       withCredentials: true
     });

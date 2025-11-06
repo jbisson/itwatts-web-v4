@@ -109,7 +109,7 @@ applyDefaultValidation();
 function applyDefaultValidation() {
   setTimeout(() => {
     defaultValidation.id = uuid.v4();
-    console.log('Default: ' + JSON.stringify(defaultValidation));
+    // console.log('Default: ' + JSON.stringify(defaultValidation));
     validationDialogItem.value = Object.assign({}, defaultValidation);
   });
 }

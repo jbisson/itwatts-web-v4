@@ -8,32 +8,36 @@ export const useTeamStore = defineStore('Teams', {
     state: () => ({
       myTeams: [] as any,
       teams: [] as any,
-      teamsMap: new Map(),
+      teamsFetched: false,
+      myTeamFetched: false,
     }),
     getters: {},
     actions: {
-      async fetchMyTeams() {             
+      async fetchMyTeams(forced = false) {
+        if (this.myTeamFetched && !forced) {
+          return;
+        }
         try {
           const response = await axios.get(`${config.serverApi.publicHostname}/v1/teams/me`,
             { withCredentials: true });
           this.myTeams = response.data.data;
-          this.myTeams.sort((team1: any, team2: any) => { return team1.display_name.localeCompare(team2.display_name) });              
+          this.myTeams.sort((team1: any, team2: any) => { return team1.display_name.localeCompare(team2.display_name) });
+          this.myTeamFetched = true;
         } catch (err: any) {                
             console.log(`An error occured fetching teams: ${err} stack: ${err.stack}`);
         }
       },
-      async fetchTeams() {            
+      async fetchTeams(forced = false) {        
+        if (this.teamsFetched && !forced) {
+          return;
+        }
+        
         try {
           const response = await axios.get(`${config.serverApi.publicHostname}/v1/teams`,
             { withCredentials: true });
-          this.teams = response.data.data;
-          this.teamsMap = new Map(
-            response.data.data.map((team: any) => [team.id, team])
-          );
-
-          // console.log(`My teams: ${JSON.stringify(this.teams)}`);
-
-          this.teams.sort((team1: any, team2: any) => { return team1.display_name.localeCompare(team2.display_name) });              
+          this.teams = response.data.data;          
+          this.teams.sort((team1: any, team2: any) => { return team1.display_name.localeCompare(team2.display_name) });
+          this.teamsFetched = true;
         } catch (err: any) {                
             console.log(`An error occured fetching teams: ${err} stack: ${err.stack}`);
         }

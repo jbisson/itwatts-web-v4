@@ -10,7 +10,8 @@ import { round } from '@/utils/numbers';
 import { rawTimeSecsToFriendlyTime } from '@/utils/string';
 import { useI18n } from 'vue-i18n';
 import security from '@/security';
-import { parseJsonSourceFileConfigFileContent } from 'typescript';
+import leaflet from "leaflet";
+import polyUtil from "polyline-encoded";
 
 const props = defineProps<{
   userID: any,
@@ -38,44 +39,42 @@ const loading = ref(false);
 const segmentType = ref('location');
 const gravelSegment = ref(true);
 const roadSegment = ref(true);
-const myMapRef = ref();
-const path = ref();
-const centerLocation = ref();
 const stravaSegmentsProcessed = reactive([] as any);
 const stravaSegmentsSelected = reactive([] as any);
 const segmentsOnMap = reactive([] as any);
 const dateRange = ref();
 const distanceRange = ref([0, 100]);
-const powerDialogStartDate = ref();
-const powerDialogEndDate = ref();
 const filterOptions = ref();
-const windDirections = ref();
+const windDirections = ref([]);
 const userStravaSegmentsStarred = ref();
 const userStravaSegmentsActivity = ref();
 const locationDialogVisible = ref(false);
 const searchAddress = ref();
-const segmentOptions = ref('allSegments');
 const showHiddenSegments = ref(false);
 const reverseCourse = ref(false);
 let maxMonths = 0;
-const openedMarkerUrl = ref();
 const locationStravaSegments = ref();
 const activityFile = ref();
 stravaSegmentsProcessed.value = [];
 stravaSegmentsSelected.value = [];
 segmentsOnMap.value = [];
 const stravaUserActivity = ref();
-const stravaUserActivities = ref();
+const stravaUserActivities = ref([]);
 const infoAlert = ref();
 const errorAlert = ref();
 const warningAlert = ref();
 let hiddenStravaSegments = new Set();
-searchAddress.value = `${useUserProfile().search_address} -> ${useUserProfile().search_area_size}km`;
+searchAddress.value = `${useUserProfile().search_location.city}, ${useUserProfile().search_location.state} -> ${useUserProfile().search_area_size}km`;
+const mapElement = ref();
+const segmentOnMap = ref();
+const showSegmentsOnMap = ref(true);
+let map: any = null;
+let polylines: any = [];
 
 const { t } = useI18n({ useScope: 'global' });
 
 const stravaHeaders: Header[] = reactive([
-  { text: t('common.segmentName'), value: "name", sortable: true },  
+  { text: t('common.segmentName'), value: "name", width: 150, sortable: true },  
   { text: 'Dist ance', value: "distance", width: 75, sortable: true },
   { text: t('stravaSegmentComponent.averageGradient'), value: "average_grade", width: 10, sortable: true },
   { text: t('stravaSegmentComponent.elevationDiff'), value: "total_elevation_gain", width: 10, sortable: true },
@@ -93,19 +92,18 @@ const stravaHeaders: Header[] = reactive([
   { text: t('stravaSegmentComponent.hisHerTime'), value: "elapsed_time", width: 65, sortable: true },
   { text: t('stravaSegmentComponent.gap'), value: "elapsed_time_vs_kom", width: 65, sortable: true },
   { text: t('actions.actions'), value: "actions", sortable: true },  
-]);
- 
-function loadGraph() {
-  console.log(`loadGraph`);
-  if (!props.userStravaTopSegments.value) {
-    return;
-  }
-}
+]); 
 
-function dateRangeChanged() {
-  powerDialogStartDate.value = `${Math.floor(2015 + dateRange.value[0] / 12)}-${minTwoDigits((dateRange.value[0]%12)+1)}`;
-  powerDialogEndDate.value = `${Math.floor(2015 + dateRange.value[1] / 12)}-${minTwoDigits((dateRange.value[1]%12)+1)}`;  
-}
+const startIcon = leaflet.divIcon({
+  className: '',
+  html: `
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" fill="green" stroke="white" stroke-width="2"/>
+      </svg>
+    `,
+   conSize: [24, 24],
+   conAnchor: [12, 12]
+});
 
 function minTwoDigits(n: any) {
   return (n < 10 ? '0' : '') + n;
@@ -120,7 +118,7 @@ function onLocationChanged() {
   locationStravaSegments.value = null;
 
   //console.log(`onLocationChanged: ${obj.location.lat}, ${obj.location.lng} areaSize: ${obj.areaSize} address: ${obj.address}`);
-  searchAddress.value = `${useUserProfile().search_address} -> ${useUserProfile().search_area_size}km`;
+  searchAddress.value = `${useUserProfile().search_location.city}, ${useUserProfile().search_location.state} -> ${useUserProfile().search_area_size}km`;
   onFilterChanged();
   refresh();
 }
@@ -175,18 +173,6 @@ function onFilterChanged() {
   });
 
   filterOptions.value.push({
-    field: 'start_date',
-    comparison: (valuesField: any, criterias: any) => {
-      if (segmentOptions.value === 'userSegments') {
-        return (new Date(valuesField.substring(0, 7)) >= new Date(powerDialogStartDate.value) &&
-          new Date(valuesField.substring(0, 7)) <= new Date(powerDialogEndDate.value));
-      }
-      return true;
-    },
-    criteria: '',
-  });
-
-  filterOptions.value.push({
     field: 'distance',
     comparison: (valueField: any, criterias: any) => {
       if (distanceRange.value && distanceRange.value[0] !== 0 && valueField < distanceRange.value[0] * 1000) {
@@ -214,6 +200,8 @@ function onFilterChanged() {
     },
     criteria: '',
   });
+
+  drawSegmentsOnMap();
 }
 
 async function refreshKom(segment_id: any) {
@@ -226,28 +214,8 @@ async function refreshKom(segment_id: any) {
   });
 }
 
-//watch(myMapRef, googleMap => {
-  /*if (googleMap) {
-    googleMap.$mapPromise.then(map => {
-      if (tableItems.length > 0) {
-        segmentsOnMap.value = tableItems.map((tableItem: any) => {
-          return {
-            segment_id: tableItem.id,
-            segment_url: `https://www.strava.com/segments/${tableItem.id}`,
-            segment_name: tableItem.name,
-            segment_distance: tableItem.distance,
-            polyline: google.maps.geometry.encoding.decodePath(tableItem.map.polyline),
-            strokeOpacity: 0.2
-          }
-        });
-        // console.log(JSON.stringify(segmentsOnMap.value));
-      }      
-    });
-  }*/
-//});
-
 async function refresh() {
-  console.log('refresh');
+  // console.log('refresh');
 
   if (!security.isTokenValid([])) {
     return emit('loginRequired');
@@ -281,7 +249,7 @@ async function refresh() {
         `?lat=${useUserProfile().search_location.lat}&lng=${useUserProfile().search_location.lng}&area_size=${useUserProfile().search_area_size * 1000}`, {
           withCredentials: true,
         });
-        locationStravaSegments.value = locationStravaSegmentsResponse.data.data;        
+        locationStravaSegments.value = locationStravaSegmentsResponse.data.data;
       } catch (err: any) {
         console.log(`Error occured: ${err} stack: ${err.stack}`);
         errorAlert.value = t('errors.errorOccured', [err]);
@@ -299,11 +267,12 @@ async function refresh() {
       }
     }    
   } else if (segmentType.value === 'strava') {
-    if (!stravaUserActivities.value || stravaUserActivity.value) {
+    // console.log('stravaUserActivities: ' + stravaUserActivities.value.length + ' props.userID: ' + props.userID);
+    if (stravaUserActivities.value.length === 0 || stravaUserActivity.value) {
       try {
         loading.value = true;
 
-        if (!stravaUserActivities.value) {
+        if (stravaUserActivities.value.length === 0) {
           const lastYear = new Date();
           lastYear.setFullYear(lastYear.getFullYear() - 2);
           const stravaActivityResponse = await axios.get(`${config.serverApi.publicHostname}/v1/users/${props.userID}?fields=strava_activities(activities_detail)&strava_activities(activities.start_date)=>${lastYear.toISOString()}`, {
@@ -327,7 +296,7 @@ async function refresh() {
         }
         if (stravaUserActivity.value) {
           const activity = userStravaSegmentsActivity.value.find((activity: any) => activity.id == stravaUserActivity.value);
-          let stravaSegments;
+          let stravaSegments = [];
           if (reverseCourse.value) {
             //console.log(JSON.stringify(activity));
             const stravaSegmentsResponse = await axios.post(`${config.serverApi.publicHostname}/v1/strava-segments`, {
@@ -340,11 +309,13 @@ async function refresh() {
           } else {
             const activitySegmentIDs = new Map(activity.segment_efforts.map((segmentEffort: any) => [segmentEffort.segment.id, segmentEffort.segment]));
             
-            const stravaSegmentsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/strava-segments?` +
-              `segment_id=${[...activitySegmentIDs.keys()].toString()}`, {
-              withCredentials: true,
-            });
-            stravaSegments = stravaSegmentsResponse.data.data;
+            if (activitySegmentIDs.size > 0) {
+              const stravaSegmentsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/strava-segments?` +
+                `segment_id=${[...activitySegmentIDs.keys()].toString()}`, {
+                withCredentials: true,
+              });
+              stravaSegments = stravaSegmentsResponse.data.data;
+            }            
           }
           
           for (let i = 0;i < stravaSegments.length;i++) {
@@ -363,13 +334,169 @@ async function refresh() {
       }
     }    
   } else if (segmentType.value === 'gpx') { 
-    onActivityFileUploaded();
+    await onActivityFileUploaded();
   }
+
+  let center = [useUserProfile().search_location.lat, useUserProfile().search_location.lng];
+  if (stravaSegmentsProcessed.value.length > 0) {
+    center = polyUtil.decode(stravaSegmentsProcessed.value[0].map.polyline)[0];      
+  }
+
+  if (mapElement.value && Object.keys(mapElement.value).length === 0) {
+    map = leaflet.map(mapElement.value).setView(center, 11); 
+
+    leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);    
+  } else if (map) {
+    map.setView(center, 11);
+  }
+  
+  drawSegmentsOnMap();
+}
+
+function drawSegmentsOnMap() {
+  if (!mapElement.value || !map) {    
+    return;
+  }  
+
+  console.log('drawSegmentsOnMap');
+  for (const polyline of polylines) {
+    map.removeLayer(polyline);
+    map.removeLayer(polyline.decorator);
+    map.removeLayer(polyline.marker);
+  }
+  
+  if (!showSegmentsOnMap.value) {
+    return;
+  }
+
+  if (segmentOnMap.value) {
+    addSegmentOnMap(segmentOnMap.value);
+  } else {    
+    for (const stravaSegment of stravaSegmentsProcessed.value) {
+      if (distanceRange.value[0]*1000 > stravaSegment.distance || distanceRange.value[1]*1000 < stravaSegment.distance ||
+        (stravaSegment.hidden && showHiddenSegments.value === false) ||
+        (windDirections.value.length > 0 && !stravaSegment.wind_direction.some((direction: any) => windDirections.value.includes(direction)))
+      ) {
+        continue;
+      }    
+      addSegmentOnMap(stravaSegment);
+    }
+  }  
+}
+
+function addSegmentOnMap(stravaSegment: any) {
+    if (stravaSegment.map && stravaSegment.map.polyline) {
+    //console.log('decode: ' + polyUtil.decode(stravaSegment.map.polyline));
+    const color = stravaSegment.distance > 10000 ? 'red' :  stravaSegment.distance > 2000 ? 'orange' : 'blue';
+    const polylineDecoded = polyUtil.decode(stravaSegment.map.polyline);
+    const polyline = leaflet.polyline(polylineDecoded,
+      {color: color, dashArray: '6, 6', fillColor: '#ffffff', lineCap: 'square'}).addTo(map);
+    polyline.stravaSegment = stravaSegment;
+    
+    polyline.marker = leaflet.marker(polylineDecoded[0],  { icon: startIcon }).addTo(map);      
+    polyline.decorator = leaflet.polylineDecorator(polyline, {
+      patterns: [
+      {
+          offset: 20,
+          repeat: 50,
+          symbol: leaflet.Symbol.arrowHead({
+              pixelSize: 7, // Size of the arrowhead
+              polygon: false, // Set to true for a filled arrowhead
+              pathOptions: { stroke: true, color: 'black', weight: 2 } // Styling for the arrowhead
+          })
+      }
+      ]
+    }).addTo(map);
+    polyline.marker.polyline = polyline;
+    polylines.push(polyline);
+    polyline.marker.on('mouseover', function(e: any) {
+      for (const polyline of polylines) {
+        if (e.target.polyline === polyline) {
+          e.target.polyline.setStyle({
+            color: 'black',
+          });
+        } else {
+          map.removeLayer(polyline);
+          map.removeLayer(polyline.decorator);
+          map.removeLayer(polyline.marker);
+        }
+      }        
+    });
+
+    polyline.marker.on('mouseout', function(e: any) {
+      drawSegmentsOnMap();
+      /*const stravaSegmentIndex = stravaSegmentsSelected.value.indexOf(e.target.polyline.stravaSegment);
+      if (stravaSegmentIndex === -1) {          
+        e.target.polyline.setStyle({
+          color: e.target.polyline.stravaSegment.distance > 10000 ? 'red' :  e.target.polyline.stravaSegment.distance > 2000 ? 'orange' : 'blue',
+        });
+      }      */  
+    });
+    polyline.marker.on('click', function(e: any) {
+      const stravaSegmentIndex = stravaSegmentsSelected.value.indexOf(e.target.polyline.stravaSegment);
+      if (stravaSegmentIndex === -1) {
+        stravaSegmentsSelected.value.push(e.target.polyline.stravaSegment);
+        e.target.polyline.setStyle({
+          color: 'black',
+        });
+      } else {          
+        stravaSegmentsSelected.value.splice(stravaSegmentIndex, 1);          
+        e.target.polyline.setStyle({
+          color: e.target.polyline.stravaSegment.distance > 10000 ? 'red' :  e.target.polyline.stravaSegment.distance > 2000 ? 'orange' : 'blue',
+        });
+      }
+    });
+    
+    polyline.on('mouseover', function(e: any) {
+      e.target.setStyle({
+        color: 'black',
+      });
+    });
+
+    polyline.on('mouseout', function(e: any) {
+      const stravaSegmentIndex = stravaSegmentsSelected.value.indexOf(e.target.stravaSegment);
+      if (stravaSegmentIndex === -1) {
+        e.target.setStyle({
+          color: e.target.stravaSegment.distance > 10000 ? 'red' :  e.target.stravaSegment.distance > 2000 ? 'orange' : 'blue',
+        });
+      }
+    });
+
+    polyline.on('click', function(e: any) {
+      const stravaSegmentIndex = stravaSegmentsSelected.value.indexOf(e.target.stravaSegment);
+      if (stravaSegmentIndex === -1) {
+        stravaSegmentsSelected.value.push(e.target.stravaSegment);
+        e.target.color = e.target.options.color;
+        e.target.setStyle({
+          color: 'black',
+        });
+      } else {
+        stravaSegmentsSelected.value.splice(stravaSegmentIndex, 1);          
+        e.target.setStyle({
+          color: e.target.stravaSegment.distance > 10000 ? 'red' :  e.target.stravaSegment.distance > 2000 ? 'orange' : 'blue',
+        });
+      }
+    });
+  }
+}
+
+function showSegmentOnlyOnMap(segmentID: any) {
+  if (segmentOnMap.value && segmentOnMap.value.id === segmentID) {
+    segmentOnMap.value = '';
+  } else {
+    const segment = stravaSegmentsProcessed.value.find((stravaSegment: any) => stravaSegment.id === segmentID);
+    segmentOnMap.value = segment;
+  }
+  
+  drawSegmentsOnMap();
 }
 
 function processStravaSegment(stravaSegment: any, stravaSegmentDb: any, userStravaTopSegments: any) {
   if (stravaSegmentDb.processed) {
-      stravaSegment.wind_direction = stravaSegmentDb.processed.wind_direction;
+    stravaSegment.wind_direction = stravaSegmentDb.processed.wind_direction;
   }
   let foundLeaderboard = false;
   if (stravaSegmentDb.leaderboard_f && 
@@ -435,6 +562,8 @@ function processStravaSegment(stravaSegment: any, stravaSegmentDb: any, userStra
 }
 
 onBeforeUpdate(() => {
+  return;
+  console.log('onBeforeUpdate');
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   
@@ -450,11 +579,11 @@ async function onActivityFileUploaded() {
   console.log('onActivityFileUploaded');
   errorAlert.value = '';
   stravaSegmentsProcessed.value = [];
-  stravaSegmentsSelected.value = [];
+  stravaSegmentsSelected.value = [];  
   if (activityFile.value && activityFile.value.name.length > 0) {    
     try {
       loading.value = true;
-
+      
       let response = await axios.post(`${config.serverApi.publicHostname}/v1/route`, {
         file: activityFile.value
       }, {
@@ -499,92 +628,16 @@ async function onActivityFileUploaded() {
 
 const onUpdateFilter = (items: any) => {
   //console.log(`onUpdateFilter ${items.length}`);
-  return;
-  if (stravaSegmentsSelected.value.length === 0) {
-    const showSegmentOnlySegment = items.find((item: any) => item.showSegmentOnly === true);
-    if (showSegmentOnlySegment) {
-      segmentsOnMap.value = [
-        {
-          segment_id: showSegmentOnlySegment.id,
-          segment_url: `https://www.strava.com/segments/${showSegmentOnlySegment.id}`,
-          segment_name: showSegmentOnlySegment.name,
-          segment_distance: showSegmentOnlySegment.distance,
-          polyline: showSegmentOnlySegment.polyline ? showSegmentOnlySegment.polyline : '',
-          //polyline: showSegmentOnlySegment.polyline ? showSegmentOnlySegment.polyline : google.maps.geometry.encoding.decodePath(showSegmentOnlySegment.map.polyline),
-          selected: false,
-        } 
-      ]
-    } else {
-      segmentsOnMap.value = items.map((tableItem: any) => {
-        return {
-          segment_id: tableItem.id,
-          segment_url: `https://www.strava.com/segments/${tableItem.id}`,
-          segment_name: tableItem.name,
-          segment_distance: tableItem.distance,
-          polyline: tableItem.polyline ? tableItem.polyline : '',
-          //polyline: tableItem.polyline ? tableItem.polyline : google.maps.geometry.encoding.decodePath(tableItem.map.polyline),
-          selected: false,
-        }
-      });
-    }
-
-    if (segmentType.value === 'location' && segmentsOnMap.value.length > 0) {
-      // console.log(JSON.stringify(segmentsOnMap.value[0]));
-      /*centerLocation.value = {
-        lat: segmentsOnMap.value[0].polyline[0].lat,
-        lng: segmentsOnMap.value[0].polyline[0].lng,
-      }*/
-    }
-  }  
+  return; 
 };
 
-function showSegmentOnlyOnMap(segmentId: number, showSegmentOnly: boolean) {
-  for (const stravaSegmentProcessed of stravaSegmentsProcessed.value) {
-    stravaSegmentProcessed.showSegmentOnly = (stravaSegmentProcessed.id === segmentId && showSegmentOnly) ? true : false;
-  }  
+async function changeShowSegmentsOnMap(val: boolean) {
+  showSegmentsOnMap.value = val;
+
+  drawSegmentsOnMap();
 }
 
-/*function openMarker(segment: any) {
-  if (!segment) {
-    return;
-  }
-  console.log(`items selected: ${segment.segment_id} ${segment.segment_url}`);
-  const segmentFull = stravaSegmentsProcessed.value.find((seg: any) => seg.id === segment.segment_id);
-  const segmentsOnMapFull = segmentsOnMap.value.find((seg: any) => seg.segment_id === segment.segment_id);
-  segmentsOnMapFull.selected = segmentsOnMapFull.selected ? false : true;
-  
-  //segmentsOnMapFull.strokeOpacity = segmentsOnMapFull.strokeOpacity === 0.2 ? 0.9 : 0.2;
-  
-  const selectedIndex = stravaSegmentsSelected.value.findIndex((seg: any) => seg.id === segment.segment_id)
-  if (selectedIndex === -1) {
-    stravaSegmentsSelected.value.push(segmentFull);
-  } else {
-    stravaSegmentsSelected.value.splice(selectedIndex, 1);    
-  }
-  
-  openedMarkerUrl.value = segment.segment_url;
-}*/
-
-/*function getSegmentStrokeOpacity(segment: any) {
-  if (segment.selected) {
-    return 0.8;
-  } else {
-    return 0.2;
-  }  
-}
-
-function getSegmentStrokeColor(segment: any) {
-  if (segment.segment_distance < 1000) {
-    return '#FF0000';    
-  } else if (segment.segment_distance < 5000) {
-    return '#0000FF';
-  } else {
-    return '#00FF00';    
-  }  
-}*/
-
-async function changeUserSegmentVisibility(segmentId: number, hidden: boolean) {
-  
+async function changeUserSegmentVisibility(segmentId: number, hidden: boolean) {  
   if (!hidden && hiddenStravaSegments.has(segmentId)) {
     hiddenStravaSegments.delete(segmentId);
   } else {
@@ -619,7 +672,10 @@ async function onStravaActivityChanged(stravaActivityID: string) {
   
   //console.log(JSON.stringify(activity.segment_efforts));
   const activitySegmentIDs = new Map(activity.segment_efforts.map((segmentEffort: any) => [segmentEffort.segment.id, segmentEffort.segment]));
-    
+  
+  if (activitySegmentIDs.size === 0) {
+    return;
+  }
   try {
     loading.value = true;
     const stravaSegmentsResponse = await axios.get(`${config.serverApi.publicHostname}/v1/strava-segments?` +
@@ -643,6 +699,11 @@ async function onStravaActivityChanged(stravaActivityID: string) {
   }
 }
 
+function closeWindow() {
+  // console.log('closing window');
+  emit('handledialog');
+}
+
 function changeUserSegmentStarred(segmentId: number, starred: boolean) {  
   axios.put(`${config.serverApi.publicHostname}/v1/strava-segments/${segmentId}/starred`, {
     id: segmentId,
@@ -651,7 +712,7 @@ function changeUserSegmentStarred(segmentId: number, starred: boolean) {
     withCredentials: true,
   })
   .then(response => {
-    if (response.status !== 200) {                
+    if (response.status !== 200) {
       console.log('An error has occured.');
       errorAlert.value = t('errors.errorOccured');
       return;
@@ -665,8 +726,37 @@ function changeUserSegmentStarred(segmentId: number, starred: boolean) {
   }); 
 }
 
-//watch(() => [], refresh);
-refresh();
+watch(() => props.visible, (newVal, oldVal) => {
+  if (newVal) {
+    console.log('watch props.visible');
+    stravaUserActivities.value = [];
+    stravaUserActivity.value = '';
+    setTimeout(function() {
+      refresh();
+    }, 1);
+  }  
+});
+
+
+watch(stravaUserActivity, (newValue, oldValue) => {
+  if (newValue) {
+    console.log('watch stravaUserActivity');
+    refresh();
+  }  
+});
+
+watch(activityFile, (newValue, oldValue) => {
+  console.log('watch activityFile');
+  refresh();
+});
+
+watch(segmentType, (newValue, oldValue) => {
+  console.log('watch segmentType');
+  refresh();
+});
+
+// watch(() => [], refresh);
+
 </script>
 <template>
   <v-form>
@@ -680,7 +770,7 @@ refresh();
             <v-btn
               icon="mdi-close"
               variant="text"
-              @click="$emit('handledialog')">
+              @click="closeWindow()">
             </v-btn>
           </v-card-title>
         </v-card-item>
@@ -713,7 +803,7 @@ refresh();
           </v-row>
             <v-row>
               <v-col class="py-0">              
-                <v-radio-group inline v-model="segmentType" :update:modelValue="refresh()">
+                <v-radio-group inline v-model="segmentType">
                   <v-radio :label="t('stravaSegmentComponent.location')" value="location" ></v-radio>
                   <v-radio :label="t('stravaSegmentComponent.stravaActivity')" value="strava"></v-radio>
                   <v-radio :label="t('stravaSegmentComponent.gpxActivityFile')" value="gpx"></v-radio>
@@ -728,15 +818,7 @@ refresh();
                   v-model="activityFile"></v-file-input>
                 </div>
               </v-col>
-            </v-row>
-            <v-row v-if="segmentType === 'location'">
-              <v-col>
-                <v-radio-group inline v-model="segmentOptions">
-                  <v-radio :label="t('stravaSegmentComponent.allSegments')" value="allSegments"></v-radio>
-                  <v-radio :label="t('stravaSegmentComponent.segmentWithResults')" value="userSegments" ></v-radio>                  
-                </v-radio-group>
-              </v-col>
-            </v-row>            
+            </v-row>        
             <v-row v-if="segmentType === 'location'">
               <v-col>
                 <v-btn @click="openStravaLocationDialog()" prepend-icon="mdi-map-marker">{{ searchAddress }}</v-btn>
@@ -752,13 +834,12 @@ refresh();
                     :item-title="'text'"
                     :item-value="'value'"
                     variant="outlined"
-                    @change="refresh()"
                   ></v-autocomplete>
               </v-col>
             </v-row>
             <v-row>
               <v-col>
-                <v-switch :label="t('stravaSegmentComponent.viewHiddenSegments')" color="primary" v-model="showHiddenSegments"></v-switch>
+                <v-switch :label="t('stravaSegmentComponent.viewHiddenSegments')" color="primary" v-model="showHiddenSegments" @change="refresh()"></v-switch>
                 <v-switch :label="t('stravaSegmentComponent.reverseCourse')" color="primary" v-model="reverseCourse" v-if="segmentType === 'gpx' || segmentType === 'strava'" @change="refresh()"></v-switch>
               </v-col>            
               <v-col cols="3" class="py-0" v-if="false">
@@ -776,42 +857,10 @@ refresh();
                 ></v-checkbox>
               </v-col>
             </v-row>
-            <v-row v-if="false">
-              <v-col cols="1">
-                <v-text-field
-                    v-model="powerDialogStartDate"
-                    density="compact"
-                    type="text"
-                    variant="outlined"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="2">
-                <v-range-slider
-                  v-model="dateRange"
-                  @update:modelValue="dateRangeChanged"
-                  @end="onFilterChanged"
-                  :step="1"
-                  :max="maxMonths"
-                  min="0"
-                  strict
-                >
-                </v-range-slider>
-              </v-col>
-                <v-col cols="1">
-                <v-text-field
-                  v-model="powerDialogEndDate"
-                  density="compact"
-                  type="text"
-                  variant="outlined"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
             <v-row>
               <v-col cols="3" md="1">
                 <div class="text-caption">
-                    Distance
+                    {{ t('stravaSegmentComponent.distance') }}
                   </div>
               </v-col>
               <v-col cols="9" md="3">              
@@ -827,8 +876,8 @@ refresh();
                   </v-range-slider>               
               </v-col>
             </v-row>
-            <v-row>
-              <v-col cols="12" >
+            <v-row align="center">
+              <v-col cols="11">
                 <v-chip-group
                   v-model="windDirections"
                   selected-class="text-primary"                
@@ -844,7 +893,11 @@ refresh();
                 <v-chip value="SW">SW</v-chip>
                 <v-chip value="W">W</v-chip>
                 <v-chip value="NW">NW</v-chip>
-              </v-chip-group>                        
+              </v-chip-group>              
+              </v-col>
+              <v-col cols="1" class="text-right">
+                <v-btn density="default" @click="changeShowSegmentsOnMap(false)" icon="mdi-eye-outline" size="x-small" v-if="showSegmentsOnMap"></v-btn>
+                <v-btn density="default" @click="changeShowSegmentsOnMap(true)" icon="mdi-eye-off" size="x-small" v-if="!showSegmentsOnMap"></v-btn>
               </v-col>
             </v-row>            
             <v-row>
@@ -854,45 +907,8 @@ refresh();
                   stream
                   color="primary"
                 ></v-progress-linear>
-                <!--
-                <GMapMap
-                  ref="myMapRef"
-                  :center="centerLocation ? centerLocation : useUserProfile().search_location"
-                  :zoom="12 - (useUserProfile().search_area_size / 100) * 4"
-                  style="height: 30rem"
-                >
-                <GMapPolyline
-                  v-for="segment in segmentsOnMap.value"
-                  :key="segment.segment_id"
-                  :path="segment.polyline"
-                  @click="openMarker(segment)"
-                  :options="{
-                    strokeColor: getSegmentStrokeColor(segment),
-                    strokeOpacity: getSegmentStrokeOpacity(segment),
-                    strokeWeight: 5,
-                    icons: [{
-                      icon: { 
-                        path: 'M 1.5 1 L 1 0 L 1 2 M 0.5 1 L 1 0',
-                        fillColor: 'black',
-                        strokeColor: 'black',
-                        strokeWeight: 2,
-                        strokeOpacity: 1
-                      },
-                      offset: '10px',
-                      repeat: '50px'
-                    }]}"
-                :editable="false"/>
-                <GMapCluster
-                  :minimumClusterSize="15">
-                  <GMapMarker
-                    v-for="segment in segmentsOnMap.value"
-                    :position="segment.polyline[0]"
-                    @click="openMarker(segment)"
-                    :icon="'https://developers.google.com/maps/documentation/javascript/examples/full/images/info-i_maps.png'"
-                  >                
-                  </GMapMarker>
-              </GMapCluster>
-              </GMapMap>-->
+                 
+                <div id="map" ref="mapElement" style="height: 500px;resize: both;"></div>
               </v-col>
             </v-row>
             <v-row>
@@ -927,14 +943,14 @@ refresh();
                   <template #item-kom_f_avg_speed="{ kom_f_avg_speed }">
                     {{ kom_f_avg_speed }} km/h
                   </template>
-                  <template #item-actions="{ id, actions, hidden, starred, showSegmentOnly }">
+                  <template #item-actions="{ id, actions, hidden, starred }">
                     <div class="d-flex align-center justify-center">
                       <v-btn density="default" @click="changeUserSegmentVisibility(id, true)" icon="mdi-eye-outline" size="x-small" v-if="!hidden"></v-btn>&nbsp;
                       <v-btn density="default" @click="changeUserSegmentVisibility(id, false)" icon="mdi-eye-off" size="x-small" v-if="hidden"></v-btn>&nbsp;
                       <v-btn density="default" @click="changeUserSegmentStarred(id, true)" icon="mdi-star-outline" size="x-small" v-if="!starred"></v-btn>&nbsp;
-                      <v-btn density="default" @click="changeUserSegmentStarred(id, false)" icon="mdi-star" size="x-small" v-if="starred"></v-btn>&nbsp;
-                      <v-btn density="default" @click="showSegmentOnlyOnMap(id, false)" icon="mdi-map-marker" size="x-small" v-if="showSegmentOnly"></v-btn>&nbsp;
-                      <v-btn density="default" @click="showSegmentOnlyOnMap(id, true)" icon="mdi-map-marker-off" size="x-small" v-if="!showSegmentOnly"></v-btn>&nbsp;
+                      <v-btn density="default" @click="changeUserSegmentStarred(id, false)" icon="mdi-star" size="x-small" v-if="starred"></v-btn>&nbsp;                      
+                      <v-btn density="default" @click="showSegmentOnlyOnMap(id)" icon="mdi-map-marker" size="x-small"></v-btn>&nbsp;                      
+                      
                       <v-btn color="primary" @click="refreshKom(id)" icon="mdi-refresh" size="x-small">
                       <!--    <v-tooltip
                           activator="parent"
@@ -964,7 +980,7 @@ refresh();
             </v-row>            
           </v-card-text>
           <v-card-actions>          
-            <v-btn color="primary" @click="$emit('handledialog')">{{ t('actions.close') }}</v-btn>
+            <v-btn color="primary" @click="closeWindow()">{{ t('actions.close') }}</v-btn>
           </v-card-actions>
       </v-card>
     </v-dialog>

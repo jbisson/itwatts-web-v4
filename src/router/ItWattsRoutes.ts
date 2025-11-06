@@ -28,6 +28,10 @@ const MainRoutes = {
         component: () => import('@/views/itwatts/team/powerStats.vue'),
       },
       {
+        path: '/itwatts/team/:teamName/calendar',
+        component: () => import('@/views/itwatts/team/calendar.vue'),
+      },
+      {
         path: '/itwatts/fera/info',
         component: () => import('@/views/itwatts/fera/info.vue'),
       },
@@ -56,6 +60,10 @@ const MainRoutes = {
         component: () => import('@/views/itwatts/super-admin/teams.vue'),
       },
       {
+        path: '/itwatts/super-admin/users',
+        component: () => import('@/views/itwatts/super-admin/users.vue'),
+      },
+      {
         path: '/itwatts/signin',
         component: () => import('@/views/itwatts/signin.vue'),
       },
@@ -81,7 +89,11 @@ const MainRoutes = {
         name: 'privacy',
         path: '/itwatts/privacy',
         component: () => import('@/views/itwatts/privacy.vue'),
-      },  
+      },
+      {
+        path: '/itwatts/account-settings',
+        component: () => import('@/views/itwatts/account-settings.vue'),
+      },
     ]
 };
 

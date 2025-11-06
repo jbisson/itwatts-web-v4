@@ -38,5 +38,4 @@ function rawTimeSecsToFriendlyTime(secs) {
   }
 }
 
-
 export { decodeBase64, rawTimeSecsToFriendlyTime }

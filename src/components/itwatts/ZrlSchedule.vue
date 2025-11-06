@@ -4,7 +4,9 @@ import { ref, watch, reactive } from "vue";
 
 import CategoryColumnZrl from '@/components/itwatts/CategoryColumnZrl.vue';
 import config from "@/config/config.json";
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
+
+const emit = defineEmits(['exportTeam']);
 
 const tab7 = ref(null);
 const errorAlert = ref();
@@ -22,8 +24,8 @@ const props = defineProps<{
   }>();
 
 const ridersInTeam = new Set();
-const defaultFormName = 'zrl20242025round2_default';
-const formName = 'zrl20242025round2';
+const defaultFormName = 'zrl20252026round2_default';
+const formName = 'registerZrl20252026Round2';
 const ridersToBeAdded = 
 {
     name: 'Coureurs à placer',
@@ -50,36 +52,47 @@ async function refresh(loadDefault = false) {
       const teamObj = Object.assign({}, team);
       teamObj.riders = [];      
       teams.value.push(teamObj);
-
       for (const rider of team.riders) {
         const riderUser = props.swatUSersMapZpId.value.get(rider);
         if (!riderUser) {
           console.log('riderUser null for ' + rider + ' with props.swatUSersMapZpId.value' + props.swatUSersMapZpId.value.size);
           return;
         }
-        const zpProfileCP20Watts = riderUser.zp_profile ? JSON.parse(riderUser.zp_profile.profile_stats).w1200 : 0;
+        
+        const zpProfileCP20Watts = riderUser.zp_profile ? riderUser.zp_profile.profile_stats.w1200 : 0;
+        const zpProfileCP20WattKg = riderUser.zp_profile ? riderUser.zp_profile.profile_stats.wkg1200 : 0;
+        const zpProfileCat = riderUser.zp_profile ? riderUser.zp_profile.category : 'E';
+        
         let availability = 0;
-        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).nov12Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).nov19Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).nov26Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).dec3Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).dec10Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).dec17Course.includes('available')) availability++;
-
+        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).nov4Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).nov11Course.includes('available')) availability++;        
+        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).nov18Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).nov25Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).dec2Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(riderUser.zp_id).dec9Course.includes('available')) availability++;
         teamObj.riders.push({
           id: riderUser.zp_id,
           name: `${riderUser.first_name} ${riderUser.last_name}`,
           catPreferences: props.formsResultsMapZpId.value.get(riderUser.zp_id).catPreferences,
+          catPreference: props.formsResultsMapZpId.value.get(riderUser.zp_id).catPreference,
+          dsInterest: props.formsResultsMapZpId.value.get(riderUser.zp_id).dsInterest,
           othersTeamPlayerNames: props.formsResultsMapZpId.value.get(riderUser.zp_id).othersTeamPlayerNames,
+          zpProfileCat: zpProfileCat,
           zpProfileCP20Watts: zpProfileCP20Watts,
+          zpProfileCP20WattKg: zpProfileCP20WattKg,
           vElo: riderUser.zwift_racing_app_profile ? Math.round(riderUser.zwift_racing_app_profile.race.rating) : 0,
           isCapitain: team.capt === riderUser.zp_id ? true : false,
-          nbAvailability: availability
+          nbAvailability: availability,
+          preferedTime6h00: props.formsResultsMapZpId.value.get(riderUser.zp_id).preferedTime6h00,
+          preferedTime7h00: props.formsResultsMapZpId.value.get(riderUser.zp_id).preferedTime7h00,
+          preferedTime8h00: props.formsResultsMapZpId.value.get(riderUser.zp_id).preferedTime8h00,
+          preferedTime12h00: props.formsResultsMapZpId.value.get(riderUser.zp_id).preferedTime12h00,
+          preferedTime18h30: props.formsResultsMapZpId.value.get(riderUser.zp_id).preferedTime18h30,
+          preferedTime19h30: props.formsResultsMapZpId.value.get(riderUser.zp_id).preferedTime19h30,
         });
-        ridersInTeam.add(rider);
+        ridersInTeam.add(rider);        
       }      
     }
-    
     const riderSortedByElo = Array.from(props.swatUSersMapZpId.value.values());
     riderSortedByElo.sort((a, b) => (b.zwift_racing_app_profile && b.zwift_racing_app_profile.race ? b.zwift_racing_app_profile.race.rating : 0) - (a.zwift_racing_app_profile && a.zwift_racing_app_profile.race ? a.zwift_racing_app_profile.race.rating : 0));
     
@@ -87,12 +100,12 @@ async function refresh(loadDefault = false) {
     for (const user of riderSortedByElo) {
       if (!ridersInTeam.has(user.zp_id)) {
         let availability = 0;
-        if (props.formsResultsMapZpId.value.get(user.zp_id).nov12Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(user.zp_id).nov19Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(user.zp_id).nov26Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(user.zp_id).dec3Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(user.zp_id).dec10Course.includes('available')) availability++;
-        if (props.formsResultsMapZpId.value.get(user.zp_id).dec17Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(user.zp_id).nov4Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(user.zp_id).nov11Course.includes('available')) availability++;        
+        if (props.formsResultsMapZpId.value.get(user.zp_id).nov18Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(user.zp_id).nov25Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(user.zp_id).dec2Course.includes('available')) availability++;
+        if (props.formsResultsMapZpId.value.get(user.zp_id).dec9Course.includes('available')) availability++;
 
         const zpProfileCP20Watts = user.zp_profile ? user.zp_profile.profile_stats.w1200 : 0;
 
@@ -101,11 +114,19 @@ async function refresh(loadDefault = false) {
             id: user.zp_id,
             name: `${user.first_name} ${user.last_name}`,
             catPreferences: props.formsResultsMapZpId.value.get(user.zp_id).catPreferences,
+            catPreference: props.formsResultsMapZpId.value.get(user.zp_id).catPreference,
+            dsInterest: props.formsResultsMapZpId.value.get(user.zp_id).dsInterest,
             othersTeamPlayerNames: props.formsResultsMapZpId.value.get(user.zp_id).othersTeamPlayerNames,
             zpProfileCP20Watts: zpProfileCP20Watts,
             vElo: user.zwift_racing_app_profile ? Math.round(user.zwift_racing_app_profile.race.rating) : 0,
             isCapitain: false,
-            nbAvailability: availability
+            nbAvailability: availability,
+            preferedTime6h00: props.formsResultsMapZpId.value.get(user.zp_id).preferedTime6h00,
+            preferedTime7h00: props.formsResultsMapZpId.value.get(user.zp_id).preferedTime7h00,
+            preferedTime8h00: props.formsResultsMapZpId.value.get(user.zp_id).preferedTime8h00,
+            preferedTime12h00: props.formsResultsMapZpId.value.get(user.zp_id).preferedTime12h00,
+            preferedTime18h30: props.formsResultsMapZpId.value.get(user.zp_id).preferedTime18h30,
+            preferedTime19h30: props.formsResultsMapZpId.value.get(user.zp_id).preferedTime19h30,
           }
         );
       }
@@ -117,9 +138,7 @@ async function refresh(loadDefault = false) {
     if (err.response && err.response.status === 401) {
       router.push({ path: '/itwatts/signin' });
     }
-    if (err.response && err.response.status !== 404) {
-      console.log(`an error occured: ${err} stack: ${err.stack}`);
-    }
+    console.log(`an error occured: ${err} stack: ${err.stack}`);
   }
 }
 
@@ -215,6 +234,10 @@ function onDeleteTeam(teamName: string) {
   teams.value = teams.value.filter((team: any) => team.name !== teamName);
 }
 
+function onExportTeam(teamName: string) {
+  emit('exportTeam', teams.value.find((team: any) => team.name === teamName));
+}
+
 watch(() => [], refresh);
 refresh();
 
@@ -287,7 +310,7 @@ refresh();
               </v-row>
             <v-row>
               <v-col cols="12" md="3" sm="6" class="d-flex" v-for="team in teams.value" :key="team.id">
-                <CategoryColumnZrl :column="team" @deleteTeam="onDeleteTeam" />
+                <CategoryColumnZrl :column="team" @deleteTeam="onDeleteTeam" @exportTeam="onExportTeam" />
               </v-col>                
             </v-row>
             </v-card-text>

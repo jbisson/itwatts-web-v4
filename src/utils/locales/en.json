@@ -14,27 +14,10 @@
     "home": {
       "title": "Home"
     },
-    "admin": {
-      "title": "Admin",
-      "info": "Info",
-      "users": "Utilisateurs",
-      "discord": "Discord",
-      "zwiftPower": "Zwift Power",
-      "strava": "Strava",      
-      "clubLadderRegistrations": "Inscriptions Club Ladder 2024",      
-      "zrl20242025Round3Registrations": "Inscriptions ZRL 2024-2025 Ronde 3",
-      "zrl20242025Round2Registrations": "Inscriptions ZRL 2024-2025 Ronde 2",
-      "wtrlTTTRegistrations": "Inscriptions WTRL TTT 2024-2025",      
-      "swatInterestForms2024": "Formulaires intérêt 2024",
-      "swatGuestForms2024": "Formulaires invité 2024",
-      "swatMembers": "Membres 5.W.4.T (2024)",
-      "swatMembers2023": "Membres 5.W.4.T (2023)",
-      "swatGuests": "Invité(e)s 5.W.4.T (2024)",
-      "swatGuests2023": "Invité(e)s 5.W.4.T (2023)"
-    },
     "superAdmin": {
       "title": "Super Admin",
-      "teams": "Teams"
+      "teams": "Teams",
+      "users": "Users"
     },
     "teams": {
       "myTeams": "My Teams"
@@ -50,6 +33,10 @@
     "pageCategory": "Super Admin",
     "pageTitle": "Teams"
   },
+  "superAdminUsers": {
+    "pageCategory": "Super Admin",
+    "pageTitle": "Users"
+  },
   "home": {
     "pageCategory": "Home",
     "pageTitle": "Welcome"    
@@ -57,6 +44,23 @@
   "cb": {
     "pageTitle": "",
     "pageCategory": ""
+  },
+  "accountSettings": {
+    "pageTitle": "Account Settings",
+    "pageCategory": "",
+    "account": "Account",
+    "preferences": "Preferences",
+    "virtualPlatform": "Virtual Platforms",
+    "connections": "Connections",
+    "noTeam1": "You are not currently associated with any team. Contact your team manager to receive an invite.",
+    "noTeam2": "If you are a team manager and would like to create your team (IRL or Virtual), {0}",
+    "contactUs": "contact us",
+    "emailNotValidated": "Your email is not currently validated. Click on {0} to receive a code at your email address.",
+    "sendMeACode": "send me a code",
+    "verifyCode": "Verify code",
+    "verifiedEmail": "Email verified",
+    "emailSent": "An email has just been sent to you; please click on the link provided to verify your email.",
+    "changePicture": "Change your profile picture from here"
   },
   "feraInfo": {
     "pageCategory": "Fair E-Racing Alliance Mission",
@@ -106,6 +110,7 @@
     "pageCategory": "Sign in",
     "pageTitle": "",
     "withStrava": "Connect with Strava",
+    "consentStrava": "Consent my Strava data",
     "continueWithStrava": "Continue with Strava",
     "withGoogle": "Connect with Google",
     "withFacebook": "Connect with swatStrava",
@@ -119,6 +124,7 @@
     "pageTitle": "",
     "needLogin" : "In order to accept the team invitation, you first need to authenticate (or create) your ITWatts account using Strava. Click on the click bellow to continue.",
     "notAuthorized": "You are not authorized to be part of this team. Please contact your team administrator.",
+    "provideEmail": "Provide your email to accept the team invitation.",
     "provideEmailAndZwiftPowerID": "Provide your email and your zwift power ID to accept the team invitation.",
     "fillEmailCode": "An email has been sent to your email: {0}, please indicate the 6 digits numbers.",
     "verificationCode": "ITWatts verification code:",
@@ -152,7 +158,8 @@
   },
   "userProfile": {
     "title": "User Profile",
-    "myProfile": "My Data",
+    "pageCategory": "",
+    "myProfile": "My Profile",
     "accountSettings": "Account parameters",
     "logoutBtn": "Logout",
     "twitch": "Twitch username",
@@ -162,6 +169,11 @@
     "ig": "Instagram username",
     "primaryTeam": "Primary team"
   },
+  "profileDropDown": {
+    "myProfile": "My Profile",
+    "accountSettings": "Account Settings",
+    "signOut": "Sign out"
+  },
   "profileTeamMembers": {
     "pageCategory": "{0} Members"
   },
@@ -169,7 +181,7 @@
     "photo": "Photo Profile",
     "noPhoto": "You don't have a profile picture at the moment.",
     "validateEmail": "Validate my email",
-    "socialMedia": "Réseaux sociaux"
+    "socialMedia": "Social media"
   },
   "teamPhotoComponent": {
     "title": "Banner Team Photo"
@@ -228,6 +240,9 @@
     "elevationDiff": "Elev ation Diff",
     "averageGradient": "Avg Grad ient"
   },
+  "stravaLocationComponent": {
+    "searchArea": "Search area"
+  },
   "powerComponent": {
     "bestEffort": "Best effort for {0}",
     "virtual": "Virtual",
@@ -237,6 +252,10 @@
     "new": "New",
     "newMsg": "Beta v1.0 released! We are now accepting new teams to join our virtual platform!"
   },
+  "connectionsComponent": {
+    "consentStrava": "Consent to sharing your Strava data with ITWatts to enable activity syncing and performance tracking.",
+    "consentDiscord": "Connect your Discord ID with ITWatts to enable better communication with your team riders"
+  },
   "lookups" : {
     "true" : "yes",
     "false" : "no"
@@ -244,7 +263,9 @@
   "errors": {
     "errorOccured": "Oops, an error has occurred...Detail: {0}",
     "expiredLink" : "The invitation link has expired.",
-    "invalidZwiftPowerID": "The Zwift Power ID you entered is not valid."
+    "invalidZwiftPowerID": "The Zwift Power ID you entered is not valid.",
+    "invalidListName": "This list name already exist.",
+    "codeNotValid": "The code could not be validated, please try again."
   },
   "validations": {
     "required": "Required field",
@@ -265,11 +286,13 @@
     "ok": "OK",
     "removeRider": "Remove Rider",
     "removeInvitation": "Remove Invitation",
+    "invite": "Invite",
     "view": "View",
     "manage": "Manage",
     "submit": "Submit",
     "close": "Close",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "addUser": "Add User"
   },
   "common": {
     "date": "Date",
@@ -284,6 +307,7 @@
     "region": "Region",
     "email": "Email",
     "primaryTrainer": "Primary trainer",
+    "primaryTeam": "Primary team",
     "powerMeterDualRecording": "Power meter (dual recording)",
     "badge": "Badges",
     "lastWeightChangeZwift": "NB days last weight change (Zwift)",
@@ -319,13 +343,14 @@
     "value": "Value",    
     "weightMeasurements": "Weight measurement | Weight measurements",
     "heightMeasurements": "Height measurement | Height measurements",
-    "personal": "Personal",
+    "personal": "Personal Details",
     "teams": "Teams",
     "platforms": "Platforms",
     "status": "Status",
     "links": "Links",
     "zwiftPower": "Zwift Power",
     "zwiftPowerID": "Zwift Power ID",
+    "stravaAthleteID": "Strava Athlete ID",
     "code": "Code",
     "invite": "Invite",
     "teamName": "Team name",
@@ -346,7 +371,25 @@
     "6months": "6 months",
     "1year": "1 year",
     "3years": "3 years",
-    "lifetime": "Lifetime"
+    "lifetime": "Lifetime",
+    "distance": "Distance",
+    "city": "City",
+    "location": "Location",
+    "packages": "Packages",
+    "aboutUs": "About Us",
+    "support": "Support",
+    "faq": "FAQ",
+    "features": "Features",
+    "resources": "Resources",
+    "allRightsReserved": "All rights reserved by ITWatts.",
+    "producedBy": "Produced by",
+    "zwift": "Zwift",
+    "myWhoosh": "MyWhoosh",
+    "stravaLastLogin": "Strava last login",
+    "strava": "Strava",
+    "discord": "Discord",
+    "connect": "Connect",
+    "connected": "Connected"
   },
   "Modern": "Modern",
   "eCommerce": "eCommerce",

@@ -9,7 +9,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "outDir": "./dist",
   },
   "references": [
     {
